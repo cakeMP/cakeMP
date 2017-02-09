@@ -53,16 +53,25 @@ static void appScriptMain()
 	}
 }
 
+static void appKeyboardHandler(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow)
+{
+	if (key == VK_F3 && !wasDownBefore && !isUpNow) {
+		logWrite("F3 was pressed");
+	}
+}
+
 static void appInitialize(HMODULE hInstance)
 {
 	logOpen(PROJECT_NAME_SHORT ".log");
 	logWrite("Initializing v" PROJECT_VERSION);
 
 	scriptRegister(hInstance, appScriptMain);
+	keyboardHandlerRegister(appKeyboardHandler);
 }
 
 static void appUninitialize(HMODULE hInstance)
 {
+	keyboardHandlerUnregister(appKeyboardHandler);
 	scriptUnregister(hInstance);
 
 	logWrite("Uninitializing");
