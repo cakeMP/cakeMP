@@ -1,3 +1,5 @@
 #pragma once
 
-extern void WriteLog(const char* str, ...);
+extern void logOpen(const char* fnm);
+extern void logClose();
+extern void logWrite(const char* str, ...);
