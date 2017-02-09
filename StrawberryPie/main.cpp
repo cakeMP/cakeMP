@@ -7,7 +7,7 @@
 
 static void appScriptMain()
 {
-	logWrite("appScriptMain was called!");
+	logWrite("Main script running");
 
 	while (true) {
 		WAIT(1000);
@@ -18,6 +18,7 @@ static void appScriptMain()
 static void appInitialize(HMODULE hInstance)
 {
 	logOpen(PROJECT_NAME_SHORT ".log");
+	logWrite("Initializing v" PROJECT_VERSION);
 
 	scriptRegister(hInstance, appScriptMain);
 }
@@ -26,6 +27,7 @@ static void appUninitialize(HMODULE hInstance)
 {
 	scriptUnregister(hInstance);
 
+	logWrite("Uninitializing");
 	logClose();
 }
 
