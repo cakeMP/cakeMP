@@ -6,6 +6,8 @@
 
 #include <enet/enet.h>
 
+#include <shv/natives.h>
+
 NetworkManager::NetworkManager()
 {
 	if (enet_initialize() < 0) {
@@ -29,15 +31,15 @@ NetworkManager::~NetworkManager()
 void NetworkManager::Connect(const char* hostname, uint16_t port)
 {
 	if (m_localPeer != nullptr) {
-		Disconnect();
+		return;
 	}
 
-	logWrite("Connecting to %08x", m_localPeer->address.host);
+	logWrite("Connecting to %08x", hostname);
 
 	ENetAddress addr;
 	enet_address_set_host(&addr, hostname);
 	addr.port = port;
-	enet_host_connect(m_localHost, &addr, 1, 0);
+	m_localPeer = enet_host_connect(m_localHost, &addr, 1, 0);
 }
 
 void NetworkManager::Disconnect()
@@ -56,6 +58,14 @@ void NetworkManager::Update()
 {
 	ENetEvent ev;
 	if (enet_host_service(m_localHost, &ev, 0) > 0) {
-		logWrite("Network event type %d", (int)ev.type);
+		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
+			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Connected");
+			UI::_DRAW_NOTIFICATION(false, true);
+		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
+			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Disconnected");
+			UI::_DRAW_NOTIFICATION(false, true);
+		}
 	}
 }

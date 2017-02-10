@@ -33,7 +33,9 @@ int main()
 		ENetEvent ev;
 		if (enet_host_service(host, &ev, 0) > 0) {
 			if (ev.type == ENET_EVENT_TYPE_CONNECT) {
-				printf("-- New connection from %08x:%d at %p!\n", ev.peer->address.host, ev.peer->address.port, ev.peer);
+				printf("-- New connection from %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
+			} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
+				printf("-- Disconnected from %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
 			}
 		}
 

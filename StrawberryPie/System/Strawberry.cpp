@@ -5,6 +5,8 @@
 #include <Scripts/CleanWorld.h>
 #include <Scripts/Game.h>
 
+#include <Utils.h>
+
 #include <shv/main.h>
 
 Strawberry* _pGame = nullptr;
