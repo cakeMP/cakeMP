@@ -1,7 +1,7 @@
 #include <Common.h>
 #include <Scripts/Game.h>
 
-#include <Strawberry.h>
+#include <System/Strawberry.h>
 
 #include <shv/main.h>
 

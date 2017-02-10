@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <Strawberry.h>
+#include <System/Strawberry.h>
 
 #include <Scripts/CleanWorld.h>
 #include <Scripts/Game.h>
@@ -30,7 +30,7 @@ void Strawberry::Update()
 void Strawberry::OnKeyDown(uint32_t key)
 {
 	if (key == VK_F3) {
-		m_network.Connect("localhost", 4499);
+		m_network.Connect(m_settings.ConnectToHost.c_str(), m_settings.ConnectToPort);
 	} else if (key == VK_F4) {
 		m_network.Disconnect();
 	}

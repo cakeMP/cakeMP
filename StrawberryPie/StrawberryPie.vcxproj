@@ -51,7 +51,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir);$(SolutionDir)Libs\ScriptHookV\include;$(SolutionDir)Libs\ENet\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libs\ScriptHookV\lib;$(SolutionDir)Libs\ENet;$(LibraryPath)</LibraryPath>
-    <OutDir>D:\Installed Games\Pirate GTA V\</OutDir>
+    <OutDir>G:\Steam\steamapps\common\Grand Theft Auto V\</OutDir>
     <TargetExt>.asi</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -62,6 +62,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Common.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -96,13 +98,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Chat.cpp" />
+    <ClCompile Include="System\Chat.cpp" />
+    <ClCompile Include="Libs\inih\ini.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Entities\Player.cpp" />
     <ClCompile Include="Network\NetworkManager.cpp" />
     <ClCompile Include="Scripts\CleanWorld.cpp" />
     <ClCompile Include="Scripts\Game.cpp" />
-    <ClCompile Include="Strawberry.cpp" />
+    <ClCompile Include="Common.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="System\Settings.cpp" />
+    <ClCompile Include="System\Strawberry.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,12 +118,17 @@
     <ClInclude Include="Entities\Player.h" />
     <ClInclude Include="Enums\GameControl.h" />
     <ClInclude Include="Enums\GameScripts.h" />
+    <ClInclude Include="Libs\inih\ini.h" />
     <ClInclude Include="Network\NetworkManager.h" />
-    <ClInclude Include="Chat.h" />
-    <ClInclude Include="Strawberry.h" />
+    <ClInclude Include="System\Chat.h" />
+    <ClInclude Include="System\Settings.h" />
+    <ClInclude Include="System\Strawberry.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />
     <ClInclude Include="Scripts\Game.h" />
     <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Licenses.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

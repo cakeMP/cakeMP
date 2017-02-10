@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <Chat.h>
+#include <System/Chat.h>
 
 #include <shv/main.h>
 #include <shv/natives.h>

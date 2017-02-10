@@ -2,6 +2,8 @@
 
 #include <Common.h>
 
+//TODO: This file should be somewhere else!
+
 class Chat
 {
 public:

@@ -33,10 +33,19 @@
     <ClCompile Include="Network\NetworkManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Strawberry.cpp">
+    <ClCompile Include="System\Strawberry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Chat.cpp">
+    <ClCompile Include="System\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\inih\ini.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Chat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,13 +68,7 @@
     <ClInclude Include="Network\NetworkManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Strawberry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Enums\GameControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enums\GameScripts.h">
@@ -74,5 +77,20 @@
     <ClInclude Include="Enums\AudioFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Libs\inih\ini.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Strawberry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Chat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Licenses.txt" />
   </ItemGroup>
 </Project>

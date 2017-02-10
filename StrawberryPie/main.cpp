@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <Strawberry.h>
+#include <System/Strawberry.h>
 #include <Utils.h>
 
 #include <Windows.h>
