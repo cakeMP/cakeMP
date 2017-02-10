@@ -8,6 +8,7 @@
 
 #include <thread>
 #include <mutex>
+#include <string>
 
 #define PROJECT_NAME "Strawberry Pie"
 #define PROJECT_NAME_SHORT "Strawberry"

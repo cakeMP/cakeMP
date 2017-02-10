@@ -1,27 +1,15 @@
-#include <shv/main.h>
-#include <shv/natives.h>
+#pragma once
 
-void ChatSetup()
+#include <Common.h>
+
+class Chat
 {
-	int movie = GRAPHICS::REQUEST_SCALEFORM_MOVIE("multiplayer_chat");
-	GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(movie, 255, 255, 255, 255, 0);
+public:
+	Chat();
+	~Chat();
 
-	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(movie, "SET_FOCUS");
-	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(2);
-	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(2);
-	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_STRING("");
-	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
-}
+	void Update();
 
-
-void addText(char *text)
-{
-	int movie = GRAPHICS::REQUEST_SCALEFORM_MOVIE("multiplayer_chat");
-	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(movie, "ADD_MESSAGE");
-
-	GRAPHICS::_BEGIN_TEXT_COMPONENT("STRING");
-	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
-	GRAPHICS::_END_TEXT_COMPONENT();
-
-	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
-}
+	void FocusChat();
+	void AddText(const std::string &str);
+};

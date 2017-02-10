@@ -1,5 +1,7 @@
 #pragma once
-char* _gameScripts[] {
+
+const char* _gameScripts[]
+{
 	"abigail1",
 	"abigail2",
 	"achievement_controller",

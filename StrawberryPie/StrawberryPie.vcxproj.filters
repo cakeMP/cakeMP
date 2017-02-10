@@ -65,13 +65,13 @@
     <ClInclude Include="Enums\GameControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioFlags.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScripts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Chat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums\GameScripts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums\AudioFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

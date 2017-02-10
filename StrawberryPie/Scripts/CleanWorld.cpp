@@ -5,56 +5,51 @@
 #include <shv/natives.h>
 
 #include <Enums/GameControl.h>
-#include <AudioFlags.h>
-#include <GameScripts.h>
+#include <Enums/GameScripts.h>
 #include <Utils.h>
-#include <Chat.h>
 
 void scriptCleanWorld()
 {
-	bool terminated = false;
+	while (DLC2::GET_IS_LOADING_SCREEN_ACTIVE()) {
+		WAIT(0);
+	}
+
+	// Disable Rockstar editor
+	GAMEPLAY::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("replay_controller");
+	GAMEPLAY::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("selector");
+
+	// Disable all game scripts
+	for (const char* scriptName : _gameScripts) {
+		GAMEPLAY::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(scriptName);
+	}
+	logWrite("Game scripts unloaded.");
+
+	AUDIO::SET_AUDIO_FLAG("LoadMPData", true);
+	AUDIO::SET_AUDIO_FLAG("DisableBarks", true);
+	AUDIO::SET_AUDIO_FLAG("DisableFlightMusic", true);
+	AUDIO::SET_AUDIO_FLAG("PoliceScannerDisabled", true);
+	AUDIO::SET_AUDIO_FLAG("OnlyAllowScriptTriggerPoliceScanner", true);
+
+	//DLC2::_LOAD_SP_DLC_MAPS();
+	//DLC2::_LOAD_MP_DLC_MAPS();
+	//GAMEPLAY::_USE_FREEMODE_MAP_BEHAVIOR(true);
+
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STAM"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STRN"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_LUNG"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_DRIV"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_FLY"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_SHO"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STL"), 100, 1);
+	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_NO_MORE_TUTORIALS"), 1, 1);
 
 	while (true) {
-		if(!terminated && !DLC2::GET_IS_LOADING_SCREEN_ACTIVE()) {
-			terminated = true;
-
-			////DISABLE ROCKSTAR EDITOR
-			GAMEPLAY::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("replay_controller");
-			GAMEPLAY::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("selector");
-
-			for(char* &i :_gameScripts) {
-				GAMEPLAY::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(i);
-			}
-			logWrite("Game scripts unloaded.");
-
-			AUDIO::SET_AUDIO_FLAG(_audioFlags[(int)AudioFlag::LoadMPData], true);
-			AUDIO::SET_AUDIO_FLAG(_audioFlags[(int)AudioFlag::DisableBarks], true);
-			AUDIO::SET_AUDIO_FLAG(_audioFlags[(int)AudioFlag::DisableFlightMusic], true);
-			AUDIO::SET_AUDIO_FLAG(_audioFlags[(int)AudioFlag::PoliceScannerDisabled], true);
-			AUDIO::SET_AUDIO_FLAG(_audioFlags[(int)AudioFlag::OnlyAllowScriptTriggerPoliceScanner], true);
-
-			//DLC2::_LOAD_SP_DLC_MAPS();
-			//DLC2::_LOAD_MP_DLC_MAPS();
-			//GAMEPLAY::_USE_FREEMODE_MAP_BEHAVIOR(true);
-			
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STAM"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STRN"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_LUNG"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_DRIV"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_FLY"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_SHO"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STL"), 100, 1);
-			STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_NO_MORE_TUTORIALS"), 1, 1);
-		}
-
 		Player player = PLAYER::PLAYER_ID();
 		Ped playerPed = PLAYER::PLAYER_PED_ID();
 
 		if (!ENTITY::DOES_ENTITY_EXIST(playerPed)) {
 			continue;
 		}
-
-		ChatSetup();
 
 		PLAYER::SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER(player, 0.0f);
 		PLAYER::SET_POLICE_IGNORE_PLAYER(player, true);

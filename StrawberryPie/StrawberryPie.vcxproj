@@ -106,11 +106,11 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioFlags.h" />
+    <ClInclude Include="Enums\AudioFlags.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entities\Player.h" />
     <ClInclude Include="Enums\GameControl.h" />
-    <ClInclude Include="GameScripts.h" />
+    <ClInclude Include="Enums\GameScripts.h" />
     <ClInclude Include="Network\NetworkManager.h" />
     <ClInclude Include="Chat.h" />
     <ClInclude Include="Strawberry.h" />

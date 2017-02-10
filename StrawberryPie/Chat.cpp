@@ -1,0 +1,43 @@
+#include <Common.h>
+
+#include <Chat.h>
+
+#include <shv/main.h>
+#include <shv/natives.h>
+
+Chat::Chat()
+{
+	//TODO: Check if we have to keep using REQUEST_SCALEFORM_MOVIE or that we can cache it here
+}
+
+Chat::~Chat()
+{
+}
+
+void Chat::Update()
+{
+}
+
+void Chat::FocusChat()
+{
+	int movie = GRAPHICS::REQUEST_SCALEFORM_MOVIE("multiplayer_chat");
+	GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(movie, 255, 255, 255, 255, 0);
+
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(movie, "SET_FOCUS");
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(2);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(2);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_STRING("");
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+}
+
+void Chat::AddText(const std::string &str)
+{
+	int movie = GRAPHICS::REQUEST_SCALEFORM_MOVIE("multiplayer_chat");
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(movie, "ADD_MESSAGE");
+
+	GRAPHICS::_BEGIN_TEXT_COMPONENT("STRING");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(str.c_str());
+	GRAPHICS::_END_TEXT_COMPONENT();
+
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+}

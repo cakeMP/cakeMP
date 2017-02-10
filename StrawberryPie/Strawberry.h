@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Network/NetworkManager.h>
+#include <Chat.h>
 
 class Strawberry
 {
@@ -8,6 +9,7 @@ public:
 	HMODULE m_hInstance;
 
 	NetworkManager m_network;
+	Chat m_chat;
 
 public:
 	Strawberry(HMODULE hInstance);
