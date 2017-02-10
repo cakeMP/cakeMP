@@ -214,3 +214,6 @@ ModelManifest.xml
 
 # MSVC garbage
 *.opendb
+
+# Qt Creator build folders
+/build-*
