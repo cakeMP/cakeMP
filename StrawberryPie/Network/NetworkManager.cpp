@@ -36,6 +36,10 @@ void NetworkManager::Connect(const char* hostname, uint16_t port)
 
 	logWrite("Connecting to %08x", hostname);
 
+	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Connecting..");
+	UI::_DRAW_NOTIFICATION(false, true);
+
 	ENetAddress addr;
 	enet_address_set_host(&addr, hostname);
 	addr.port = port;
@@ -50,6 +54,10 @@ void NetworkManager::Disconnect()
 
 	logWrite("Disconnecting from %08x", m_localPeer->address.host);
 
+	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Disconnecting..");
+	UI::_DRAW_NOTIFICATION(false, true);
+
 	enet_peer_disconnect(m_localPeer, 0);
 	m_localPeer = nullptr;
 }
@@ -60,11 +68,11 @@ void NetworkManager::Update()
 	if (enet_host_service(m_localHost, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
 			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Connected");
+			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~g~Connected");
 			UI::_DRAW_NOTIFICATION(false, true);
 		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
 			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Disconnected");
+			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Disconnected");
 			UI::_DRAW_NOTIFICATION(false, true);
 		}
 	}
