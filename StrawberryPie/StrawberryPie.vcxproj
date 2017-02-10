@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Chat.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Entities\Player.cpp" />
     <ClCompile Include="Network\NetworkManager.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Enums\GameControl.h" />
     <ClInclude Include="GameScripts.h" />
     <ClInclude Include="Network\NetworkManager.h" />
+    <ClInclude Include="Chat.h" />
     <ClInclude Include="Strawberry.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />
     <ClInclude Include="Scripts\Game.h" />

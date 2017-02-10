@@ -426,7 +426,7 @@ char* _gameScripts[] {
 	"luxe_veh_activity",
 	"magdemo",
 	"magdemo2",
-	"main",
+	//"main",
 	"maintransition",
 	"main_install",
 	"main_persistent",
