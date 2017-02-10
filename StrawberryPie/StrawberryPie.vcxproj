@@ -51,7 +51,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir);$(SolutionDir)Libs\ScriptHookV\include;$(SolutionDir)Libs\ENet\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libs\ScriptHookV\lib;$(SolutionDir)Libs\ENet;$(LibraryPath)</LibraryPath>
-    <OutDir>G:\Steam\steamapps\common\Grand Theft Auto V\</OutDir>
+    <OutDir>D:\Installed Games\Pirate GTA V\</OutDir>
     <TargetExt>.asi</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,9 +105,11 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioFlags.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entities\Player.h" />
     <ClInclude Include="Enums\GameControl.h" />
+    <ClInclude Include="GameScripts.h" />
     <ClInclude Include="Network\NetworkManager.h" />
     <ClInclude Include="Strawberry.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />
