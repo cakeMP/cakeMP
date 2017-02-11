@@ -34,7 +34,7 @@ void NetworkManager::Connect(const char* hostname, uint16_t port)
 		return;
 	}
 
-	logWrite("Connecting to %08x", hostname);
+	logWrite("Connecting to %s:%u", hostname, port);
 
 	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
 	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Connecting..");
