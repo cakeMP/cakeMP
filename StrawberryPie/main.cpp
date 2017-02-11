@@ -35,10 +35,7 @@ static void appUninitialize()
 
 	delete _pGame;
 
-	logWrite("Memory test...");
 	memTest();
-	logWrite("Done!");
-
 	logClose();
 }
 
