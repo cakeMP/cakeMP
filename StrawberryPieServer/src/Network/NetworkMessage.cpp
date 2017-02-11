@@ -7,7 +7,7 @@ NetworkMessage::NetworkMessage()
 	m_outgoing = true;
 }
 
-NetworkMessage::NetworkMessage(uint32_t peer, ENetPacket* packet)
+NetworkMessage::NetworkMessage(ENetPeer* peer, ENetPacket* packet)
 {
 	m_forPeer = peer;
 
@@ -15,6 +15,7 @@ NetworkMessage::NetworkMessage(uint32_t peer, ENetPacket* packet)
 	m_length = packet->dataLength;
 
 	m_packet = packet;
+	m_reliable = (packet->flags & ENET_PACKET_FLAG_RELIABLE) != 0;
 }
 
 NetworkMessage::~NetworkMessage()
@@ -49,18 +50,18 @@ void NetworkMessage::WriteRaw(const void* src, size_t sz)
 	assert(m_outgoing);
 
 	if (m_data == nullptr) {
-		m_lengthAlloc = NETWORK_MESSAGE_DEFAULT_SIZE;
-		m_data = (uint8_t*)malloc(m_lengthAlloc);
+		m_length = NETWORK_MESSAGE_DEFAULT_SIZE;
+		m_data = (uint8_t*)malloc(m_length);
 	}
 
 	bool mustRealloc = false;
-	while (m_current + sz > m_lengthAlloc) {
-		m_lengthAlloc += NETWORK_MESSAGE_ALLOCATE_SIZE;
+	while (m_current + sz > m_length) {
+		m_length += NETWORK_MESSAGE_ALLOCATE_SIZE;
 		mustRealloc = true;
 	}
 
 	if (mustRealloc) {
-		m_data = (uint8_t*)realloc(m_data, m_lengthAlloc);
+		m_data = (uint8_t*)realloc(m_data, m_length);
 	}
 
 	memcpy(m_data + m_current, src, sz);

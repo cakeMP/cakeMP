@@ -10,6 +10,8 @@ public:
 
 	Settings m_settings;
 
+	bool m_running = true;
+
 public:
 	GameServer();
 	~GameServer();
