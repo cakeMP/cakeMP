@@ -13,12 +13,14 @@
 #define MEMORY_PRINT_NEWLINE
 
 #include <cstdio>
+#include <cstring>
 #include <cstdlib>
 #include <cstdint>
 
-#include <vector>
+#include <map>
 #include <algorithm>
 #include <mutex>
+#include <atomic>
 
 struct Allocation
 {
@@ -41,7 +43,8 @@ struct DebugAllocator
 	void deallocate(T* p, std::size_t n) { free(p); }
 };
 
-static std::vector<Allocation, DebugAllocator<Allocation>> _memAllocations;
+static std::map<size_t, Allocation, std::less<size_t>, DebugAllocator<Allocation>> _memAllocations;
+static std::atomic<size_t> _memAllocationIndex(0);
 static std::mutex _memMutex;
 
 inline size_t memGetAllocIndex(void* p)
@@ -68,11 +71,12 @@ void* memAlloc(size_t size, const char* fnm, int line)
 
 	_memMutex.lock();
 
-	_memAllocations.push_back(alloc);
-	*(size_t*)ptr = _memAllocations.size() - 1;
+	size_t newIndex = _memAllocationIndex++;
+	_memAllocations[newIndex] = alloc;
+	*(size_t*)ptr = newIndex;
 
 #if MEMORY_DEBUG
-	MEMORY_PRINT(".. memAlloc: %p at %s:%d" MEMORY_PRINT_NEWLINE, ret, fnm, line);
+	MEMORY_PRINT(".. memAlloc: %p at %s:%d (bookkeeping %016X)" MEMORY_PRINT_NEWLINE, ret, fnm, line, _memAllocationIndex - 1);
 #endif
 
 	_memMutex.unlock();
@@ -131,7 +135,7 @@ void memFree(void* p, const char* fnm, int line)
 	size_t allocIndex = memGetAllocIndex(p);
 	Allocation &alloc = memGetAlloc(p);
 	free(alloc.ptr);
-	_memAllocations.erase(_memAllocations.begin() + allocIndex);
+	_memAllocations.erase(allocIndex);
 
 	_memMutex.unlock();
 }
@@ -151,8 +155,11 @@ void memTest(bool freeMemory)
 		MEMORY_PRINT("== There are %zu unfreed memory allocations!" MEMORY_PRINT_NEWLINE, _memAllocations.size());
 	}
 
-	for (Allocation &alloc : _memAllocations) {
-		MEMORY_PRINT("!! Memory leak of size %llu at %p found!" MEMORY_PRINT_NEWLINE, alloc.size, ((unsigned char*)alloc.ptr + sizeof(size_t)));
+	for (auto &item : _memAllocations) {
+		size_t index = item.first;
+		Allocation &alloc = item.second;
+
+		MEMORY_PRINT("!! Memory leak of size %llu at %p found! (bookkeeping %016X)" MEMORY_PRINT_NEWLINE, alloc.size, ((unsigned char*)alloc.ptr + sizeof(size_t)), index);
 		MEMORY_PRINT("   Allocated at %s:%d" MEMORY_PRINT_NEWLINE, alloc.fnm, alloc.line);
 
 		if (freeMemory) {
