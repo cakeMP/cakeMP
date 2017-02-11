@@ -96,6 +96,7 @@ void NetworkManager::Update()
 			Player* player = FindPlayer(ev.peer);
 			assert(player != nullptr);
 			if (player != nullptr) {
+				m_players.erase(std::find(m_players.begin(), m_players.end(), player));
 				player->OnDisconnected();
 				delete player;
 			}
