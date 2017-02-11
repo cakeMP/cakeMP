@@ -8,7 +8,7 @@
 
 #include <Utils.h>
 
-#define MEMORY_DEBUG 1
+#define MEMORY_DEBUG 0
 #define MEMORY_PRINT logWrite
 #define MEMORY_PRINT_NEWLINE
 
