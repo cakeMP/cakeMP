@@ -10,6 +10,10 @@
 
 void scriptCleanWorld()
 {
+	DLC2::_LOAD_SP_DLC_MAPS();
+	DLC2::_LOAD_MP_DLC_MAPS();
+	GAMEPLAY::_USE_FREEMODE_MAP_BEHAVIOR(true);
+
 	while (DLC2::GET_IS_LOADING_SCREEN_ACTIVE()) {
 		WAIT(0);
 	}
@@ -29,10 +33,6 @@ void scriptCleanWorld()
 	AUDIO::SET_AUDIO_FLAG("DisableFlightMusic", true);
 	AUDIO::SET_AUDIO_FLAG("PoliceScannerDisabled", true);
 	AUDIO::SET_AUDIO_FLAG("OnlyAllowScriptTriggerPoliceScanner", true);
-
-	//DLC2::_LOAD_SP_DLC_MAPS();
-	//DLC2::_LOAD_MP_DLC_MAPS();
-	//GAMEPLAY::_USE_FREEMODE_MAP_BEHAVIOR(true);
 
 	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STAM"), 100, 1);
 	STATS::STAT_SET_INT(GAMEPLAY::GET_HASH_KEY("MP0_SCRIPT_INCREASE_STRN"), 100, 1);
