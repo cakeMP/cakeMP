@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstring>
 #include <ctime>
+#include <cassert>
 
 #ifndef _MSC_VER
 #include <unistd.h>
@@ -15,3 +16,4 @@
 #include <thread>
 #include <mutex>
 #include <string>
+#include <vector>

@@ -16,6 +16,12 @@ add_executable(StrawberryServer
 
 	src/Network/NetworkManager.cpp
 	src/Network/NetworkManager.h
+
+	src/Network/NetworkMessage.cpp
+	src/Network/NetworkMessage.h
+
+	src/Network/Player.cpp
+	src/Network/Player.h
 )
 
 find_package(ENet REQUIRED)
