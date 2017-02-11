@@ -98,6 +98,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Memory.cpp" />
     <ClCompile Include="System\Chat.cpp" />
     <ClCompile Include="Libs\inih\ini.cpp" />
     <ClCompile Include="main.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Enums\GameControl.h" />
     <ClInclude Include="Enums\GameScripts.h" />
     <ClInclude Include="Libs\inih\ini.h" />
+    <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />
     <ClInclude Include="System\Chat.h" />
     <ClInclude Include="System\Settings.h" />

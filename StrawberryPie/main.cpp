@@ -29,11 +29,16 @@ static void appInitialize(HMODULE hInstance)
 
 static void appUninitialize()
 {
+	logWrite("Uninitializing");
+
 	keyboardHandlerUnregister(appKeyboardHandler);
 
 	delete _pGame;
 
-	logWrite("Uninitializing");
+	logWrite("Memory test...");
+	memTest();
+	logWrite("Done!");
+
 	logClose();
 }
 

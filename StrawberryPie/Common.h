@@ -13,6 +13,9 @@
 #include <mutex>
 #include <string>
 
+// Custom includes
+#include <Memory.h>
+
 // This needs to move someplace else eventually (we don't want this in pch)
 #define PROJECT_NAME "Strawberry Pie"
 #define PROJECT_NAME_SHORT "Strawberry"
