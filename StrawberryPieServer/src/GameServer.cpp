@@ -30,17 +30,4 @@ void GameServer::Run()
 void GameServer::Update()
 {
 	m_network.Update();
-
-	static int _testState = 0;
-	if (_testState == 0) {
-		if (m_network.m_players.size() > 0) {
-			printf("TEST: Player connected\n");
-			_testState++;
-		}
-	} else if (_testState == 1) {
-		if (m_network.m_players.size() == 0) {
-			printf("TEST: Player disconnected, closing server now\n");
-			m_running = false;
-		}
-	}
 }

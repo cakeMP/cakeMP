@@ -23,19 +23,6 @@ NetworkManager::~NetworkManager()
 	enet_deinitialize();
 }
 
-Player* NetworkManager::FindPlayer(const ENetPeer* peer)
-{
-	//TODO: This function is possibly slow, but I don't see any userdata field on peers, so this will have to do for now..
-	for (Player* p : m_players) {
-		//TODO: Does ENet throw the objects away/around that we can't compare actual pointers?
-		//NOTE: connectID can not be used here because when a disconnect event is received, only the peer's data is valid!
-		if (p->GetPeer() == peer) {
-			return p;
-		}
-	}
-	return nullptr;
-}
-
 void NetworkManager::Listen(const char* host, uint16_t port, uint32_t maxClients)
 {
 	if (m_hostListen != nullptr) {
@@ -83,9 +70,10 @@ void NetworkManager::Update()
 	ENetEvent ev;
 	if (enet_host_service(m_hostListen, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
-			printf("New connection from: %08x:%d (id %d)\n", ev.peer->address.host, ev.peer->address.port, ev.peer->connectID);
+			printf("New connection from: %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
 
 			Player* newPlayer = new Player(ev.peer);
+			ev.peer->data = newPlayer;
 			m_players.push_back(newPlayer);
 
 			newPlayer->OnConnected();
@@ -93,7 +81,7 @@ void NetworkManager::Update()
 		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
 			printf("Client disconnected: %08x\n", ev.peer->address.host);
 
-			Player* player = FindPlayer(ev.peer);
+			Player* player = (Player*)ev.peer->data;
 			assert(player != nullptr);
 			if (player != nullptr) {
 				m_players.erase(std::find(m_players.begin(), m_players.end(), player));
