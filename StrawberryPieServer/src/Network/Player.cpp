@@ -94,7 +94,7 @@ void Player::HandleMessage(NetworkMessage* message)
 		m_position = newPosition;
 		m_rotation = newRotation;
 
-		_pServer->m_network.SendMessageToAll(message);
+		//TODO: Send other clients a packet
 
 		return;
 	}
