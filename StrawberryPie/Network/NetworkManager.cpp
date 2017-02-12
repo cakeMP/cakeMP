@@ -115,12 +115,15 @@ void NetworkManager::Update()
 		logWrite("Incoming message of size %u at %p (type %d)", message->m_length, message->m_data, (int)message->m_type);
 
 		if (message->m_type == NMT_Disconnect) {
-			logWrite("Server is disconnecting us");
-
 			std::string reason;
 			message->Read(reason);
 
-			logWrite("Because: %s", reason.c_str());
+			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(reason.c_str());
+			UI::_DRAW_NOTIFICATION(false, true);
+
+			enet_peer_disconnect(m_localPeer, 0);
+			m_localPeer = nullptr;
 		}
 
 		delete message;
