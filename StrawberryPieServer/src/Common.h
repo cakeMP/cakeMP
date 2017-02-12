@@ -20,6 +20,7 @@
 #include <queue>
 #include <algorithm>
 #include <chrono>
+#include <unordered_map>
 
 // glm includes
 #include <glm/glm.hpp>

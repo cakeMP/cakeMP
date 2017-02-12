@@ -17,10 +17,14 @@ add_executable(StrawberryServer
 	src/Network/NetworkManager.cpp
 	src/Network/NetworkManager.h
 
-	src/Network/Player.cpp
-	src/Network/Player.h
+	src/Entity.cpp
+	src/Entity.h
+
+	src/Entities/Player.cpp
+	src/Entities/Player.h
 
 	# Shared sources
+	../StrawberryPieShared/SharedUtils.h
 	../StrawberryPieShared/Enums/NetworkMessageType.h
 	../StrawberryPieShared/Network/NetworkMessage.h
 	../StrawberryPieShared/Network/NetHandle.h

@@ -23,6 +23,12 @@ NetworkManager::~NetworkManager()
 	enet_deinitialize();
 }
 
+NetHandle NetworkManager::AssignHandle()
+{
+	//TODO: This could be smarter in the future so it uses unused slots
+	return NetHandle(m_handleIterator++);
+}
+
 void NetworkManager::Listen(const char* host, uint16_t port, uint32_t maxClients)
 {
 	if (m_hostListen != nullptr) {
@@ -88,8 +94,8 @@ void NetworkManager::Update()
 		return;
 	}
 
-	for (Player* player : m_players) {
-		player->Update();
+	for (auto &pair : m_entities) {
+		pair.second->Update();
 	}
 
 	//TODO: Make a thread just for network message queueing
@@ -98,7 +104,7 @@ void NetworkManager::Update()
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
 			printf("New connection from: %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
 
-			Player* newPlayer = new Player(ev.peer);
+			Player* newPlayer = new Player(ev.peer, AssignHandle());
 			ev.peer->data = newPlayer;
 			m_players.push_back(newPlayer);
 

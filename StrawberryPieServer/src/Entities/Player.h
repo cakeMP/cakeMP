@@ -2,12 +2,14 @@
 
 #include <Common.h>
 
+#include <Entity.h>
+
 #include <Network/NetworkMessage.h>
 #include <Network/NetHandle.h>
 
 #include <enet/enet.h>
 
-class Player
+class Player : public Entity
 {
 private:
 	ENetPeer* m_peer = nullptr;
@@ -16,23 +18,13 @@ private:
 	ClockTime m_tmSyncLastPosition;
 
 public:
-	NetHandle m_handle; //TODO: Move this into some abstract NetworkEntity or SyncedEntity class
-
 	std::string m_nickname;
 	std::string m_username;
 
-	glm::vec3 m_position;
-	glm::vec3 m_rotation;
-
 public:
-	Player(ENetPeer* peer);
-	~Player();
+	Player(ENetPeer* peer, const NetHandle &handle);
+	virtual ~Player();
 
-private:
-	// Don't use the copyconstructor!!
-	Player(const Player &player) {}
-
-public:
 	void OnConnected();
 	void OnDisconnected();
 
@@ -41,7 +33,7 @@ public:
 
 	void HandleMessage(NetworkMessage* message);
 
-	void Update();
+	virtual void Update();
 
 	//TODO: Make these getters atomic
 	inline ENetPeer* GetPeer() { return m_peer; }

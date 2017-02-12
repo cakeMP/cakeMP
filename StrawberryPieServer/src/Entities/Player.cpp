@@ -1,11 +1,17 @@
 #include <Common.h>
 
-#include <Network/Player.h>
+#include <Entities/Player.h>
 #include <GameServer.h>
 
-Player::Player(ENetPeer* peer)
+Player::Player(ENetPeer* peer, const NetHandle &handle)
+	: Entity(handle)
 {
 	m_peer = peer;
+
+	//TODO: Make spawn position configurable (or something)
+	m_position.x = -0.341730f;
+	m_position.y = 525.319763f;
+	m_position.z = 179.050201;
 }
 
 Player::~Player()
@@ -70,6 +76,17 @@ void Player::HandleMessage(NetworkMessage* message)
 		m_nickname = nickname;
 
 		printf("Player info received: %s (nickname: %s)\n", m_username.c_str(), m_nickname.c_str());
+
+		NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
+		msgHandshake->Write(m_handle);
+		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
+
+		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
+		msgJoin->Write(m_handle);
+		msgJoin->Write(m_username);
+		msgJoin->Write(m_nickname);
+		msgJoin->Write(m_position);
+		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
 
 		return;
 	}
