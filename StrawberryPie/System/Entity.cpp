@@ -28,7 +28,7 @@ bool Entity::IsLocal()
 
 bool Entity::CanBeDeleted()
 {
-	return true;
+	return IsLocal();
 }
 
 int Entity::GetLocalHandle()
