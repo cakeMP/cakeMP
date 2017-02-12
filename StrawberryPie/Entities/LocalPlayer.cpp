@@ -40,9 +40,12 @@ void LocalPlayer::Initialize()
 void LocalPlayer::Update()
 {
 	glm::vec3 pos = GetPosition();
-	glm::vec3 rot = GetRotation();
 
 	if (glm::distance(m_lastSyncedPosition, pos) > 0.25f) {
+		glm::vec3 rot = GetRotation();
+
+		m_lastSyncedPosition = pos;
+
 		NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
 		msgPos->Write(pos);
 		msgPos->Write(rot);

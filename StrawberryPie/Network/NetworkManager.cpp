@@ -64,6 +64,10 @@ void NetworkManager::Disconnect()
 
 void NetworkManager::SendToHost(NetworkMessage* message)
 {
+	if (!m_connected) {
+		delete message;
+		return;
+	}
 	m_outgoingMessages.push(message);
 }
 
