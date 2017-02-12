@@ -19,3 +19,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+
+// glm includes
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>

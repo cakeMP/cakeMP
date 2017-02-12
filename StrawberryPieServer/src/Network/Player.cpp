@@ -17,7 +17,6 @@ Player::~Player()
 
 void Player::OnConnected()
 {
-	Kick("Hey this is my server, fuck off");
 }
 
 void Player::OnDisconnected()
@@ -57,6 +56,51 @@ void Player::Close()
 	m_peer = nullptr;
 }
 
+void Player::HandleMessage(NetworkMessage* message)
+{
+	if (message->m_type == NMT_Handshake) {
+		std::string username, nickname;
+
+		message->Read(username);
+		message->Read(nickname);
+
+		//TODO: Process handshake data for validity
+
+		m_username = username;
+		m_nickname = nickname;
+
+		printf("Player info received: %s (nickname: %s)\n", m_username.c_str(), m_nickname.c_str());
+
+		return;
+	}
+
+	if (message->m_type == NMT_ChatMessage) {
+		std::string chatMessage;
+		message->Read(chatMessage);
+
+		printf("%s: %s\n", "Player", m_username.c_str(), chatMessage.c_str());
+
+		return;
+	}
+
+	if (message->m_type == NMT_PlayerMove) {
+		glm::vec3 newPosition, newRotation;
+
+		message->Read(newPosition);
+		message->Read(newRotation);
+
+		//TODO: Process vectors for validity (maybe even do NaN checks for floats and vectors in NetworkMessage::Read())
+
+		m_position = newPosition;
+		m_rotation = newRotation;
+
+		_pServer->m_network.SendMessageToAll(message);
+
+		return;
+	}
+}
+
 void Player::Update()
 {
+	printf("Player is at: %f %f %f\n", m_position.x, m_position.y, m_position.z);
 }

@@ -2,6 +2,8 @@
 
 #include <Common.h>
 
+#include <Network/NetworkMessage.h>
+
 #include <enet/enet.h>
 
 class Player
@@ -9,6 +11,13 @@ class Player
 private:
 	ENetPeer* m_peer = nullptr;
 	bool m_orderedToDisconnect = false;
+
+public:
+	std::string m_nickname;
+	std::string m_username;
+
+	glm::vec3 m_position;
+	glm::vec3 m_rotation;
 
 public:
 	Player(ENetPeer* peer);
@@ -24,6 +33,8 @@ public:
 
 	void Kick(const std::string &reason);
 	void Close();
+
+	void HandleMessage(NetworkMessage* message);
 
 	void Update();
 
