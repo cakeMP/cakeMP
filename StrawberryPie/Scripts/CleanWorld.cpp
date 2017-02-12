@@ -6,7 +6,8 @@
 
 #include <Enums/GameControl.h>
 #include <Enums/GameScripts.h>
-#include <Utils.h>
+
+NAMESPACE_BEGIN;
 
 void scriptCleanWorld()
 {
@@ -126,3 +127,5 @@ void scriptCleanWorld()
 		WAIT(0);
 	}
 }
+
+NAMESPACE_END;

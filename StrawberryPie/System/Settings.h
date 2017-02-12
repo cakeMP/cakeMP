@@ -2,6 +2,8 @@
 
 #include <Common.h>
 
+NAMESPACE_BEGIN;
+
 class Settings
 {
 public:
@@ -11,3 +13,5 @@ public:
 public:
 	Settings();
 };
+
+NAMESPACE_END;

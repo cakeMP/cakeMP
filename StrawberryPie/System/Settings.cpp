@@ -3,7 +3,7 @@
 
 #include <Libs/inih/ini.h>
 
-#include <Utils.h>
+NAMESPACE_BEGIN;
 
 static int settings_handler(void* user, const char* section, const char* name, const char* value)
 {
@@ -30,3 +30,5 @@ Settings::Settings()
 {
 	ini_parse(PROJECT_NAME_SHORT ".ini", &settings_handler, this);
 }
+
+NAMESPACE_END;

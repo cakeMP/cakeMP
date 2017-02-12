@@ -6,6 +6,8 @@
 
 #include <enet/enet.h>
 
+NAMESPACE_BEGIN;
+
 class NetworkManager
 {
 public:
@@ -30,3 +32,5 @@ public:
 	void Initialize();
 	void Update();
 };
+
+NAMESPACE_END;

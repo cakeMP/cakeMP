@@ -1,12 +1,13 @@
 #include <Common.h>
 
 #include <System/Strawberry.h>
-#include <Utils.h>
 
 #include <Windows.h>
 
 #include <shv/main.h>
 #include <shv/natives.h>
+
+NAMESPACE_BEGIN;
 
 static void appKeyboardHandler(DWORD key, WORD repeats, BYTE scanCode, BOOL isExtended, BOOL isWithAlt, BOOL wasDownBefore, BOOL isUpNow)
 {
@@ -39,12 +40,14 @@ static void appUninitialize()
 	logClose();
 }
 
+NAMESPACE_END;
+
 BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 {
 	if (reason == DLL_PROCESS_ATTACH) {
-		appInitialize(hInstance);
+		NAMESPACE_NAME::appInitialize(hInstance);
 	} else if (reason == DLL_PROCESS_DETACH) {
-		appUninitialize();
+		NAMESPACE_NAME::appUninitialize();
 	}
 	return TRUE;
 }

@@ -4,6 +4,8 @@
 
 //TODO: This file should be somewhere else!
 
+NAMESPACE_BEGIN;
+
 class Chat
 {
 public:
@@ -15,3 +17,5 @@ public:
 	void FocusChat();
 	void AddText(const std::string &str);
 };
+
+NAMESPACE_END;

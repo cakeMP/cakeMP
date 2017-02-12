@@ -4,6 +4,8 @@
 
 #include <share.h>
 
+NAMESPACE_BEGIN;
+
 static FILE* _fhLog = nullptr;
 static std::mutex _mutexLog;
 
@@ -60,3 +62,5 @@ void logAssertFailed(const char* condition, const char* filename, int line)
 	logWrite("!! ASSERTION FAILED: '%s'", condition);
 	logWrite("   At: %s:%d", filename, line);
 }
+
+NAMESPACE_END;

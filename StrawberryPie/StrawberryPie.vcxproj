@@ -49,7 +49,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir);$(SolutionDir)Libs\ScriptHookV\include;$(SolutionDir)Libs\ENet\include;$(SolutionDir)StrawberryPieShared;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(SolutionDir)Libs\ScriptHookV\include;$(SolutionDir)Libs\ENet\include;$(SolutionDir)StrawberryPieShared;$(SolutionDir)Libs\glm;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libs\ScriptHookV\lib;$(SolutionDir)Libs\ENet;$(LibraryPath)</LibraryPath>
     <OutDir>G:\Steam\steamapps\common\Grand Theft Auto V\</OutDir>
     <TargetExt>.asi</TargetExt>
@@ -98,6 +98,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entities\LocalPlayer.cpp" />
+    <ClCompile Include="Entities\Ped.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="System\Chat.cpp" />
     <ClCompile Include="Libs\inih\ini.cpp" />
@@ -109,11 +111,14 @@
     <ClCompile Include="Common.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="System\Entity.cpp" />
     <ClCompile Include="System\Settings.cpp" />
     <ClCompile Include="System\Strawberry.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entities\LocalPlayer.h" />
+    <ClInclude Include="Entities\Ped.h" />
     <ClInclude Include="Enums\AudioFlags.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entities\Player.h" />
@@ -123,6 +128,7 @@
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />
     <ClInclude Include="System\Chat.h" />
+    <ClInclude Include="System\Entity.h" />
     <ClInclude Include="System\Settings.h" />
     <ClInclude Include="System\Strawberry.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />

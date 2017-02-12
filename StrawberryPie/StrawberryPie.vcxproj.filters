@@ -51,6 +51,15 @@
     <ClCompile Include="Memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Entities\LocalPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Ped.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -93,6 +102,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\LocalPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Ped.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

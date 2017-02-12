@@ -1,9 +1,15 @@
 #pragma once
 
+#include <Common.h>
+
 #include <Network/NetworkManager.h>
 
 #include <System/Settings.h>
 #include <System/Chat.h>
+
+#include <Entities/LocalPlayer.h>
+
+NAMESPACE_BEGIN;
 
 class Strawberry
 {
@@ -12,6 +18,8 @@ public:
 
 	NetworkManager m_network;
 	Settings m_settings;
+
+	LocalPlayer m_player;
 
 	Chat m_chat;
 
@@ -27,3 +35,5 @@ public:
 };
 
 extern Strawberry* _pGame;
+
+NAMESPACE_END;

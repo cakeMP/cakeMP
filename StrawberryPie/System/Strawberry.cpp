@@ -5,9 +5,9 @@
 #include <Scripts/CleanWorld.h>
 #include <Scripts/Game.h>
 
-#include <Utils.h>
-
 #include <shv/main.h>
+
+NAMESPACE_BEGIN;
 
 Strawberry* _pGame = nullptr;
 
@@ -26,11 +26,15 @@ Strawberry::~Strawberry()
 
 void Strawberry::Initialize()
 {
+	logWrite("Client initializing.");
+
+	m_player.Initialize();
 	m_network.Initialize();
 }
 
 void Strawberry::Update()
 {
+	m_player.Update();
 	m_network.Update();
 }
 
@@ -46,3 +50,5 @@ void Strawberry::OnKeyDown(uint32_t key)
 void Strawberry::OnKeyUp(uint32_t key)
 {
 }
+
+NAMESPACE_END;

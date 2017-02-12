@@ -6,6 +6,8 @@
 #include <shv/main.h>
 #include <shv/natives.h>
 
+NAMESPACE_BEGIN;
+
 void scriptGame()
 {
 	while (DLC2::GET_IS_LOADING_SCREEN_ACTIVE()) {
@@ -28,3 +30,5 @@ void scriptGame()
 		WAIT(0);
 	}
 }
+
+NAMESPACE_END;

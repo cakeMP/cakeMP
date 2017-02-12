@@ -5,6 +5,8 @@
 #include <shv/main.h>
 #include <shv/natives.h>
 
+NAMESPACE_BEGIN;
+
 Chat::Chat()
 {
 	//TODO: Check if we have to keep using REQUEST_SCALEFORM_MOVIE or that we can cache it here
@@ -41,3 +43,5 @@ void Chat::AddText(const std::string &str)
 
 	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
 }
+
+NAMESPACE_END;

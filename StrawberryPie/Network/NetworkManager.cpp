@@ -2,11 +2,11 @@
 
 #include <Network/NetworkManager.h>
 
-#include <Utils.h>
-
 #include <enet/enet.h>
 
 #include <shv/natives.h>
+
+NAMESPACE_BEGIN;
 
 static void networkMessageFree(ENetPacket* packet)
 {
@@ -141,3 +141,5 @@ void NetworkManager::Update()
 		// Note: We don't delete this packet here, we wait until ENet tells us it's no longer in use and delete it in the free callback (networkMessageFree)
 	}
 }
+
+NAMESPACE_END;

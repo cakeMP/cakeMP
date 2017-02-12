@@ -9,7 +9,7 @@
 #include <Utils.h>
 
 #define MEMORY_DEBUG 0
-#define MEMORY_PRINT logWrite
+#define MEMORY_PRINT NAMESPACE_NAME::logWrite
 #define MEMORY_PRINT_NEWLINE
 
 #include <cstdio>
