@@ -57,7 +57,17 @@ void NetworkManager::Close()
 
 void NetworkManager::SendMessageTo(ENetPeer* peer, NetworkMessage* message)
 {
+	message->m_handled = false;
+	message->m_outgoing = true;
 	message->m_forPeer = peer;
+	m_outgoingMessages.push(message);
+}
+
+void NetworkManager::SendMessageToAll(NetworkMessage* message)
+{
+	message->m_handled = false;
+	message->m_outgoing = true;
+	message->m_forPeer = nullptr;
 	m_outgoingMessages.push(message);
 }
 
@@ -65,6 +75,10 @@ void NetworkManager::Update()
 {
 	if (m_hostListen == nullptr) {
 		return;
+	}
+
+	for (Player* player : m_players) {
+		player->Update();
 	}
 
 	//TODO: Make a thread just for network message queueing
@@ -105,10 +119,14 @@ void NetworkManager::Update()
 
 		frameReceived += message->m_length;
 
-		//TODO: Process incoming messages
-		printf("Incoming message at %p of size %u for peer %d\n", message->m_data, message->m_length, message->m_forPeer->connectID);
+		message->m_handled = true;
 
-		delete message;
+		Player* forPlayer = (Player*)message->m_forPeer->data;
+		forPlayer->HandleMessage(message);
+
+		if (message->m_handled) {
+			delete message;
+		}
 	}
 
 	while (m_outgoingMessages.size() > 0) {
@@ -126,7 +144,14 @@ void NetworkManager::Update()
 		ENetPacket* newPacket = enet_packet_create(message->m_data, message->m_length, packetFlags);
 		newPacket->userData = message;
 		newPacket->freeCallback = networkMessageFree;
-		enet_peer_send(message->m_forPeer, 0, newPacket);
+
+		if (message->m_forPeer == nullptr) {
+			for (Player* player : m_players) {
+				enet_peer_send(player->GetPeer(), 0, newPacket);
+			}
+		} else {
+			enet_peer_send(message->m_forPeer, 0, newPacket);
+		}
 
 		// Note: We don't delete this packet here, we wait until ENet tells us it's no longer in use and delete it in the free callback (networkMessageFree)
 	}

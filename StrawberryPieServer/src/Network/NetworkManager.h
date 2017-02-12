@@ -25,6 +25,7 @@ public:
 	void Close();
 
 	void SendMessageTo(ENetPeer* peer, NetworkMessage* message);
+	void SendMessageToAll(NetworkMessage* message);
 
 	void Update();
 };

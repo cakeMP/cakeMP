@@ -14,6 +14,7 @@ public:
 	NetworkMessageType m_type = NMT_Unknown;
 
 	bool m_outgoing = false;
+	bool m_handled = false;
 	ENetPeer* m_forPeer = nullptr;
 
 	uint8_t* m_data = nullptr;
@@ -104,6 +105,19 @@ public:
 		memcpy(m_data + m_current, src, sz);
 		m_length += sz;
 		m_current += sz;
+	}
+
+	void Seek(size_t n, int dir)
+	{
+		//TODO: Seek is currently not working well in combination with writing. Not that we need it, but it's in the API, so good to note.
+
+		if (dir == SEEK_SET) {
+			m_current = n;
+		} else if (dir == SEEK_END) {
+			m_current = m_length + n;
+		} else if (dir == SEEK_CUR) {
+			m_current += n;
+		}
 	}
 
 	template<typename T>
