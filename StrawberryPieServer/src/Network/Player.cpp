@@ -17,6 +17,7 @@ Player::~Player()
 
 void Player::OnConnected()
 {
+	Kick("Hey this is my server, fuck off");
 }
 
 void Player::OnDisconnected()
@@ -30,7 +31,7 @@ void Player::Kick(const std::string &reason)
 		return;
 	}
 
-	NetworkMessage* msgDisconnect = new NetworkMessage;
+	NetworkMessage* msgDisconnect = new NetworkMessage(NMT_Disconnect);
 	msgDisconnect->Write(reason);
 	_pServer->m_network.SendMessageTo(m_peer, msgDisconnect);
 

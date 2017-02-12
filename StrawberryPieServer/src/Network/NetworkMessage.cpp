@@ -2,9 +2,13 @@
 
 #include <Network/NetworkMessage.h>
 
-NetworkMessage::NetworkMessage()
+NetworkMessage::NetworkMessage(NetworkMessageType type)
 {
+	m_type = type;
+
 	m_outgoing = true;
+
+	Write(type);
 }
 
 NetworkMessage::NetworkMessage(ENetPeer* peer, ENetPacket* packet)
@@ -16,6 +20,8 @@ NetworkMessage::NetworkMessage(ENetPeer* peer, ENetPacket* packet)
 
 	m_packet = packet;
 	m_reliable = (packet->flags & ENET_PACKET_FLAG_RELIABLE) != 0;
+
+	Read(m_type);
 }
 
 NetworkMessage::~NetworkMessage()

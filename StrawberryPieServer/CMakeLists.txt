@@ -40,4 +40,5 @@ endif()
 include_directories(
 	${CMAKE_SOURCE_DIR}/src
 	${ENet_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/../StrawberryPieShared/
 )

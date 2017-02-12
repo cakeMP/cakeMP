@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Common.h>
+#include <Enums/NetworkMessageType.h>
 
 #include <enet/enet.h>
 
@@ -10,6 +11,8 @@
 class NetworkMessage
 {
 public:
+	NetworkMessageType m_type = NMT_Unknown;
+
 	bool m_outgoing = false;
 	ENetPeer* m_forPeer = nullptr;
 
@@ -22,7 +25,7 @@ private:
 	bool m_reliable = true;
 
 public:
-	NetworkMessage();
+	NetworkMessage(NetworkMessageType type);
 	NetworkMessage(ENetPeer* peer, ENetPacket* packet);
 	~NetworkMessage();
 
