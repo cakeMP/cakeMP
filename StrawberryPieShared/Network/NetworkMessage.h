@@ -113,6 +113,23 @@ public:
 		assert(sz == sizeof(T));
 	}
 
+	inline void Read(std::string &dst)
+	{
+		uint32_t sz = 0;
+		Read(sz);
+
+		if (sz == 0) {
+			dst = "";
+			return;
+		}
+
+		char* stringBuffer = (char*)malloc(sz + 1);
+		ReadRaw(stringBuffer, sz);
+		stringBuffer[sz] = '\0';
+		dst = stringBuffer;
+		free(stringBuffer);
+	}
+
 	template<typename T>
 	inline void Write(const T &src)
 	{

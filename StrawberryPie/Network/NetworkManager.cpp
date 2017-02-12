@@ -112,8 +112,16 @@ void NetworkManager::Update()
 		NetworkMessage* message = m_incomingMessages.front();
 		m_incomingMessages.pop();
 
-		//TODO: Handle network message
-		logWrite("Incoming message of size %u at %p\n", message->m_length, message->m_data);
+		logWrite("Incoming message of size %u at %p (type %d)", message->m_length, message->m_data, (int)message->m_type);
+
+		if (message->m_type == NMT_Disconnect) {
+			logWrite("Server is disconnecting us");
+
+			std::string reason;
+			message->Read(reason);
+
+			logWrite("Because: %s", reason.c_str());
+		}
 
 		delete message;
 	}
