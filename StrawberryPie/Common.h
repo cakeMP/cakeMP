@@ -23,10 +23,12 @@
 #include <mutex>
 #include <string>
 #include <queue>
+#include <unordered_map>
 
 // Custom includes
 #include <Memory.h>
 #include <Utils.h>
+#include <SharedUtils.h>
 
 // Libraries
 #include <glm/glm.hpp>

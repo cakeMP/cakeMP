@@ -10,6 +10,7 @@ class Ped : public Entity
 {
 public:
 	Ped();
+	Ped(int localHandle, const NetHandle &netHandle);
 	virtual ~Ped();
 
 	virtual void SetModel(uint32_t hash);

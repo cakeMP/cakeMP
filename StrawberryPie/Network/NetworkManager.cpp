@@ -2,6 +2,10 @@
 
 #include <Network/NetworkManager.h>
 
+#include <Entities/LocalPlayer.h>
+#include <System/Strawberry.h>
+#include <Network/NetHandle.h>
+
 #include <enet/enet.h>
 
 #include <shv/natives.h>
@@ -10,6 +14,9 @@ NAMESPACE_BEGIN;
 
 static void networkMessageFree(ENetPacket* packet)
 {
+	assert(packet->userData != nullptr);
+	assert(((NetworkMessage*)packet->userData)->m_outgoing);
+	delete (NetworkMessage*)packet->userData;
 }
 
 NetworkManager::NetworkManager()
@@ -52,6 +59,9 @@ void NetworkManager::Disconnect()
 		return;
 	}
 
+	//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
+	ClearEntities();
+
 	logWrite("Disconnecting from %08x", m_localPeer->address.host);
 
 	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
@@ -62,13 +72,37 @@ void NetworkManager::Disconnect()
 	m_localPeer = nullptr;
 }
 
+void NetworkManager::ClearEntities()
+{
+	for (auto &pair : m_entitiesNetwork) {
+		if (!pair.second->CanBeDeleted()) {
+			continue;
+		}
+		delete pair.second;
+	}
+	m_entitiesNetwork.clear();
+}
+
 void NetworkManager::SendToHost(NetworkMessage* message)
 {
-	if (!m_connected) {
+	if (m_localPeer == nullptr) {
+		logWrite("WARNING: Tried sending a network message with type %d while not connected!", (int)message->m_type);
 		delete message;
 		return;
 	}
 	m_outgoingMessages.push(message);
+}
+
+template<typename T>
+T* NetworkManager::GetEntityFromHandle(const NetHandle &handle)
+{
+	auto it = m_entitiesNetwork.find(handle);
+	if (it == m_entitiesNetwork.end()) {
+		assert(false);
+		return nullptr;
+	}
+
+	return dynamic_cast<T*>(it->second);
 }
 
 void NetworkManager::Initialize()
@@ -94,6 +128,13 @@ void NetworkManager::Update()
 			//m_localPeer = ev.peer;
 			m_connected = true;
 
+			LocalPlayer &player = _pGame->m_player;
+
+			NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
+			msgHandshake->Write(player.m_username);
+			msgHandshake->Write(player.m_nickname);
+			SendToHost(msgHandshake);
+
 			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
 			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~g~Connected");
 			UI::_DRAW_NOTIFICATION(false, true);
@@ -118,19 +159,13 @@ void NetworkManager::Update()
 
 		logWrite("Incoming message of size %u at %p (type %d)", message->m_length, message->m_data, (int)message->m_type);
 
-		if (message->m_type == NMT_Disconnect) {
-			std::string reason;
-			message->Read(reason);
+		message->m_handled = true;
 
-			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(reason.c_str());
-			UI::_DRAW_NOTIFICATION(false, true);
+		HandleMessage(message);
 
-			enet_peer_disconnect(m_localPeer, 0);
-			m_localPeer = nullptr;
+		if (message->m_handled) {
+			delete message;
 		}
-
-		delete message;
 	}
 
 	while (m_outgoingMessages.size() > 0) {
@@ -143,6 +178,76 @@ void NetworkManager::Update()
 		enet_peer_send(m_localPeer, 0, newPacket);
 
 		// Note: We don't delete this packet here, we wait until ENet tells us it's no longer in use and delete it in the free callback (networkMessageFree)
+	}
+}
+
+//TODO: Perhaps this should move to some other place?
+void NetworkManager::HandleMessage(NetworkMessage* message)
+{
+	if (message->m_type == NMT_Disconnect) {
+		std::string reason;
+		message->Read(reason);
+
+		logWrite("Server disconnected us: '%s'", reason.c_str());
+
+		UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(reason.c_str());
+		UI::_DRAW_NOTIFICATION(false, true);
+
+		enet_peer_disconnect(m_localPeer, 0);
+		m_localPeer = nullptr;
+
+		return;
+	}
+
+	if (message->m_type == NMT_Handshake) {
+		NetHandle handle;
+		message->Read(handle);
+
+		_pGame->m_player.SetNetHandle(handle);
+
+		return;
+	}
+
+	if (message->m_type == NMT_PlayerJoin) {
+		NetHandle handle;
+		std::string username, nickname;
+		glm::vec3 position;
+
+		message->Read(handle);
+		message->Read(username);
+		message->Read(nickname);
+		message->Read(position);
+
+		logWrite("Player joined: %s (%s)", username.c_str(), nickname.c_str());
+
+		int localHandle = PED::CREATE_PED(1, hashGet("franklin"), position.x, position.y, position.z, 0.0f, false, false);
+		Player* newPlayer = new Player(localHandle, handle);
+		newPlayer->m_username = username;
+		newPlayer->m_nickname = nickname;
+		m_entitiesNetwork[handle] = newPlayer;
+
+		return;
+	}
+
+	if (message->m_type == NMT_PlayerMove) {
+		NetHandle handle;
+		glm::vec3 newPosition, newRotation;
+
+		message->Read(handle);
+		message->Read(newPosition);
+		message->Read(newRotation);
+
+		Player* player = GetEntityFromHandle<Player>(handle);
+		if (player == nullptr) {
+			assert(false);
+			return;
+		}
+
+		player->SetPosition(newPosition);
+		player->SetRotation(newRotation);
+
+		return;
 	}
 }
 

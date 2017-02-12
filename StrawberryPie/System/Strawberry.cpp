@@ -6,6 +6,7 @@
 #include <Scripts/Game.h>
 
 #include <shv/main.h>
+#include <shv/natives.h>
 
 NAMESPACE_BEGIN;
 

@@ -17,6 +17,9 @@ enum NetworkMessageType
 	//  * string: The reason for the disconnect.
 	NMT_Disconnect,
 
+	// Server to client: The player's information according to the server.
+	//  * NetHandle: The player's new network handle.
+	//
 	// Client to server: The player's information, the initial handshake.
 	//  * string: The player's Social Club username.
 	//  * string: The player's nickname.
@@ -26,6 +29,7 @@ enum NetworkMessageType
 	//  * NetHandle: The player that joined.
 	//  * string: The player's Social Club username.
 	//  * string: The player's nickname.
+	//  * vec3: The player's spawning position.
 	NMT_PlayerJoin,
 
 	// Server to client: A player has left the game.

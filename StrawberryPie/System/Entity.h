@@ -2,19 +2,31 @@
 
 #include <Common.h>
 
+#include <Network/NetHandle.h>
+
 NAMESPACE_BEGIN;
 
 class Entity
 {
 private:
 	int m_handle = 0;
+	NetHandle m_netHandle;
 
 public:
 	Entity();
+	Entity(int localHandle, const NetHandle &netHandle);
 	virtual ~Entity();
 
-	virtual int GetHandle();
-	virtual void SetHandle(int handle);
+	virtual bool IsLocal();
+	virtual bool CanBeDeleted();
+
+	virtual int GetLocalHandle();
+	virtual void SetLocalHandle(int handle);
+
+	virtual NetHandle GetNetHandle();
+	virtual void SetNetHandle(const NetHandle &handle);
+
+	virtual void Delete();
 
 	virtual bool IsDead();
 

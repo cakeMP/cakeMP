@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Entities/Ped.h>
+#include <Entities/Player.h>
 
 NAMESPACE_BEGIN;
 
-class LocalPlayer : public Ped
+class LocalPlayer : public Player
 {
 public:
 	int m_playerHandle = 0;
@@ -15,8 +15,12 @@ public:
 	LocalPlayer();
 	virtual ~LocalPlayer();
 
-	virtual int GetHandle();
-	virtual void SetHandle(int handle);
+	virtual bool CanBeDeleted();
+
+	virtual int GetLocalHandle();
+	virtual void SetLocalHandle(int handle);
+
+	virtual void Delete();
 
 	virtual void SetModel(uint32_t hash);
 

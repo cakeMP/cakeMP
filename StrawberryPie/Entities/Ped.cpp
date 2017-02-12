@@ -10,6 +10,11 @@ Ped::Ped()
 {
 }
 
+Ped::Ped(int localHandle, const NetHandle &netHandle)
+	: Entity(localHandle, netHandle)
+{
+}
+
 Ped::~Ped()
 {
 }
