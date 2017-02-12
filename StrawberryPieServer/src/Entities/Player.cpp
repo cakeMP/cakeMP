@@ -79,6 +79,7 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
 		msgHandshake->Write(m_handle);
+		msgHandshake->Write(m_position);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
