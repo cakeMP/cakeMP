@@ -8,6 +8,7 @@ class Player
 {
 private:
 	ENetPeer* m_peer = nullptr;
+	bool m_orderedToDisconnect = false;
 
 public:
 	Player(ENetPeer* peer);

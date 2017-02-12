@@ -31,12 +31,20 @@ void Player::Kick(const std::string &reason)
 		return;
 	}
 
+	if (m_orderedToDisconnect) {
+		printf("Peer %08X was forced to disconnect\n", m_peer->address.host);
+		enet_peer_disconnect(m_peer, 0);
+		m_peer = nullptr;
+		return;
+	}
+
+	printf("Kicking %08X because '%s'\n", m_peer->address.host, reason.c_str());
+
 	NetworkMessage* msgDisconnect = new NetworkMessage(NMT_Disconnect);
 	msgDisconnect->Write(reason);
 	_pServer->m_network.SendMessageTo(m_peer, msgDisconnect);
 
-	enet_peer_disconnect(m_peer, 0);
-	m_peer = nullptr;
+	m_orderedToDisconnect = true;
 }
 
 void Player::Close()

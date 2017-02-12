@@ -101,9 +101,9 @@ public:
 			m_data = (uint8_t*)realloc(m_data, m_lengthAllocated);
 		}
 
+		memcpy(m_data + m_current, src, sz);
 		m_length += sz;
 		m_current += sz;
-		memcpy(m_data + m_current, src, sz);
 	}
 
 	template<typename T>

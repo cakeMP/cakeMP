@@ -67,8 +67,9 @@ void NetworkManager::Update()
 		return;
 	}
 
+	//TODO: Make a thread just for network message queueing
 	ENetEvent ev;
-	if (enet_host_service(m_hostListen, &ev, 0) > 0) {
+	while (enet_host_service(m_hostListen, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
 			printf("New connection from: %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
 
@@ -122,7 +123,7 @@ void NetworkManager::Update()
 			packetFlags |= ENET_PACKET_FLAG_RELIABLE;
 		}
 
-		ENetPacket* newPacket = enet_packet_create(message->m_data, message->m_length, ENET_PACKET_FLAG_RELIABLE | ENET_PACKET_FLAG_NO_ALLOCATE);
+		ENetPacket* newPacket = enet_packet_create(message->m_data, message->m_length, packetFlags);
 		newPacket->userData = message;
 		newPacket->freeCallback = networkMessageFree;
 		enet_peer_send(message->m_forPeer, 0, newPacket);
