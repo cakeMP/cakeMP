@@ -54,3 +54,9 @@ void logWrite(const char* fmt, ...)
 
 	_mutexLog.unlock();
 }
+
+void logAssertFailed(const char* condition, const char* filename, int line)
+{
+	logWrite("!! ASSERTION FAILED: '%s'", condition);
+	logWrite("   At: %s:%d", filename, line);
+}

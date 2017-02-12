@@ -59,12 +59,16 @@ public:
 	inline bool Reliable() { return m_reliable; }
 	inline void Reliable(bool reliable) { m_reliable = reliable; }
 
-	int ReadRaw(void* dst, size_t sz)
+	size_t ReadRaw(void* dst, size_t sz)
 	{
 		assert(!m_outgoing);
 		assert(m_length <= m_length);
 
+#ifdef _MSC_VER
+		sz = min(sz, m_length - m_current);
+#else
 		sz = std::min(sz, m_length - m_current);
+#endif
 
 		assert(sz > 0);
 		if (sz == 0) {
@@ -102,7 +106,7 @@ public:
 	template<typename T>
 	inline void Read(T &dst)
 	{
-		int sz = ReadRaw(&dst, sizeof(T));
+		size_t sz = ReadRaw(&dst, sizeof(T));
 		assert(sz == sizeof(T));
 	}
 
@@ -114,14 +118,15 @@ public:
 
 	inline void Write(const char* src)
 	{
-		uint32_t len = strlen(src);
+		uint32_t len = (uint32_t)strlen(src);
 		Write(len);
 		WriteRaw(src, len);
 	}
 
 	inline void Write(const std::string &src)
 	{
-		Write((uint32_t)src.size());
+		uint32_t len = (uint32_t)src.size();
+		Write(len);
 		WriteRaw(src.c_str(), src.size());
 	}
 };

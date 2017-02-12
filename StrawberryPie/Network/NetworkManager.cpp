@@ -8,6 +8,10 @@
 
 #include <shv/natives.h>
 
+static void networkMessageFree(ENetPacket* packet)
+{
+}
+
 NetworkManager::NetworkManager()
 {
 }
@@ -58,6 +62,11 @@ void NetworkManager::Disconnect()
 	m_localPeer = nullptr;
 }
 
+void NetworkManager::SendToHost(NetworkMessage* message)
+{
+	m_outgoingMessages.push(message);
+}
+
 void NetworkManager::Initialize()
 {
 	if (enet_initialize() < 0) {
@@ -74,16 +83,50 @@ void NetworkManager::Update()
 		return;
 	}
 
+	//TODO: Make a thread just for network message queueing
 	ENetEvent ev;
-	if (enet_host_service(m_localHost, &ev, 0) > 0) {
+	while (enet_host_service(m_localHost, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
+			//m_localPeer = ev.peer;
+			m_connected = true;
+
 			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
 			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~g~Connected");
 			UI::_DRAW_NOTIFICATION(false, true);
+
 		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
+			m_localPeer = nullptr;
+			m_connected = false;
+
 			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
 			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Disconnected");
 			UI::_DRAW_NOTIFICATION(false, true);
+
+		} else if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
+			NetworkMessage* newMessage = new NetworkMessage(ev.peer, ev.packet);
+			m_incomingMessages.push(newMessage);
 		}
+	}
+
+	while (m_incomingMessages.size() > 0) {
+		NetworkMessage* message = m_incomingMessages.front();
+		m_incomingMessages.pop();
+
+		//TODO: Handle network message
+		logWrite("Incoming message of size %u at %p\n", message->m_length, message->m_data);
+
+		delete message;
+	}
+
+	while (m_outgoingMessages.size() > 0) {
+		NetworkMessage* message = m_outgoingMessages.front();
+		m_outgoingMessages.pop();
+
+		ENetPacket* newPacket = enet_packet_create(message->m_data, message->m_length, ENET_PACKET_FLAG_RELIABLE | ENET_PACKET_FLAG_NO_ALLOCATE);
+		newPacket->userData = message;
+		newPacket->freeCallback = networkMessageFree;
+		enet_peer_send(m_localPeer, 0, newPacket);
+
+		// Note: We don't delete this packet here, we wait until ENet tells us it's no longer in use and delete it in the free callback (networkMessageFree)
 	}
 }
