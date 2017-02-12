@@ -24,6 +24,11 @@ Strawberry::~Strawberry()
 	scriptUnregister(m_hInstance);
 }
 
+void Strawberry::Initialize()
+{
+	m_network.Initialize();
+}
+
 void Strawberry::Update()
 {
 	m_network.Update();

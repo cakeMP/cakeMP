@@ -15,5 +15,6 @@ public:
 	void Connect(const char* hostname, uint16_t port);
 	void Disconnect();
 
+	void Initialize();
 	void Update();
 };

@@ -19,6 +19,7 @@ public:
 	Strawberry(HMODULE hInstance);
 	~Strawberry();
 
+	void Initialize();
 	void Update();
 
 	void OnKeyDown(uint32_t key);

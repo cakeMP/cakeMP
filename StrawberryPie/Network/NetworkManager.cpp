@@ -10,12 +10,6 @@
 
 NetworkManager::NetworkManager()
 {
-	if (enet_initialize() < 0) {
-		logWrite("Failed to initialize ENet!");
-		return;
-	}
-
-	m_localHost = enet_host_create(nullptr, 1, 1, 0, 0);
 }
 
 NetworkManager::~NetworkManager()
@@ -24,13 +18,15 @@ NetworkManager::~NetworkManager()
 		Disconnect();
 	}
 
-	enet_host_destroy(m_localHost);
-	enet_deinitialize();
+	if (m_localHost != nullptr) {
+		enet_host_destroy(m_localHost);
+		enet_deinitialize();
+	}
 }
 
 void NetworkManager::Connect(const char* hostname, uint16_t port)
 {
-	if (m_localPeer != nullptr) {
+	if (m_localHost == nullptr || m_localPeer != nullptr) {
 		return;
 	}
 
@@ -62,8 +58,22 @@ void NetworkManager::Disconnect()
 	m_localPeer = nullptr;
 }
 
+void NetworkManager::Initialize()
+{
+	if (enet_initialize() < 0) {
+		logWrite("Failed to initialize ENet!");
+		return;
+	}
+
+	m_localHost = enet_host_create(nullptr, 1, 1, 0, 0);
+}
+
 void NetworkManager::Update()
 {
+	if (m_localHost == nullptr) {
+		return;
+	}
+
 	ENetEvent ev;
 	if (enet_host_service(m_localHost, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
