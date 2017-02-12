@@ -18,6 +18,7 @@ public:
 
 	uint8_t* m_data = nullptr;
 	size_t m_length = 0;
+	size_t m_lengthAllocated = 0;
 
 private:
 	size_t m_current = 0;
@@ -62,7 +63,7 @@ public:
 	size_t ReadRaw(void* dst, size_t sz)
 	{
 		assert(!m_outgoing);
-		assert(m_length <= m_length);
+		assert(m_current < m_length);
 
 #ifdef _MSC_VER
 		sz = min(sz, m_length - m_current);
@@ -86,20 +87,22 @@ public:
 		assert(m_outgoing);
 
 		if (m_data == nullptr) {
-			m_length = NETWORK_MESSAGE_DEFAULT_SIZE;
-			m_data = (uint8_t*)malloc(m_length);
+			m_lengthAllocated = NETWORK_MESSAGE_DEFAULT_SIZE;
+			m_data = (uint8_t*)malloc(m_lengthAllocated);
 		}
 
 		bool mustRealloc = false;
-		while (m_current + sz > m_length) {
-			m_length += NETWORK_MESSAGE_ALLOCATE_SIZE;
+		while (m_current + sz > m_lengthAllocated) {
+			m_lengthAllocated += NETWORK_MESSAGE_ALLOCATE_SIZE;
 			mustRealloc = true;
 		}
 
 		if (mustRealloc) {
-			m_data = (uint8_t*)realloc(m_data, m_length);
+			m_data = (uint8_t*)realloc(m_data, m_lengthAllocated);
 		}
 
+		m_length += sz;
+		m_current += sz;
 		memcpy(m_data + m_current, src, sz);
 	}
 
