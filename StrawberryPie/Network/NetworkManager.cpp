@@ -202,11 +202,15 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 	if (message->m_type == NMT_Handshake) {
 		NetHandle handle;
+		glm::vec3 position;
+
 		message->Read(handle);
+		message->Read(position);
 
 		logWrite("We have received our local handle: %u", handle.m_value);
 
 		_pGame->m_player.SetNetHandle(handle);
+		_pGame->m_player.SetPosition(position);
 
 		return;
 	}
