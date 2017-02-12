@@ -204,6 +204,8 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		NetHandle handle;
 		message->Read(handle);
 
+		logWrite("We have received our local handle: %u", handle.m_value);
+
 		_pGame->m_player.SetNetHandle(handle);
 
 		return;
@@ -226,6 +228,31 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		newPlayer->m_username = username;
 		newPlayer->m_nickname = nickname;
 		m_entitiesNetwork[handle] = newPlayer;
+
+		return;
+	}
+
+	if (message->m_type == NMT_PlayerLeave) {
+		NetHandle handle;
+
+		message->Read(handle);
+
+		auto it = m_entitiesNetwork.find(handle);
+		if (it == m_entitiesNetwork.end()) {
+			assert(false);
+			return;
+		}
+
+		Player* player = dynamic_cast<Player*>(it->second);
+		if (player == nullptr) {
+			assert(false);
+			return;
+		}
+
+		logWrite("Player left: %s (%s)", player->m_username.c_str(), player->m_nickname.c_str());
+
+		m_entitiesNetwork.erase(it);
+		delete player;
 
 		return;
 	}
