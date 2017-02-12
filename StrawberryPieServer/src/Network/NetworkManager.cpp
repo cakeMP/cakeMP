@@ -60,6 +60,7 @@ void NetworkManager::SendMessageTo(ENetPeer* peer, NetworkMessage* message)
 	message->m_handled = false;
 	message->m_outgoing = true;
 	message->m_forPeer = peer;
+	message->m_exceptPeer = nullptr;
 	m_outgoingMessages.push(message);
 }
 
@@ -68,6 +69,16 @@ void NetworkManager::SendMessageToAll(NetworkMessage* message)
 	message->m_handled = false;
 	message->m_outgoing = true;
 	message->m_forPeer = nullptr;
+	message->m_exceptPeer = nullptr;
+	m_outgoingMessages.push(message);
+}
+
+void NetworkManager::SendMessageToAll(NetworkMessage* message, ENetPeer* except)
+{
+	message->m_handled = false;
+	message->m_outgoing = true;
+	message->m_forPeer = nullptr;
+	message->m_exceptPeer = except;
 	m_outgoingMessages.push(message);
 }
 
@@ -147,6 +158,9 @@ void NetworkManager::Update()
 
 		if (message->m_forPeer == nullptr) {
 			for (Player* player : m_players) {
+				if (message->m_exceptPeer != nullptr && message->m_exceptPeer == player->GetPeer()) {
+					continue;
+				}
 				enet_peer_send(player->GetPeer(), 0, newPacket);
 			}
 		} else {

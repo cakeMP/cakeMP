@@ -16,6 +16,7 @@ public:
 	bool m_outgoing = false;
 	bool m_handled = false;
 	ENetPeer* m_forPeer = nullptr;
+	ENetPeer* m_exceptPeer = nullptr;
 
 	uint8_t* m_data = nullptr;
 	size_t m_length = 0;

@@ -3,6 +3,7 @@
 #include <Common.h>
 
 #include <Network/NetworkMessage.h>
+#include <Network/NetHandle.h>
 
 #include <enet/enet.h>
 
@@ -12,7 +13,11 @@ private:
 	ENetPeer* m_peer = nullptr;
 	bool m_orderedToDisconnect = false;
 
+	ClockTime m_tmSyncLastPosition;
+
 public:
+	NetHandle m_handle; //TODO: Move this into some abstract NetworkEntity or SyncedEntity class
+
 	std::string m_nickname;
 	std::string m_username;
 

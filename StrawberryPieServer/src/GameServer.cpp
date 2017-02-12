@@ -16,6 +16,8 @@ void GameServer::Run()
 {
 	printf("Server starting...\n");
 
+	m_tmStarted = Clock::now();
+
 	m_network.Listen(m_settings.ListenHost.c_str(), m_settings.ListenPort, m_settings.MaxClients);
 
 	while (m_running) {

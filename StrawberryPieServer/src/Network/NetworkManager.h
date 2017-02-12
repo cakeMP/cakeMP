@@ -26,6 +26,7 @@ public:
 
 	void SendMessageTo(ENetPeer* peer, NetworkMessage* message);
 	void SendMessageToAll(NetworkMessage* message);
+	void SendMessageToAll(NetworkMessage* message, ENetPeer* except);
 
 	void Update();
 };

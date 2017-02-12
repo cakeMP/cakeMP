@@ -12,6 +12,8 @@ public:
 
 	bool m_running = true;
 
+	ClockTime m_tmStarted;
+
 public:
 	GameServer();
 	~GameServer();

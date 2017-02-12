@@ -19,6 +19,11 @@ add_executable(StrawberryServer
 
 	src/Network/Player.cpp
 	src/Network/Player.h
+
+	# Shared sources
+	../StrawberryPieShared/Enums/NetworkMessageType.h
+	../StrawberryPieShared/Network/NetworkMessage.h
+	../StrawberryPieShared/Network/NetHandle.h
 )
 
 find_package(ENet REQUIRED)

@@ -94,13 +94,19 @@ void Player::HandleMessage(NetworkMessage* message)
 		m_position = newPosition;
 		m_rotation = newRotation;
 
-		//TODO: Send other clients a packet
-
 		return;
 	}
 }
 
 void Player::Update()
 {
-	printf("Player is at: %f %f %f\n", m_position.x, m_position.y, m_position.z);
+	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 100) {
+		m_tmSyncLastPosition = Clock::now();
+
+		NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
+		msgPos->Write(m_handle);
+		msgPos->Write(m_position);
+		msgPos->Write(m_rotation);
+		_pServer->m_network.SendMessageToAll(msgPos, GetPeer());
+	}
 }
