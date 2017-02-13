@@ -27,7 +27,7 @@ Strawberry::~Strawberry()
 
 void Strawberry::Initialize()
 {
-	logWrite("Client initializing. %u");
+	logWrite("Client initializing.");
 
 	m_player.Initialize();
 	m_network.Initialize();

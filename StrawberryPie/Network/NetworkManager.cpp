@@ -223,10 +223,10 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 	if (message->m_type == NMT_CreateEntities) {
 		logWrite("Creating entities:");
 
-		uint32_t numPlayers;
-		message->Read(numPlayers);
+		uint32_t numEntities;
+		message->Read(numEntities);
 
-		for (uint32_t i = 0; i < numPlayers; i++) {
+		for (uint32_t i = 0; i < numEntities; i++) {
 			NetworkEntityType entityType = ET_None;
 			message->Read(entityType);
 
