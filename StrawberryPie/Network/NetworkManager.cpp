@@ -230,6 +230,8 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			NetworkEntityType entityType = ET_None;
 			message->Read(entityType);
 
+			logWrite("  %d", (int)entityType);
+
 			//TODO: Clean this up a bit, it's gonna become huge if we leave this like this
 			if (entityType == ET_Player) {
 				NetStructs::CreatePed createPedPlayer;
