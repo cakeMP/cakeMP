@@ -72,6 +72,7 @@ bool mdlRequest(uint32_t hash)
 	}
 
 	if (!STREAMING::IS_MODEL_VALID(hash)) {
+		logWrite("Model hash %u is invalid!", hash);
 		return false;
 	}
 

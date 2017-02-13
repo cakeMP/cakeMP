@@ -38,6 +38,10 @@ void LocalPlayer::Delete()
 
 void LocalPlayer::SetModel(uint32_t hash)
 {
+	if (!mdlRequest(hash)) {
+		assert(false);
+		return;
+	}
 	PLAYER::SET_PLAYER_MODEL(m_playerHandle, hash);
 }
 
