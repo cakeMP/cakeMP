@@ -248,6 +248,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 			} else {
 				assert(false);
+				break;
 			}
 		}
 	}
