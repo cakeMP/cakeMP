@@ -28,11 +28,9 @@ enum NetworkMessageType
 	NMT_Handshake,
 
 	// Server to client: A new player has joined the game.
-	//  * NetHandle: The player that joined.
+	//  * NetStructs::CreatePed: The ped that must be created for the player.
 	//  * string: The player's Social Club username.
 	//  * string: The player's nickname.
-	//  * vec3: The player's spawning position.
-	//  * uint32: The player's model hash.
 	NMT_PlayerJoin,
 
 	// Server to client: A player has left the game.

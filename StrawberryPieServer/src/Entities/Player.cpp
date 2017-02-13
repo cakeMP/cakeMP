@@ -3,6 +3,8 @@
 #include <Entities/Player.h>
 #include <GameServer.h>
 
+#include <Network/Structs/CreatePed.h>
+
 Player::Player(ENetPeer* peer, const NetHandle &handle)
 	: Entity(handle)
 {
@@ -85,13 +87,17 @@ void Player::HandleMessage(NetworkMessage* message)
 		msgHandshake->Write(m_model);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
-		//TODO: Replace this with a more generic "create entity" message
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
-		msgJoin->Write(m_handle);
+
+		NetStructs::CreatePed createPedPlayer;
+		createPedPlayer.m_handle = m_handle;
+		createPedPlayer.m_model = m_model;
+		createPedPlayer.m_position = m_position;
+		createPedPlayer.m_rotation = m_rotation;
+
+		msgJoin->Write(createPedPlayer);
 		msgJoin->Write(m_username);
 		msgJoin->Write(m_nickname);
-		msgJoin->Write(m_position);
-		msgJoin->Write(m_model);
 		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
 
 		return;
