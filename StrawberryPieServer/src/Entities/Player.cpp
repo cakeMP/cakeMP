@@ -3,6 +3,7 @@
 #include <Entities/Player.h>
 #include <GameServer.h>
 
+#include <Network/NetworkEntityType.h>
 #include <Network/Structs/CreatePed.h>
 
 Player::Player(ENetPeer* peer, const NetHandle &handle)
@@ -81,21 +82,31 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		printf("Player info received: %s (nickname: %s)\n", m_username.c_str(), m_nickname.c_str());
 
+		// Send back player handshake
 		NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
 		msgHandshake->Write(m_handle);
 		msgHandshake->Write(m_position);
 		msgHandshake->Write(m_model);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
+		// Send a list of existing entities to the client
+		//TODO: Make this nicer by delegating this to some other place
+		NetworkMessage* msgCreateEntities = new NetworkMessage(NMT_CreateEntities);
+		//TODO: This looks unsafe; we assume there's always X entities - 1 (the current player)
+		uint32_t numEntities = _pServer->m_network.m_entities.size() - 1;
+		msgCreateEntities->Write(numEntities);
+		for (auto &pair : _pServer->m_network.m_entities) {
+			if (pair.second == this) {
+				continue;
+			}
+			pair.second->NetworkSerialize(msgCreateEntities);
+		}
+		_pServer->m_network.SendMessageTo(m_peer, msgCreateEntities);
+
+		// Tell everyone else we joined
+		//TODO: This shouldn't create a ped on the client! We can just use NMT_CreateEntities for this.
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
-
-		NetStructs::CreatePed createPedPlayer;
-		createPedPlayer.m_handle = m_handle;
-		createPedPlayer.m_model = m_model;
-		createPedPlayer.m_position = m_position;
-		createPedPlayer.m_rotation = m_rotation;
-
-		msgJoin->Write(createPedPlayer);
+		msgJoin->Write(GetNetworkCreatePedStruct());
 		msgJoin->Write(m_username);
 		msgJoin->Write(m_nickname);
 		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
@@ -125,6 +136,24 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		return;
 	}
+}
+
+NetStructs::CreatePed Player::GetNetworkCreatePedStruct()
+{
+	NetStructs::CreatePed ret;
+	ret.m_handle = m_handle;
+	ret.m_model = m_model;
+	ret.m_position = m_position;
+	ret.m_rotation = m_rotation;
+	return ret;
+}
+
+void Player::NetworkSerialize(NetworkMessage* message)
+{
+	message->Write(ET_Player);
+	message->Write(GetNetworkCreatePedStruct());
+	message->Write(m_username);
+	message->Write(m_nickname);
 }
 
 void Player::Update()

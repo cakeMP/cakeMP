@@ -6,6 +6,7 @@
 
 #include <Network/NetworkMessage.h>
 #include <Network/NetHandle.h>
+#include <Network/Structs/CreatePed.h>
 
 #include <enet/enet.h>
 
@@ -32,6 +33,9 @@ public:
 	void Close();
 
 	void HandleMessage(NetworkMessage* message);
+
+	NetStructs::CreatePed GetNetworkCreatePedStruct();
+	virtual void NetworkSerialize(NetworkMessage* message);
 
 	virtual void Update();
 

@@ -2,6 +2,7 @@
 
 #include <Common.h>
 #include <Network/NetHandle.h>
+#include <Network/NetworkMessage.h>
 
 class Entity
 {
@@ -16,6 +17,9 @@ public:
 public:
 	Entity(const NetHandle &handle);
 	virtual ~Entity();
+
+	//TODO: Make this can be done cleaner..
+	virtual void NetworkSerialize(NetworkMessage* message) = 0;
 
 	virtual void Update();
 };

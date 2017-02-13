@@ -18,9 +18,10 @@ private:
 
 	std::vector<Player*> m_players;
 
-	std::unordered_map<uint32_t, Entity*> m_entities;
-
 	uint32_t m_handleIterator = 1;
+
+public: //TODO: Maybe this shouldn't be public
+	std::unordered_map<uint32_t, Entity*> m_entities;
 
 public:
 	NetworkManager();

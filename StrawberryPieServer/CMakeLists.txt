@@ -29,6 +29,7 @@ add_executable(StrawberryServer
 	../StrawberryPieShared/Enums/NetworkMessageType.h
 	../StrawberryPieShared/Network/NetworkMessage.h
 	../StrawberryPieShared/Network/NetHandle.h
+	../StrawberryPieShared/Network/NetworkEntityType.h
 	../StrawberryPieShared/Network/Structs/CreatePed.h
 )
 
