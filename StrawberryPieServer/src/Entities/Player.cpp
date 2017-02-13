@@ -13,7 +13,7 @@ Player::Player(ENetPeer* peer, const NetHandle &handle)
 	m_position.y = 525.319763f;
 	m_position.z = 179.050201;
 
-	m_model = hashGet("player_one");
+	m_model = hashGet("a_f_y_bevhills_02");
 }
 
 Player::~Player()

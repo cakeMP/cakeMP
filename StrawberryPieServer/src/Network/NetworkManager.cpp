@@ -121,6 +121,7 @@ void NetworkManager::Update()
 			assert(player != nullptr);
 			if (player != nullptr) {
 				m_players.erase(std::find(m_players.begin(), m_players.end(), player));
+				m_entities.erase(m_entities.find(player->m_handle));
 				player->OnDisconnected();
 				delete player;
 			}
