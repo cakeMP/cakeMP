@@ -104,9 +104,13 @@ void NetworkManager::Update()
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
 			printf("New connection from: %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
 
-			Player* newPlayer = new Player(ev.peer, AssignHandle());
+			NetHandle newPlayerHandle = AssignHandle();
+
+			Player* newPlayer = new Player(ev.peer, newPlayerHandle);
 			ev.peer->data = newPlayer;
 			m_players.push_back(newPlayer);
+
+			m_entities[newPlayerHandle] = newPlayer;
 
 			newPlayer->OnConnected();
 

@@ -123,7 +123,7 @@ void Player::HandleMessage(NetworkMessage* message)
 
 void Player::Update()
 {
-	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 100) {
+	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 250) {
 		m_tmSyncLastPosition = Clock::now();
 
 		NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
@@ -132,4 +132,6 @@ void Player::Update()
 		msgPos->Write(m_rotation);
 		_pServer->m_network.SendMessageToAll(msgPos, GetPeer());
 	}
+
+	Entity::Update();
 }
