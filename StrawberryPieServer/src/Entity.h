@@ -11,6 +11,8 @@ public:
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;
 
+	uint32_t m_model = 0;
+
 public:
 	Entity(const NetHandle &handle);
 	virtual ~Entity();

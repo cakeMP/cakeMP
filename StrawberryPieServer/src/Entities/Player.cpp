@@ -12,6 +12,8 @@ Player::Player(ENetPeer* peer, const NetHandle &handle)
 	m_position.x = -0.341730f;
 	m_position.y = 525.319763f;
 	m_position.z = 179.050201;
+
+	m_model = hashGet("player_one");
 }
 
 Player::~Player()
@@ -80,13 +82,16 @@ void Player::HandleMessage(NetworkMessage* message)
 		NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
 		msgHandshake->Write(m_handle);
 		msgHandshake->Write(m_position);
+		msgHandshake->Write(m_model);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
+		//TODO: Replace this with a more generic "create entity" message
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
 		msgJoin->Write(m_handle);
 		msgJoin->Write(m_username);
 		msgJoin->Write(m_nickname);
 		msgJoin->Write(m_position);
+		msgJoin->Write(m_model);
 		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
 
 		return;
