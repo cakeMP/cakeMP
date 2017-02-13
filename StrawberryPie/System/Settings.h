@@ -7,7 +7,7 @@ NAMESPACE_BEGIN;
 class Settings
 {
 public:
-	std::string ConnectToHost;
+	std::string ConnectToHost = "localhost";
 	uint16_t ConnectToPort = 4499;
 
 public:

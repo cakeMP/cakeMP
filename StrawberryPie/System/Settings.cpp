@@ -28,7 +28,9 @@ static int settings_handler(void* user, const char* section, const char* name, c
 
 Settings::Settings()
 {
-	ini_parse(PROJECT_NAME_SHORT ".ini", &settings_handler, this);
+	if (ini_parse(PROJECT_NAME_SHORT ".ini", &settings_handler, this) < 0) {
+		logWrite("Error loading Strawberry.ini!");
+	}
 }
 
 NAMESPACE_END;
