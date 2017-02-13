@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Enums\NetworkMessageType.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Network\NetHandle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Network\NetworkEntityType.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Network\NetworkMessage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Network\Structs\CreatePed.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedUtils.h" />

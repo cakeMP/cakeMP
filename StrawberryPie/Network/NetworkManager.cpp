@@ -5,6 +5,7 @@
 #include <Entities/LocalPlayer.h>
 #include <System/Strawberry.h>
 #include <Network/NetHandle.h>
+#include <Network/NetworkEntityType.h>
 #include <Network/Structs/CreatePed.h>
 
 #include <enet/enet.h>
@@ -225,20 +226,27 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		uint32_t numPlayers;
 		message->Read(numPlayers);
 
-		logWrite("  Players: %u", numPlayers);
-
 		for (uint32_t i = 0; i < numPlayers; i++) {
-			NetStructs::CreatePed createPedPlayer;
-			std::string username, nickname;
+			NetworkEntityType entityType = ET_None;
+			message->Read(entityType);
 
-			message->Read(createPedPlayer);
-			message->Read(username);
-			message->Read(nickname);
+			//TODO: Clean this up a bit, it's gonna become huge if we leave this like this
+			if (entityType == ET_Player) {
+				NetStructs::CreatePed createPedPlayer;
+				std::string username, nickname;
 
-			Player* newPlayer = new Player(createPedPlayer);
-			newPlayer->m_username = username;
-			newPlayer->m_nickname = nickname;
-			m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
+				message->Read(createPedPlayer);
+				message->Read(username);
+				message->Read(nickname);
+
+				Player* newPlayer = new Player(createPedPlayer);
+				newPlayer->m_username = username;
+				newPlayer->m_nickname = nickname;
+				m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
+
+			} else {
+				assert(false);
+			}
 		}
 	}
 

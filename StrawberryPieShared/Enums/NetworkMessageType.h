@@ -29,11 +29,13 @@ enum NetworkMessageType
 	NMT_Handshake,
 
 	// Server to client: Sending over a batch of entities for the client to create.
-	//  * uint32: Amount of player entities to create.
+	//  * uint32: Amount of entities to create.
 	//  * for n:
-	//    * NetStructs::CreatePed: The ped that must be created for the player.
-	//    * string: The player's Social Club username.
-	//    * string: The player's nickname;
+	//    * NetworkEntityType: The type of entity.
+	//    * if t == ET_Player:
+	//      * NetStructs::CreatePed: The ped that must be created for the player.
+	//      * string: The player's Social Club username.
+	//      * string: The player's nickname;
 	NMT_CreateEntities,
 
 	// Server to client: A new player has joined the game.
