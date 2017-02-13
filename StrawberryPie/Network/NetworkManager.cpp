@@ -268,6 +268,14 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		newPlayer->m_nickname = nickname;
 		m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
 
+		std::string joinMessage = "~b~";
+		joinMessage += username;
+		joinMessage += "~s~ joined";
+
+		UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(joinMessage.c_str());
+		UI::_DRAW_NOTIFICATION(false, true);
+
 		return;
 	}
 
@@ -290,6 +298,14 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		logWrite("Player left: %s (%s)", player->m_username.c_str(), player->m_nickname.c_str());
 
+		std::string leaveMessage = "~b~";
+		leaveMessage += player->m_username;
+		leaveMessage += "~s~ left";
+
+		UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(leaveMessage.c_str());
+		UI::_DRAW_NOTIFICATION(false, true);
+
 		m_entitiesNetwork.erase(it);
 		delete player;
 
@@ -310,7 +326,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		player->SetPosition(newPosition);
+		player->SetPositionNoOffset(newPosition);
 		player->SetRotation(newRotation);
 
 		return;
