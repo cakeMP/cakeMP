@@ -5,6 +5,7 @@
 #include <Entities/LocalPlayer.h>
 #include <System/Strawberry.h>
 #include <Network/NetHandle.h>
+#include <Network/Structs/CreatePed.h>
 
 #include <enet/enet.h>
 
@@ -213,35 +214,48 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		_pGame->m_player.SetNetHandle(handle);
 		_pGame->m_player.SetModel(skinHash);
-		_pGame->m_player.SetPosition(position);
+		_pGame->m_player.SetPositionNoOffset(position);
 
 		return;
 	}
 
-	if (message->m_type == NMT_PlayerJoin) {
-		NetHandle handle;
-		std::string username, nickname;
-		glm::vec3 position;
-		uint32_t skinHash;
+	if (message->m_type == NMT_CreateEntities) {
+		logWrite("Creating entities:");
 
-		message->Read(handle);
+		uint32_t numPlayers;
+		message->Read(numPlayers);
+
+		logWrite("  Players: %u", numPlayers);
+
+		for (uint32_t i = 0; i < numPlayers; i++) {
+			NetStructs::CreatePed createPedPlayer;
+			std::string username, nickname;
+
+			message->Read(createPedPlayer);
+			message->Read(username);
+			message->Read(nickname);
+
+			Player* newPlayer = new Player(createPedPlayer);
+			newPlayer->m_username = username;
+			newPlayer->m_nickname = nickname;
+			m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
+		}
+	}
+
+	if (message->m_type == NMT_PlayerJoin) {
+		NetStructs::CreatePed createPedPlayer;
+		std::string username, nickname;
+
+		message->Read(createPedPlayer);
 		message->Read(username);
 		message->Read(nickname);
-		message->Read(position);
-		message->Read(skinHash);
 
 		logWrite("Player joined: %s (%s)", username.c_str(), nickname.c_str());
 
-		if (!mdlRequest(skinHash)) {
-			assert(false);
-		}
-		//TODO: Move CREATE_PED to a helper function?
-		int localHandle = PED::CREATE_PED(26, skinHash, position.x, position.y, position.z, 0.0f, false, false);
-
-		Player* newPlayer = new Player(localHandle, handle);
+		Player* newPlayer = new Player(createPedPlayer);
 		newPlayer->m_username = username;
 		newPlayer->m_nickname = nickname;
-		m_entitiesNetwork[handle] = newPlayer;
+		m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
 
 		return;
 	}

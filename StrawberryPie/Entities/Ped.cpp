@@ -24,4 +24,13 @@ void Ped::SetModel(uint32_t hash)
 	//TODO: We have to re-create the entire ped, I think?
 }
 
+int Ped::CreateLocal(uint32_t modelHash, const glm::vec3 &pos, float heading)
+{
+	if (!mdlRequest(modelHash)) {
+		assert(false);
+		modelHash = hashGet("player_one");
+	}
+	return PED::CREATE_PED(26, modelHash, pos.x, pos.y, pos.z, heading, false, true);
+}
+
 NAMESPACE_END;

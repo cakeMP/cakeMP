@@ -32,6 +32,7 @@ public:
 
 	virtual glm::vec3 GetPosition();
 	virtual void SetPosition(const glm::vec3 &pos);
+	virtual void SetPositionNoOffset(const glm::vec3 &pos);
 
 	virtual glm::vec3 GetRotation();
 	virtual void SetRotation(const glm::vec3 &rot);

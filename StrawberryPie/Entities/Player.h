@@ -2,6 +2,8 @@
 
 #include <Entities/Ped.h>
 
+#include <Network/Structs/CreatePed.h>
+
 NAMESPACE_BEGIN;
 
 class Player : public Ped
@@ -12,6 +14,7 @@ public:
 
 public:
 	Player();
+	Player(const NetStructs::CreatePed &createPed);
 	Player(int localHandle, const NetHandle &netHandle);
 	virtual ~Player();
 };

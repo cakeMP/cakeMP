@@ -3,8 +3,9 @@
 // The network message type.
 //
 // Things to do:
-//  * Create some common structures (eg. player info for joining/handshake are similar)
 //  * Separate rotation from NMT_PlayerMove
+//  * Can we figure out a way to put strings in NetStructs?
+//  * Maybe implement an "Array" type that we can easily access via read/write? We wouldn't have the integer overhead then.
 enum NetworkMessageType
 {
 	// Unknown message, do not use.
@@ -26,6 +27,14 @@ enum NetworkMessageType
 	//  * string: The player's nickname.
 	//  * uint32: The player's model hash.
 	NMT_Handshake,
+
+	// Server to client: Sending over a batch of entities for the client to create.
+	//  * uint32: Amount of player entities to create.
+	//  * for n:
+	//    * NetStructs::CreatePed: The ped that must be created for the player.
+	//    * string: The player's Social Club username.
+	//    * string: The player's nickname;
+	NMT_CreateEntities,
 
 	// Server to client: A new player has joined the game.
 	//  * NetStructs::CreatePed: The ped that must be created for the player.

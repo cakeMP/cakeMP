@@ -75,6 +75,11 @@ void Entity::SetPosition(const glm::vec3 &pos)
 	ENTITY::SET_ENTITY_COORDS(GetLocalHandle(), pos.x, pos.y, pos.z, false, false, false, true);
 }
 
+void Entity::SetPositionNoOffset(const glm::vec3 &pos)
+{
+	ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GetLocalHandle(), pos.x, pos.y, pos.z, false, false, false);
+}
+
 glm::vec3 Entity::GetRotation()
 {
 	Vector3 ret = ENTITY::GET_ENTITY_ROTATION(GetLocalHandle(), 2);
