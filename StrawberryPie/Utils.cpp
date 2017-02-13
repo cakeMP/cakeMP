@@ -4,6 +4,8 @@
 
 #include <share.h>
 
+#include <shv/natives.h>
+
 NAMESPACE_BEGIN;
 
 static FILE* _fhLog = nullptr;
@@ -61,6 +63,29 @@ void logAssertFailed(const char* condition, const char* filename, int line)
 {
 	logWrite("!! ASSERTION FAILED: '%s'", condition);
 	logWrite("   At: %s:%d", filename, line);
+}
+
+bool mdlRequest(uint32_t hash)
+{
+	if (STREAMING::HAS_MODEL_LOADED(hash)) {
+		return true;
+	}
+
+	if (!STREAMING::IS_MODEL_VALID(hash)) {
+		return false;
+	}
+
+	STREAMING::REQUEST_MODEL(hash);
+	while (!STREAMING::HAS_MODEL_LOADED(hash)) {
+		WAIT(0);
+	}
+
+	return true;
+}
+
+bool mdlRequest(const char* str)
+{
+	return mdlRequest(hashGet(str));
 }
 
 NAMESPACE_END;

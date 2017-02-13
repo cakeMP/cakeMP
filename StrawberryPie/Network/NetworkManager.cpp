@@ -59,9 +59,6 @@ void NetworkManager::Disconnect()
 		return;
 	}
 
-	//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
-	ClearEntities();
-
 	logWrite("Disconnecting from %08x", m_localPeer->address.host);
 
 	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
@@ -143,6 +140,9 @@ void NetworkManager::Update()
 			m_localPeer = nullptr;
 			m_connected = false;
 
+			//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
+			ClearEntities();
+
 			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
 			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Disconnected");
 			UI::_DRAW_NOTIFICATION(false, true);
@@ -203,13 +203,16 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 	if (message->m_type == NMT_Handshake) {
 		NetHandle handle;
 		glm::vec3 position;
+		uint32_t skinHash;
 
 		message->Read(handle);
 		message->Read(position);
+		message->Read(skinHash);
 
 		logWrite("We have received our local handle: %u", handle.m_value);
 
 		_pGame->m_player.SetNetHandle(handle);
+		_pGame->m_player.SetModel(skinHash);
 		_pGame->m_player.SetPosition(position);
 
 		return;
@@ -219,15 +222,22 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		NetHandle handle;
 		std::string username, nickname;
 		glm::vec3 position;
+		uint32_t skinHash;
 
 		message->Read(handle);
 		message->Read(username);
 		message->Read(nickname);
 		message->Read(position);
+		message->Read(skinHash);
 
 		logWrite("Player joined: %s (%s)", username.c_str(), nickname.c_str());
 
-		int localHandle = PED::CREATE_PED(1, hashGet("franklin"), position.x, position.y, position.z, 0.0f, false, false);
+		if (!mdlRequest(skinHash)) {
+			assert(false);
+		}
+		//TODO: Move CREATE_PED to a helper function?
+		int localHandle = PED::CREATE_PED(26, skinHash, position.x, position.y, position.z, 0.0f, false, false);
+
 		Player* newPlayer = new Player(localHandle, handle);
 		newPlayer->m_username = username;
 		newPlayer->m_nickname = nickname;
