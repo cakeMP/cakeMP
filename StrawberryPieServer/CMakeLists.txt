@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 project(Strawberry)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
+set(CMAKE_CXX_STANDARD 11)
 
 add_executable(StrawberryServer
 	src/main.cpp

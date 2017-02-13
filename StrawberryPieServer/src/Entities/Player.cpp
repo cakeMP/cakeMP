@@ -96,7 +96,7 @@ void Player::HandleMessage(NetworkMessage* message)
 		std::string chatMessage;
 		message->Read(chatMessage);
 
-		printf("%s: %s\n", "Player", m_username.c_str(), chatMessage.c_str());
+		printf("%s: %s\n", m_username.c_str(), chatMessage.c_str());
 
 		return;
 	}
