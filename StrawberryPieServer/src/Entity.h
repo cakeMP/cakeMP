@@ -11,6 +11,8 @@ public:
 
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;
+	glm::vec3 m_velocity;
+	uint8_t m_moveType = 0;
 
 	uint32_t m_model = 0;
 

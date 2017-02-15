@@ -1,5 +1,7 @@
 #include <Common.h>
 
+#include <cmath>
+
 #include <signal.h>
 
 #include <enet/enet.h>
@@ -48,6 +50,10 @@ int main()
 
 	bool connected = false;
 
+	glm::vec3 spawnPoint;
+	int sendPosC = 0;
+	int tickCount = 0;
+
 	while (g_keepRunning) {
 		ENetEvent ev;
 		if (enet_host_service(g_host, &ev, 0) > 0) {
@@ -91,6 +97,8 @@ int main()
 					msg->Read(position);
 					msg->Read(skin);
 
+					spawnPoint = position;
+
 					printf("Handshake received from server:\n");
 					printf("  Our NetHandle is: %08X\n", handle.m_value);
 					printf("  Our position is: %f, %f, %f\n", position.x, position.y, position.z);
@@ -111,6 +119,24 @@ int main()
 				delete msg;
 				continue;
 			}
+		}
+
+		if (++sendPosC >= 7) {
+			printf("Send position!\n");
+			tickCount++;
+
+			NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
+			float distance = 4.0f;
+			float dx = cosf(tickCount / 10.0f) * distance;
+			float dy = sinf(tickCount / 10.0f) * distance;
+			float heading = (tickCount * 3.1415926f) * 2.0f;
+			msgPos->Write(spawnPoint + glm::vec3(dx, dy, 0));
+			msgPos->Write(heading);
+			msgPos->Write(glm::vec3(cosf(heading), sinf(heading), 0.0f));
+			msgPos->Write((uint8_t)2);
+			SendToHost(msgPos);
+
+			sendPosC = 0;
 		}
 
 		usleep(17 * 1000);

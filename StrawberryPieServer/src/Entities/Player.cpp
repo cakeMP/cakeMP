@@ -128,15 +128,21 @@ void Player::HandleMessage(NetworkMessage* message)
 	}
 
 	if (message->m_type == NMT_PlayerMove) {
-		glm::vec3 newPosition, newRotation;
+		glm::vec3 newPosition, newVelocity;
+		float newHeading;
+		uint8_t newMoveType;
 
 		message->Read(newPosition);
-		message->Read(newRotation);
+		message->Read(newHeading);
+		message->Read(newVelocity);
+		message->Read(newMoveType);
 
 		//TODO: Process vectors for validity (maybe even do NaN checks for floats and vectors in NetworkMessage::Read())
 
 		m_position = newPosition;
-		m_rotation = newRotation;
+		m_rotation.z = newHeading;
+		m_velocity = newVelocity;
+		m_moveType = newMoveType;
 
 		return;
 	}
@@ -162,13 +168,16 @@ void Player::NetworkSerialize(NetworkMessage* message)
 
 void Player::Update()
 {
-	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 250) {
+	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 500) {
 		m_tmSyncLastPosition = Clock::now();
 
 		NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
+		//TODO: Turn this into a NetStruct
 		msgPos->Write(m_handle);
 		msgPos->Write(m_position);
-		msgPos->Write(m_rotation);
+		msgPos->Write(m_rotation.z);
+		msgPos->Write(m_velocity);
+		msgPos->Write(m_moveType);
 		_pServer->m_network.SendMessageToAll(msgPos, GetPeer());
 	}
 
