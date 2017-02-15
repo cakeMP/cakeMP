@@ -60,10 +60,14 @@ enum NetworkMessageType
 	// Server to client: A player has moved.
 	//  * NetHandle: The player that moved.
 	//  * vec3: The player's new position.
-	//  * vec3: The player's new rotation.
+	//  * float: The player's new heading.
+	//  * vec3: The player's velocity.
+	//  * uint8: The player's movement type, where 1 is walking, 2 is running, 3 is sprinting.
 	//
 	// Client to server: The client player has moved.
 	//  * vec3: The client's new position.
-	//  * vec3: The client's new rotation.
+	//  * float: The client's new heading.
+	//  * vec3: The client's new velocity.
+	//  * uint8: The client's new movement type.
 	NMT_PlayerMove,
 };

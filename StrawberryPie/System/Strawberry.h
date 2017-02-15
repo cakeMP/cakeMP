@@ -23,6 +23,8 @@ public:
 
 	Chat m_chat;
 
+	int m_gameTime = 0;
+
 	uint32_t m_pedRelGroup = 0;
 
 public:

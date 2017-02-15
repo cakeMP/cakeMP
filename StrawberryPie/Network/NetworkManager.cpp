@@ -120,6 +120,10 @@ void NetworkManager::Update()
 		return;
 	}
 
+	for (auto &pair : m_entitiesNetwork) {
+		pair.second->Update();
+	}
+
 	//TODO: Make a thread just for network message queueing
 	ENetEvent ev;
 	while (enet_host_service(m_localHost, &ev, 0) > 0) {
@@ -159,7 +163,7 @@ void NetworkManager::Update()
 		NetworkMessage* message = m_incomingMessages.front();
 		m_incomingMessages.pop();
 
-		logWrite("Incoming message of size %u at %p (type %d)", message->m_length, message->m_data, (int)message->m_type);
+		//logWrite("Incoming message of size %u at %p (type %d)", message->m_length, message->m_data, (int)message->m_type);
 
 		message->m_handled = true;
 
@@ -314,11 +318,11 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 	if (message->m_type == NMT_PlayerMove) {
 		NetHandle handle;
-		glm::vec3 newPosition, newRotation;
+		glm::vec3 newPosition, newVelocity;
+		float newHeading;
+		uint8_t newMoveType;
 
 		message->Read(handle);
-		message->Read(newPosition);
-		message->Read(newRotation);
 
 		Player* player = GetEntityFromHandle<Player>(handle);
 		if (player == nullptr) {
@@ -326,8 +330,30 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		player->SetPositionNoOffset(newPosition);
-		player->SetRotation(newRotation);
+		message->Read(newPosition);
+		message->Read(newHeading);
+		message->Read(newVelocity);
+		message->Read(newMoveType);
+
+		glm::vec3 posOld = player->GetPosition();
+		glm::vec3 posPredict = newPosition + (newPosition - posOld) + newVelocity * 1.25f; // This doesn't look right
+
+		player->m_TEMP_predictPos = posPredict;
+		player->Interpolate(posOld, newPosition, 500);
+		player->SetRotation(glm::vec3(0, 0, newHeading));
+		ENTITY::SET_ENTITY_HEADING(player->GetLocalHandle(), newHeading);
+
+		if (newMoveType == 1) {
+			AI::TASK_GO_STRAIGHT_TO_COORD(player->GetLocalHandle(), posPredict.x, posPredict.y, posPredict.z, 1.0f, -1, 0.0f, 0.0f);
+			AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(player->GetLocalHandle(), 1.0f);
+		} else if (newMoveType == 2) {
+			AI::TASK_GO_STRAIGHT_TO_COORD(player->GetLocalHandle(), posPredict.x, posPredict.y, posPredict.z, 4.0f, -1, 0.0f, 0.0f);
+			AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(player->GetLocalHandle(), 2.0f);
+		} else if (newMoveType == 3) {
+			AI::TASK_GO_STRAIGHT_TO_COORD(player->GetLocalHandle(), posPredict.x, posPredict.y, posPredict.z, 3.0f, -1, 0.0f, 0.0f);
+			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(player->GetLocalHandle(), 1.49f);
+			AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(player->GetLocalHandle(), 3.0f);
+		}
 
 		return;
 	}

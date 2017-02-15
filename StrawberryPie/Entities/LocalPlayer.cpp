@@ -58,14 +58,26 @@ void LocalPlayer::Update()
 	if (_pGame->m_network.m_connected) {
 		glm::vec3 pos = GetPosition();
 
-		if (glm::distance(m_lastSyncedPosition, pos) > 0.25f) {
+		if (glm::distance(m_lastSyncedPosition, pos) > 0.5f) {
 			glm::vec3 rot = GetRotation();
+			glm::vec3 vel = GetVelocity();
 
 			m_lastSyncedPosition = pos;
 
+			uint8_t moveType = 0;
+			if (AI::IS_PED_WALKING(GetLocalHandle())) {
+				moveType = 1;
+			} else if (AI::IS_PED_RUNNING(GetLocalHandle())) {
+				moveType = 2;
+			} else if (AI::IS_PED_SPRINTING(GetLocalHandle())) {
+				moveType = 3;
+			}
+
 			NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
 			msgPos->Write(pos);
-			msgPos->Write(rot);
+			msgPos->Write(rot.z);
+			msgPos->Write(vel);
+			msgPos->Write(moveType);
 			_pGame->m_network.SendToHost(msgPos);
 		}
 	}

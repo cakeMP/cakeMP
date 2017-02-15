@@ -37,6 +37,8 @@ void Strawberry::Initialize()
 
 void Strawberry::Update()
 {
+	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
+
 	m_player.Update();
 	m_network.Update();
 }
