@@ -12,7 +12,7 @@ static void networkMessageFree(ENetPacket* packet)
 NetworkManager::NetworkManager()
 {
 	if (enet_initialize() < 0) {
-		printf("Failed to initialize ENet!\n");
+		logWrite("Failed to initialize ENet!\n");
 	}
 }
 
@@ -40,8 +40,8 @@ void NetworkManager::Listen(const char* host, uint16_t port, uint32_t maxClients
 	addr.port = port;
 	m_hostListen = enet_host_create(&addr, maxClients, 1, 0, 0);
 
-	printf("Server is listening on %s:%d\n", host, port);
-	printf("Max clients: %d\n", maxClients);
+	logWrite("Server is listening on %s:%d\n", host, port);
+	logWrite("Max clients: %d\n", maxClients);
 }
 
 void NetworkManager::Close()
@@ -55,7 +55,7 @@ void NetworkManager::Close()
 		m_players.pop_back();
 	}
 
-	printf("Closing listen host\n");
+	logWrite("Closing listen host\n");
 
 	enet_host_destroy(m_hostListen);
 	m_hostListen = nullptr;
@@ -102,7 +102,7 @@ void NetworkManager::Update()
 	ENetEvent ev;
 	while (enet_host_service(m_hostListen, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
-			printf("New connection from: %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
+			logWrite("New connection from: %08x:%d\n", ev.peer->address.host, ev.peer->address.port);
 
 			NetHandle newPlayerHandle = AssignHandle();
 
@@ -115,7 +115,7 @@ void NetworkManager::Update()
 			newPlayer->OnConnected();
 
 		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
-			printf("Client disconnected: %08x\n", ev.peer->address.host);
+			logWrite("Client disconnected: %08x\n", ev.peer->address.host);
 
 			Player* player = (Player*)ev.peer->data;
 			assert(player != nullptr);

@@ -14,7 +14,7 @@ GameServer::~GameServer()
 
 void GameServer::Run()
 {
-	printf("Server starting...\n");
+	logWrite("Server starting...\n");
 
 	m_tmStarted = Clock::now();
 
@@ -26,7 +26,7 @@ void GameServer::Run()
 		usleep((1000 / m_settings.TickRate) * 1000);
 	}
 
-	printf("Server shutting down...\n");
+	logWrite("Server shutting down...\n");
 }
 
 void GameServer::Update()

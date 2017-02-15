@@ -9,6 +9,9 @@ add_executable(StrawberryServer
 
 	src/Common.h
 
+	src/Logging.cpp
+	src/Logging.h
+
 	src/GameServer.cpp
 	src/GameServer.h
 

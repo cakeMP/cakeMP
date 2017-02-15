@@ -28,6 +28,7 @@
 
 // Our includes
 #include <SharedUtils.h>
+#include <Logging.h>
 
 // Our types and definitions
 typedef std::chrono::high_resolution_clock Clock;
