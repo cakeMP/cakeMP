@@ -21,5 +21,7 @@ void logWrite(const char* fmt, ...)
 	vprintf(fmt, args);
 	va_end(args);
 
+	putchar('\n');
+
 	_mutexLog.unlock();
 }

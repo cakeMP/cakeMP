@@ -46,13 +46,13 @@ void Player::Kick(const std::string &reason)
 	}
 
 	if (m_orderedToDisconnect) {
-		logWrite("Peer %08X was forced to disconnect\n", m_peer->address.host);
+		logWrite("Peer %08X was forced to disconnect", m_peer->address.host);
 		enet_peer_disconnect(m_peer, 0);
 		m_peer = nullptr;
 		return;
 	}
 
-	logWrite("Kicking %08X because '%s'\n", m_peer->address.host, reason.c_str());
+	logWrite("Kicking %08X because '%s'", m_peer->address.host, reason.c_str());
 
 	NetworkMessage* msgDisconnect = new NetworkMessage(NMT_Disconnect);
 	msgDisconnect->Write(reason);
@@ -84,7 +84,7 @@ void Player::HandleMessage(NetworkMessage* message)
 		m_username = username;
 		m_nickname = nickname;
 
-		logWrite("Player info received: %s (nickname: %s)\n", m_username.c_str(), m_nickname.c_str());
+		logWrite("Player info received: %s (nickname: %s)", m_username.c_str(), m_nickname.c_str());
 
 		// Send back player handshake
 		NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
@@ -122,7 +122,7 @@ void Player::HandleMessage(NetworkMessage* message)
 		std::string chatMessage;
 		message->Read(chatMessage);
 
-		logWrite("%s: %s\n", m_username.c_str(), chatMessage.c_str());
+		logWrite("%s: %s", m_username.c_str(), chatMessage.c_str());
 
 		return;
 	}
