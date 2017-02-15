@@ -51,7 +51,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir);$(SolutionDir)Libs\ScriptHookV\include;$(SolutionDir)Libs\ENet\include;$(SolutionDir)StrawberryPieShared;$(SolutionDir)Libs\glm;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libs\ScriptHookV\lib;$(SolutionDir)Libs\ENet;$(LibraryPath)</LibraryPath>
-    <OutDir>G:\Steam\steamapps\common\Grand Theft Auto V\</OutDir>
     <TargetExt>.asi</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -74,7 +74,7 @@ void NetworkManager::Disconnect()
 void NetworkManager::ClearEntities()
 {
 	for (auto &pair : m_entitiesNetwork) {
-		if (!pair.second->CanBeDeleted()) {
+		if (pair.second == &_pGame->m_player) {
 			continue;
 		}
 		delete pair.second;

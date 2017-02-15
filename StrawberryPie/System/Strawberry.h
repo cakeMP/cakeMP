@@ -23,6 +23,8 @@ public:
 
 	Chat m_chat;
 
+	uint32_t m_pedRelGroup = 0;
+
 public:
 	Strawberry(HMODULE hInstance);
 	~Strawberry();

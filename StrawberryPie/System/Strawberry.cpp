@@ -29,6 +29,8 @@ void Strawberry::Initialize()
 {
 	logWrite("Client initializing.");
 
+	PED::ADD_RELATIONSHIP_GROUP("SYNCPED", (Hash*)&m_pedRelGroup);
+
 	m_player.Initialize();
 	m_network.Initialize();
 }
