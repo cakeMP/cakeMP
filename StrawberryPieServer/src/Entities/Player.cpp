@@ -32,6 +32,10 @@ void Player::OnConnected()
 
 void Player::OnDisconnected()
 {
+	NetworkMessage* msgLeave = new NetworkMessage(NMT_PlayerLeave);
+	msgLeave->Write(m_handle);
+	_pServer->m_network.SendMessageToAll(msgLeave);
+
 	m_peer = nullptr;
 }
 
