@@ -29,6 +29,7 @@
 #include <Memory.h>
 #include <Utils.h>
 #include <SharedUtils.h>
+#include <Enums/OnFootMoveTypes.h>
 
 // Libraries
 #include <glm/glm.hpp>

@@ -3,6 +3,7 @@
 #include <Common.h>
 
 #include <Network/NetHandle.h>
+#include <System/Interpolator.h>
 
 NAMESPACE_BEGIN;
 
@@ -12,13 +13,10 @@ private:
 	int m_handle = 0;
 	NetHandle m_netHandle;
 
-	int m_lerpPosStart = 0;
-	int m_lerpPosLength = 0;
-	glm::vec3 m_lerpPosFrom;
-	glm::vec3 m_lerpPosTo;
-
-public:
-	glm::vec3 m_TEMP_predictPos; //TODO: Remove this
+protected:
+	Interpolator<glm::vec3> m_lerpPos;
+	Interpolator<glm::vec3> m_lerpRot;
+	Interpolator<float> m_lerpHeading;
 
 public:
 	Entity();
@@ -27,7 +25,9 @@ public:
 
 	virtual void Update();
 
-	virtual void Interpolate(const glm::vec3 &start, const glm::vec3 &end, int ms);
+	virtual void InterpolatePosition(const glm::vec3 &start, const glm::vec3 &end, int ms);
+	virtual void InterpolateRotation(const glm::vec3 &start, const glm::vec3 &end, int ms);
+	virtual void InterpolateHeading(float start, float end, int ms);
 
 	virtual bool IsLocal();
 	virtual bool CanBeDeleted();
@@ -48,6 +48,9 @@ public:
 
 	virtual glm::vec3 GetRotation();
 	virtual void SetRotation(const glm::vec3 &rot);
+
+	virtual float GetHeading();
+	virtual void SetHeading(float heading);
 
 	virtual glm::vec3 GetVelocity();
 	virtual void SetVelocity(const glm::vec3 &vel);

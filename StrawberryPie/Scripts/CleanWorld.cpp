@@ -77,26 +77,26 @@ void scriptCleanWorld()
 
 		MOBILE::DESTROY_MOBILE_PHONE();
 
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::EnterCheatCode, true);
-		//CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::FrontendPause, true);
-		//CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::FrontendPauseAlternate, true);
-		//CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::FrontendSocialClub, true);
-		//CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::FrontendSocialClubSecondary, true);
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::SpecialAbility, true);
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::SpecialAbilityPC, true);
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::SpecialAbilitySecondary, true);
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::CharacterWheel, true);
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::Phone, true);
-		CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::Duck, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_EnterCheatCode, true);
+		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendPause, true);
+		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendPauseAlternate, true);
+		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendSocialClub, true);
+		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendSocialClubSecondary, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_SpecialAbility, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_SpecialAbilityPC, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_SpecialAbilitySecondary, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_CharacterWheel, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_Phone, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_Duck, true);
 
 		if (PED::GET_PED_PARACHUTE_STATE(playerPed) == 2) {
-			CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::Aim, true);
-			CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::Attack, true);
+			CONTROLS::DISABLE_CONTROL_ACTION(0, GC_Aim, true);
+			CONTROLS::DISABLE_CONTROL_ACTION(0, GC_Attack, true);
 		}
 
 		if (PED::IS_PED_RAGDOLL(playerPed)) {
-			CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::Attack, true);
-			CONTROLS::DISABLE_CONTROL_ACTION(0, GameControl::Attack2, true);
+			CONTROLS::DISABLE_CONTROL_ACTION(0, GC_Attack, true);
+			CONTROLS::DISABLE_CONTROL_ACTION(0, GC_Attack2, true);
 		}
 
 		UI::HIDE_HELP_TEXT_THIS_FRAME();

@@ -23,6 +23,14 @@ static int settings_handler(void* user, const char* section, const char* name, c
 		}
 	}
 
+	if (strcmp(section, "Player") == 0) {
+		if (strcmp(name, "Nickname") == 0) {
+			self.Nickname = value;
+			logWrite("Settings: Nickname: '%s'", self.Nickname.c_str());
+			return 1;
+		}
+	}
+
 	return 1;
 }
 

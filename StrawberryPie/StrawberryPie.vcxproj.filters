@@ -113,6 +113,15 @@
     <ClInclude Include="Entities\Ped.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="System\Interpolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Interval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums\OnFootMoveTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Licenses.txt" />

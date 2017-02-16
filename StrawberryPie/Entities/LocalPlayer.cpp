@@ -50,17 +50,23 @@ void LocalPlayer::Initialize()
 	SetLocalHandle(PLAYER::GET_PLAYER_INDEX());
 
 	m_username = PLAYER::GET_PLAYER_NAME(m_playerHandle);
-	m_nickname = m_username; //TODO
+	if (_pGame->m_settings.Nickname != "") {
+		m_nickname = _pGame->m_settings.Nickname;
+	} else {
+		m_nickname = m_username;
+	}
 }
 
 void LocalPlayer::Update()
 {
 	if (_pGame->m_network.m_connected) {
 		glm::vec3 pos = GetPosition();
+		glm::vec3 vel = GetVelocity();
 
-		if (glm::distance(m_lastSyncedPosition, pos) > 0.5f) {
+		GRAPHICS::DRAW_LINE(pos.x, pos.y, pos.z, pos.x + vel.x, pos.y + vel.y, pos.z + vel.z, 0, 0, 255, 255);
+
+		if (vel.length() > 0.5f) {
 			glm::vec3 rot = GetRotation();
-			glm::vec3 vel = GetVelocity();
 
 			m_lastSyncedPosition = pos;
 

@@ -336,24 +336,13 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		message->Read(newMoveType);
 
 		glm::vec3 posOld = player->GetPosition();
+		float headingOld = player->GetHeading();
 		glm::vec3 posPredict = newPosition + (newPosition - posOld) + newVelocity * 1.25f; // This doesn't look right
 
-		player->m_TEMP_predictPos = posPredict;
-		player->Interpolate(posOld, newPosition, 500);
-		player->SetRotation(glm::vec3(0, 0, newHeading));
-		ENTITY::SET_ENTITY_HEADING(player->GetLocalHandle(), newHeading);
-
-		if (newMoveType == 1) {
-			AI::TASK_GO_STRAIGHT_TO_COORD(player->GetLocalHandle(), posPredict.x, posPredict.y, posPredict.z, 1.0f, -1, 0.0f, 0.0f);
-			AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(player->GetLocalHandle(), 1.0f);
-		} else if (newMoveType == 2) {
-			AI::TASK_GO_STRAIGHT_TO_COORD(player->GetLocalHandle(), posPredict.x, posPredict.y, posPredict.z, 4.0f, -1, 0.0f, 0.0f);
-			AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(player->GetLocalHandle(), 2.0f);
-		} else if (newMoveType == 3) {
-			AI::TASK_GO_STRAIGHT_TO_COORD(player->GetLocalHandle(), posPredict.x, posPredict.y, posPredict.z, 3.0f, -1, 0.0f, 0.0f);
-			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(player->GetLocalHandle(), 1.49f);
-			AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(player->GetLocalHandle(), 3.0f);
-		}
+		player->m_speedOnFoot = (OnFootMoveTypes)newMoveType;
+		player->m_speedOnFootTowards = posPredict;
+		player->InterpolatePosition(posOld, newPosition, 500);
+		player->InterpolateHeading(headingOld, newHeading, 500);
 
 		return;
 	}

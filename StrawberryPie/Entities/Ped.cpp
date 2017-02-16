@@ -21,6 +21,38 @@ Ped::~Ped()
 {
 }
 
+void Ped::Update()
+{
+	Entity::Update();
+
+	if (m_lerpPos.IsActive()) {
+		glm::vec3 &from = m_lerpPos.From();
+		glm::vec3 &to = m_lerpPos.To();
+
+		GRAPHICS::DRAW_LINE(from.x, from.y, from.z, to.x, to.y, to.z, 255, 0, 0, 255);
+		GRAPHICS::DRAW_LINE(from.x, from.y, from.z, m_speedOnFootTowards.x, m_speedOnFootTowards.y, m_speedOnFootTowards.z, 0, 255, 0, 255);
+	} else {
+		m_speedOnFoot = OFMT_Still;
+	}
+
+	if (m_speedOnFoot == OFMT_Still) {
+		AI::CLEAR_PED_TASKS(GetLocalHandle());
+
+	} else if (m_speedOnFoot == OFMT_Walking) {
+		AI::TASK_GO_STRAIGHT_TO_COORD(GetLocalHandle(), m_speedOnFootTowards.x, m_speedOnFootTowards.y, m_speedOnFootTowards.z, 1.0f, -1, 0.0f, 0.0f);
+		AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(GetLocalHandle(), 1.0f);
+
+	} else if (m_speedOnFoot == OFMT_Running) {
+		AI::TASK_GO_STRAIGHT_TO_COORD(GetLocalHandle(), m_speedOnFootTowards.x, m_speedOnFootTowards.y, m_speedOnFootTowards.z, 4.0f, -1, 0.0f, 0.0f);
+		AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(GetLocalHandle(), 2.0f);
+
+	} else if (m_speedOnFoot == OFMT_Sprinting) {
+		AI::TASK_GO_STRAIGHT_TO_COORD(GetLocalHandle(), m_speedOnFootTowards.x, m_speedOnFootTowards.y, m_speedOnFootTowards.z, 3.0f, -1, 0.0f, 0.0f);
+		PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(GetLocalHandle(), 1.49f);
+		AI::SET_PED_DESIRED_MOVE_BLEND_RATIO(GetLocalHandle(), 3.0f);
+	}
+}
+
 void Ped::SetModel(uint32_t hash)
 {
 	//TODO: We have to re-create the entire ped, I think?

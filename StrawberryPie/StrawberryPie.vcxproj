@@ -123,11 +123,14 @@
     <ClInclude Include="Entities\Player.h" />
     <ClInclude Include="Enums\GameControl.h" />
     <ClInclude Include="Enums\GameScripts.h" />
+    <ClInclude Include="Enums\OnFootMoveTypes.h" />
     <ClInclude Include="Libs\inih\ini.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />
     <ClInclude Include="System\Chat.h" />
     <ClInclude Include="System\Entity.h" />
+    <ClInclude Include="System\Interpolator.h" />
+    <ClInclude Include="System\Interval.h" />
     <ClInclude Include="System\Settings.h" />
     <ClInclude Include="System\Strawberry.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />

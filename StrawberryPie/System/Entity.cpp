@@ -25,32 +25,40 @@ Entity::~Entity()
 
 void Entity::Update()
 {
-	if (m_lerpPosStart > 0) {
-		int tmNow = _pGame->m_gameTime;
-		int tmPassed = tmNow - m_lerpPosStart;
-		float factor = tmPassed / (float)m_lerpPosLength;
+	if (m_lerpPos.IsActive()) {
+		m_lerpPos.Update();
+		glm::vec3 lerpedPosition = m_lerpPos.Current();
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GetLocalHandle(), lerpedPosition.x, lerpedPosition.y, lerpedPosition.z, false, false, false);
+	}
 
-		if (factor >= 1.0f) {
-			m_lerpPosStart = 0;
-			factor = 1.0f;
-		}
+	if (m_lerpRot.IsActive()) {
+		m_lerpRot.Update();
+		glm::vec3 lerpedRotation = m_lerpRot.Current();
+		ENTITY::SET_ENTITY_ROTATION(GetLocalHandle(), lerpedRotation.x, lerpedRotation.y, lerpedRotation.z, 2, true);
+	}
 
-		glm::vec3 lerped = glm::mix(m_lerpPosFrom, m_lerpPosTo, factor);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GetLocalHandle(), lerped.x, lerped.y, lerped.z, false, false, false);
-
-		GRAPHICS::DRAW_LINE(m_lerpPosFrom.x, m_lerpPosFrom.y, m_lerpPosFrom.z, m_lerpPosTo.x, m_lerpPosTo.y, m_lerpPosTo.z, 255, 0, 0, 255);
-		GRAPHICS::DRAW_LINE(m_lerpPosFrom.x, m_lerpPosFrom.y, m_lerpPosFrom.z, m_TEMP_predictPos.x, m_TEMP_predictPos.y, m_TEMP_predictPos.z, 0, 255, 0, 255);
+	if (m_lerpHeading.IsActive()) {
+		m_lerpHeading.Update();
+		ENTITY::SET_ENTITY_HEADING(GetLocalHandle(), m_lerpHeading.Current());
 	}
 }
 
-void Entity::Interpolate(const glm::vec3 &start, const glm::vec3 &end, int ms)
+void Entity::InterpolatePosition(const glm::vec3 &start, const glm::vec3 &end, int ms)
 {
-	m_lerpPosStart = _pGame->m_gameTime;
-	m_lerpPosLength = ms;
-	m_lerpPosFrom = start;
-	m_lerpPosTo = end;
-
+	m_lerpPos.Set(start, end, ms);
 	ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GetLocalHandle(), start.x, start.y, start.z, false, false, false);
+}
+
+void Entity::InterpolateRotation(const glm::vec3 &start, const glm::vec3 &end, int ms)
+{
+	m_lerpRot.Set(start, end, ms);
+	ENTITY::SET_ENTITY_ROTATION(GetLocalHandle(), start.x, start.y, start.z, 2, true);
+}
+
+void Entity::InterpolateHeading(float start, float end, int ms)
+{
+	m_lerpHeading.Set(start, end, ms);
+	ENTITY::SET_ENTITY_HEADING(GetLocalHandle(), start);
 }
 
 bool Entity::IsLocal()
@@ -121,6 +129,16 @@ glm::vec3 Entity::GetRotation()
 void Entity::SetRotation(const glm::vec3 &rot)
 {
 	ENTITY::SET_ENTITY_ROTATION(GetLocalHandle(), rot.x, rot.y, rot.z, 2, true);
+}
+
+float Entity::GetHeading()
+{
+	return ENTITY::GET_ENTITY_HEADING(GetLocalHandle());
+}
+
+void Entity::SetHeading(float heading)
+{
+	ENTITY::SET_ENTITY_HEADING(GetLocalHandle(), heading);
 }
 
 glm::vec3 Entity::GetVelocity()
