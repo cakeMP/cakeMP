@@ -11,10 +11,10 @@ private:
 	T m_from;
 	T m_to;
 
-	float m_factor;
+	float m_factor = 0.0f;
 
-	int m_tmStart;
-	int m_tmLength;
+	int m_tmStart = 0;
+	int m_tmLength = 0;
 
 public:
 	inline void Set(const T &from, const T &to, int ms)

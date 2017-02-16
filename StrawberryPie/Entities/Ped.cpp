@@ -33,6 +33,15 @@ void Ped::Update()
 		GRAPHICS::DRAW_LINE(from.x, from.y, from.z, m_speedOnFootTowards.x, m_speedOnFootTowards.y, m_speedOnFootTowards.z, 0, 255, 0, 255);
 	}
 
+	/*
+	char buffer[256];
+	sprintf(buffer, "On foot speed: ~b~%d", (int)m_speedOnFoot);
+
+	UI::BEGIN_TEXT_COMMAND_PRINT("CELL_EMAIL_BCON");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(buffer);
+	UI::END_TEXT_COMMAND_PRINT(1000, true);
+	*/
+
 	if (m_speedOnFoot == OFMT_Still) {
 		AI::CLEAR_PED_TASKS(GetLocalHandle());
 
