@@ -34,6 +34,7 @@
 // Libraries
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 // Custom assertions
 #ifdef assert

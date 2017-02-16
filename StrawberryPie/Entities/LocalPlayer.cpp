@@ -66,7 +66,7 @@ void LocalPlayer::Update()
 		GRAPHICS::DRAW_LINE(pos.x, pos.y, pos.z, pos.x + vel.x, pos.y + vel.y, pos.z + vel.z, 0, 0, 255, 255);
 
 		if (vel.length() > 0.5f) {
-			glm::vec3 rot = GetRotation();
+			float heading = GetHeading();
 
 			m_lastSyncedPosition = pos;
 
@@ -81,7 +81,7 @@ void LocalPlayer::Update()
 
 			NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
 			msgPos->Write(pos);
-			msgPos->Write(rot.z);
+			msgPos->Write(heading);
 			msgPos->Write(vel);
 			msgPos->Write(moveType);
 			_pGame->m_network.SendToHost(msgPos);

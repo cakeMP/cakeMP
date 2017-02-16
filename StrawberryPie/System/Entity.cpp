@@ -33,13 +33,8 @@ void Entity::Update()
 
 	if (m_lerpRot.IsActive()) {
 		m_lerpRot.Update();
-		glm::vec3 lerpedRotation = m_lerpRot.Current();
-		ENTITY::SET_ENTITY_ROTATION(GetLocalHandle(), lerpedRotation.x, lerpedRotation.y, lerpedRotation.z, 2, true);
-	}
-
-	if (m_lerpHeading.IsActive()) {
-		m_lerpHeading.Update();
-		ENTITY::SET_ENTITY_HEADING(GetLocalHandle(), m_lerpHeading.Current());
+		glm::quat lerpedQuaternion = m_lerpRot.CurrentSpherical();
+		ENTITY::SET_ENTITY_QUATERNION(GetLocalHandle(), lerpedQuaternion.x, lerpedQuaternion.y, lerpedQuaternion.z, lerpedQuaternion.w);
 	}
 }
 
@@ -49,16 +44,19 @@ void Entity::InterpolatePosition(const glm::vec3 &start, const glm::vec3 &end, i
 	ENTITY::SET_ENTITY_COORDS_NO_OFFSET(GetLocalHandle(), start.x, start.y, start.z, false, false, false);
 }
 
-void Entity::InterpolateRotation(const glm::vec3 &start, const glm::vec3 &end, int ms)
+void Entity::InterpolateQuaternion(const glm::quat &start, const glm::quat &end, int ms)
 {
 	m_lerpRot.Set(start, end, ms);
-	ENTITY::SET_ENTITY_ROTATION(GetLocalHandle(), start.x, start.y, start.z, 2, true);
+	ENTITY::SET_ENTITY_QUATERNION(GetLocalHandle(), start.x, start.y, start.z, start.w);
 }
 
 void Entity::InterpolateHeading(float start, float end, int ms)
 {
-	m_lerpHeading.Set(start, end, ms);
-	ENTITY::SET_ENTITY_HEADING(GetLocalHandle(), start);
+	float radStart = glm::radians(start);
+	float radEnd = glm::radians(end);
+
+	glm::vec3 up(0.0f, 0.0f, 1.0f);
+	InterpolateQuaternion(glm::angleAxis(radStart, up), glm::angleAxis(radEnd, up), ms);
 }
 
 bool Entity::IsLocal()
@@ -131,8 +129,22 @@ void Entity::SetRotation(const glm::vec3 &rot)
 	ENTITY::SET_ENTITY_ROTATION(GetLocalHandle(), rot.x, rot.y, rot.z, 2, true);
 }
 
+glm::quat Entity::GetQuat()
+{
+	glm::quat ret;
+	ENTITY::GET_ENTITY_QUATERNION(GetLocalHandle(), &ret.x, &ret.y, &ret.z, &ret.w);
+	return ret;
+}
+
+void Entity::SetQuat(const glm::quat &quat)
+{
+	ENTITY::SET_ENTITY_QUATERNION(GetLocalHandle(), quat.x, quat.y, quat.z, quat.w);
+}
+
 float Entity::GetHeading()
 {
+	glm::quat q = glm::angleAxis(0.0f, glm::vec3(0, 0, 1));
+
 	return ENTITY::GET_ENTITY_HEADING(GetLocalHandle());
 }
 

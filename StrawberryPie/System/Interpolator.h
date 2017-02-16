@@ -43,7 +43,9 @@ public:
 
 	inline T &From() { return m_from; }
 	inline T &To() { return m_to; }
+
 	inline T Current() { return glm::mix(m_from, m_to, m_factor); }
+	inline T CurrentSpherical() { return glm::slerp(m_from, m_to, m_factor); }
 
 	inline bool IsActive() { return m_tmStart > 0; }
 };

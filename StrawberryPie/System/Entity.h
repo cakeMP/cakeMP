@@ -15,8 +15,7 @@ private:
 
 protected:
 	Interpolator<glm::vec3> m_lerpPos;
-	Interpolator<glm::vec3> m_lerpRot;
-	Interpolator<float> m_lerpHeading;
+	Interpolator<glm::quat> m_lerpRot;
 
 public:
 	Entity();
@@ -26,7 +25,7 @@ public:
 	virtual void Update();
 
 	virtual void InterpolatePosition(const glm::vec3 &start, const glm::vec3 &end, int ms);
-	virtual void InterpolateRotation(const glm::vec3 &start, const glm::vec3 &end, int ms);
+	virtual void InterpolateQuaternion(const glm::quat &start, const glm::quat &end, int ms);
 	virtual void InterpolateHeading(float start, float end, int ms);
 
 	virtual bool IsLocal();
@@ -48,6 +47,9 @@ public:
 
 	virtual glm::vec3 GetRotation();
 	virtual void SetRotation(const glm::vec3 &rot);
+
+	virtual glm::quat GetQuat();
+	virtual void SetQuat(const glm::quat &quat);
 
 	virtual float GetHeading();
 	virtual void SetHeading(float heading);
