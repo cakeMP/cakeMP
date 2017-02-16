@@ -342,9 +342,9 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		player->m_speedOnFoot = (OnFootMoveTypes)newMoveType;
 		player->m_speedOnFootTowards = posPredict;
 		if (glm::distance2(posOld, newPosition) > 0.1f) {
-			player->InterpolatePosition(posOld, newPosition, 500);
+			player->InterpolatePosition(posOld, newPosition, 250);
 		}
-		player->InterpolateHeading(headingOld, newHeading, 300);
+		player->InterpolateHeading(headingOld, newHeading, 250);
 
 		return;
 	}

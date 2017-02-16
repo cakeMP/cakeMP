@@ -31,8 +31,6 @@ void Ped::Update()
 
 		GRAPHICS::DRAW_LINE(from.x, from.y, from.z, to.x, to.y, to.z, 255, 0, 0, 255);
 		GRAPHICS::DRAW_LINE(from.x, from.y, from.z, m_speedOnFootTowards.x, m_speedOnFootTowards.y, m_speedOnFootTowards.z, 0, 255, 0, 255);
-	} else {
-		m_speedOnFoot = OFMT_Still;
 	}
 
 	if (m_speedOnFoot == OFMT_Still) {
