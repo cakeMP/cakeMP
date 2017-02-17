@@ -168,7 +168,7 @@ void Player::NetworkSerialize(NetworkMessage* message)
 
 void Player::Update()
 {
-	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 500) {
+	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 250) {
 		m_tmSyncLastPosition = Clock::now();
 
 		NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);

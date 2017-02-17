@@ -8,6 +8,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <Network/NetHandle.h>
 #include <Network/NetworkMessage.h>
@@ -51,6 +52,7 @@ int main()
 	bool connected = false;
 
 	glm::vec3 spawnPoint;
+	glm::vec3 prevPos;
 	int sendPosC = 0;
 	int tickCount = 0;
 
@@ -98,6 +100,7 @@ int main()
 					msg->Read(skin);
 
 					spawnPoint = position;
+					prevPos = spawnPoint;
 
 					printf("Handshake received from server:\n");
 					printf("  Our NetHandle is: %08X\n", handle.m_value);
@@ -125,15 +128,20 @@ int main()
 			printf("Send position!\n");
 			tickCount++;
 
-			NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
 			float distance = 4.0f;
-			float dx = cosf(tickCount / 10.0f) * distance;
-			float dy = sinf(tickCount / 10.0f) * distance;
-			float heading = (tickCount * 3.1415926f) * 2.0f;
+			float dx = cosf(tickCount / 5.0f) * distance;
+			float dy = sinf(tickCount / 5.0f) * distance;
+			glm::vec3 newPos = spawnPoint + glm::vec3(dx, dy, 0);
+			glm::vec3 diff = glm::normalize(newPos - prevPos);
+			float heading = glm::degrees(atan2f(diff.y, diff.x)) - 90.0f;
+
+			prevPos = newPos;
+
+			NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
 			msgPos->Write(spawnPoint + glm::vec3(dx, dy, 0));
 			msgPos->Write(heading);
-			msgPos->Write(glm::vec3(cosf(heading), sinf(heading), 0.0f));
-			msgPos->Write((uint8_t)2);
+			msgPos->Write(diff * 4.0f);
+			msgPos->Write((uint8_t)3);
 			SendToHost(msgPos);
 
 			sendPosC = 0;
