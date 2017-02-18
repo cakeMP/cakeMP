@@ -54,24 +54,6 @@ void Strawberry::OnKeyDown(uint32_t key)
 		m_network.Connect(m_settings.ConnectToHost.c_str(), m_settings.ConnectToPort);
 	} else if (key == VK_F4) {
 		m_network.Disconnect();
-	} else if (key == VK_F5) {
-		int playerHandle = m_player.GetLocalHandle();
-
-		{
-			auto tmA = std::chrono::steady_clock::now();
-			Vector3 coords = ENTITY::GET_ENTITY_COORDS(playerHandle, true);
-			auto tmB = std::chrono::steady_clock::now();
-
-			logWrite("GET_ENTITY_COORDS: %d", std::chrono::duration_cast<std::chrono::nanoseconds>(tmB - tmA).count());
-		}
-
-		{
-			auto tmA = std::chrono::steady_clock::now();
-			BOOL isInAnyVehicle = PED::IS_PED_IN_ANY_VEHICLE(playerHandle, true);
-			auto tmB = std::chrono::steady_clock::now();
-
-			logWrite("IS_PED_IN_ANY_VEHICLE: %d", std::chrono::duration_cast<std::chrono::nanoseconds>(tmB - tmA).count());
-		}
 	}
 }
 
