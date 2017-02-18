@@ -71,6 +71,11 @@ void NetworkManager::Disconnect()
 	m_localPeer = nullptr;
 }
 
+bool NetworkManager::IsConnected()
+{
+	return m_connected;
+}
+
 void NetworkManager::ClearEntities()
 {
 	for (auto &pair : m_entitiesNetwork) {
@@ -312,6 +317,24 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		m_entitiesNetwork.erase(it);
 		delete player;
+
+		return;
+	}
+
+	if (message->m_type == NMT_ChatMessage) {
+		NetHandle handle;
+		std::string text;
+
+		message->Read(handle);
+		message->Read(text);
+
+		Player* player = GetEntityFromHandle<Player>(handle);
+		if (player == nullptr) {
+			assert(false);
+			return;
+		}
+
+		_pGame->m_chat.AddMessage(player->m_nickname.c_str(), text.c_str());
 
 		return;
 	}

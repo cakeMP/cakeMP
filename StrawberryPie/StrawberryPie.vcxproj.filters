@@ -60,6 +60,9 @@
     <ClCompile Include="Entities\Ped.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GTA\Scaleform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enums\OnFootMoveTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GTA\Scaleform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

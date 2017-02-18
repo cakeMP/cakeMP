@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="Entities\LocalPlayer.cpp" />
     <ClCompile Include="Entities\Ped.cpp" />
+    <ClCompile Include="GTA\Scaleform.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="System\Chat.cpp" />
     <ClCompile Include="Libs\inih\ini.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Enums\GameControl.h" />
     <ClInclude Include="Enums\GameScripts.h" />
     <ClInclude Include="Enums\OnFootMoveTypes.h" />
+    <ClInclude Include="GTA\Scaleform.h" />
     <ClInclude Include="Libs\inih\ini.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />

@@ -59,7 +59,7 @@ void LocalPlayer::Initialize()
 
 void LocalPlayer::Update()
 {
-	if (_pGame->m_network.m_connected) {
+	if (_pGame->m_network.IsConnected()) {
 		glm::vec3 pos = GetPosition();
 		glm::vec3 vel = GetVelocity();
 

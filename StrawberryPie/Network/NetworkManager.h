@@ -12,10 +12,9 @@ NAMESPACE_BEGIN;
 
 class NetworkManager
 {
-public:
+private:
 	bool m_connected = false;
 
-private:
 	ENetHost* m_localHost = nullptr;
 	ENetPeer* m_localPeer = nullptr;
 
@@ -30,6 +29,7 @@ public:
 
 	void Connect(const char* hostname, uint16_t port);
 	void Disconnect();
+	bool IsConnected();
 
 	void ClearEntities();
 

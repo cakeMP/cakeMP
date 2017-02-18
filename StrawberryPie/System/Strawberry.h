@@ -15,6 +15,7 @@ class Strawberry
 {
 public:
 	HMODULE m_hInstance;
+	uint8_t m_keyStates[256];
 
 	NetworkManager m_network;
 	Settings m_settings;
@@ -36,6 +37,8 @@ public:
 
 	void OnKeyDown(uint32_t key);
 	void OnKeyUp(uint32_t key);
+
+	bool IsKeyDown(uint8_t key);
 };
 
 extern Strawberry* _pGame;
