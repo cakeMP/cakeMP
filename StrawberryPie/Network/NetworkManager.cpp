@@ -143,20 +143,13 @@ void NetworkManager::Update()
 			msgHandshake->Write(player.m_nickname);
 			SendToHost(msgHandshake);
 
-			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~g~Connected");
-			UI::_DRAW_NOTIFICATION(false, true);
+			//NOTE: We don't call OnConnected until the server has accepted our handshake
 
 		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
 			m_localPeer = nullptr;
 			m_connected = false;
 
-			//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
-			ClearEntities();
-
-			UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-			UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Disconnected");
-			UI::_DRAW_NOTIFICATION(false, true);
+			_pGame->OnDisconnected();
 
 		} else if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
 			NetworkMessage* newMessage = new NetworkMessage(ev.peer, ev.packet);
@@ -225,6 +218,8 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		_pGame->m_player.SetNetHandle(handle);
 		_pGame->m_player.SetModel(skinHash);
 		_pGame->m_player.SetPositionNoOffset(position);
+
+		_pGame->OnConnected();
 
 		return;
 	}

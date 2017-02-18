@@ -26,6 +26,7 @@ public:
 	bool IsFocused();
 
 	void AddMessage(const char* sender, const char* message);
+	void Clear();
 };
 
 NAMESPACE_END;

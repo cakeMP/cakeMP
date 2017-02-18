@@ -152,4 +152,9 @@ void Chat::AddMessage(const char* sender, const char* message)
 	m_scaleform.FinishFunction();
 }
 
+void Chat::Clear()
+{
+	m_scaleform.CallFunction("RESET");
+}
+
 NAMESPACE_END;

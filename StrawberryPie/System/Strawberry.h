@@ -35,6 +35,9 @@ public:
 	void Initialize();
 	void Update();
 
+	void OnConnected();
+	void OnDisconnected();
+
 	void OnKeyDown(uint32_t key);
 	void OnKeyUp(uint32_t key);
 

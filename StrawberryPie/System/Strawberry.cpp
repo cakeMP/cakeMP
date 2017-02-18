@@ -55,6 +55,25 @@ void Strawberry::Update()
 	}
 }
 
+void Strawberry::OnConnected()
+{
+	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~g~Connected");
+	UI::_DRAW_NOTIFICATION(false, true);
+}
+
+void Strawberry::OnDisconnected()
+{
+	m_chat.Clear();
+
+	//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
+	m_network.ClearEntities();
+
+	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Disconnected");
+	UI::_DRAW_NOTIFICATION(false, true);
+}
+
 void Strawberry::OnKeyDown(uint32_t key)
 {
 	assert(key < 256);
