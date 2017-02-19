@@ -53,8 +53,13 @@ void Chat::Initialize()
 
 void Chat::Update()
 {
+}
+
+void Chat::Render()
+{
 	m_scaleform.Render();
 
+	//TODO: This could go into Update() if we write a controls helper class
 	if (IsFocused()) {
 		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(0);
 	}

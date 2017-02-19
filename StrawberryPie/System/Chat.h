@@ -19,6 +19,7 @@ public:
 
 	void Initialize();
 	void Update();
+	void Render();
 
 	void OnKeyDown(uint32_t c);
 

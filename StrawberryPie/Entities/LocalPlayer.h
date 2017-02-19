@@ -27,6 +27,7 @@ public:
 	void Initialize();
 
 	void Update();
+	void Render();
 };
 
 NAMESPACE_END;

@@ -38,7 +38,8 @@ public:
 	~Strawberry();
 
 	void Initialize();
-	void Update();
+	void Update(float dt);
+	void Render();
 
 	void OnConnected();
 	void OnDisconnected();

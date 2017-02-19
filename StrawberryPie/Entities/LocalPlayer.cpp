@@ -60,12 +60,10 @@ void LocalPlayer::Initialize()
 void LocalPlayer::Update()
 {
 	if (_pGame->m_network.IsConnected()) {
-		glm::vec3 pos = GetPosition();
 		glm::vec3 vel = GetVelocity();
 
-		GRAPHICS::DRAW_LINE(pos.x, pos.y, pos.z, pos.x + vel.x, pos.y + vel.y, pos.z + vel.z, 0, 0, 255, 255);
-
 		if (vel.length() > 0.5f) {
+			glm::vec3 pos = GetPosition();
 			float heading = GetHeading();
 
 			m_lastSyncedPosition = pos;
@@ -87,6 +85,17 @@ void LocalPlayer::Update()
 			_pGame->m_network.SendToHost(msgPos);
 		}
 	}
+}
+
+void LocalPlayer::Render()
+{
+	if (!_pGame->m_network.IsConnected()) {
+		return;
+	}
+
+	glm::vec3 pos = GetPosition();
+	glm::vec3 vel = GetVelocity();
+	GRAPHICS::DRAW_LINE(pos.x, pos.y, pos.z, pos.x + vel.x, pos.y + vel.y, pos.z + vel.z, 0, 0, 255, 255);
 }
 
 NAMESPACE_END;

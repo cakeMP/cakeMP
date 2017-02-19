@@ -60,14 +60,9 @@ void Strawberry::Initialize()
 	m_chat.Initialize();
 }
 
-void Strawberry::Update()
+void Strawberry::Update(float dt)
 {
 	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
-
-	//TODO: This should be an option (it slows down keyboard input outside of the game sadly)
-	if (GetForegroundWindow() != m_hWnd) {
-		Sleep(17);
-	}
 
 	m_player.Update();
 	m_network.Update();
@@ -75,7 +70,20 @@ void Strawberry::Update()
 	if (m_network.IsConnected()) {
 		m_chat.Update();
 	}
+}
 
+void Strawberry::Render()
+{
+	//TODO: This should be an option (it slows down keyboard input outside of the game sadly)
+	if (GetForegroundWindow() != m_hWnd) {
+		Sleep(17);
+	}
+
+	m_player.Render();
+
+	if (m_network.IsConnected()) {
+		m_chat.Render();
+	}
 	m_fpsCounter.Render();
 }
 
