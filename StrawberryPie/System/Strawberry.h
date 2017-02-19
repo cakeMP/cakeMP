@@ -6,8 +6,11 @@
 
 #include <System/Settings.h>
 #include <System/Chat.h>
+#include <System/FPSCounter.h>
 
 #include <Entities/LocalPlayer.h>
+
+#include <GTA/UI/Text.h>
 
 NAMESPACE_BEGIN;
 
@@ -15,6 +18,7 @@ class Strawberry
 {
 public:
 	HMODULE m_hInstance;
+	HWND m_hWnd = nullptr;
 	uint8_t m_keyStates[256];
 
 	NetworkManager m_network;
@@ -23,6 +27,7 @@ public:
 	LocalPlayer m_player;
 
 	Chat m_chat;
+	FPSCounter m_fpsCounter;
 
 	int m_gameTime = 0;
 

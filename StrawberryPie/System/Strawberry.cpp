@@ -5,12 +5,28 @@
 #include <Scripts/CleanWorld.h>
 #include <Scripts/Game.h>
 
+#include <GTA/UI/UI.h>
+
 #include <shv/main.h>
 #include <shv/natives.h>
 
 NAMESPACE_BEGIN;
 
 Strawberry* _pGame = nullptr;
+
+static BOOL CALLBACK _windowEnumHandler(HWND hwnd, LPARAM lparam)
+{
+	Strawberry* pGame = (Strawberry*)lparam;
+
+	DWORD pid = 0;
+	GetWindowThreadProcessId(hwnd, &pid);
+	if (pid == GetCurrentProcessId()) {
+		pGame->m_hWnd = hwnd;
+		return FALSE;
+	}
+
+	return TRUE;
+}
 
 Strawberry::Strawberry(HMODULE hInstance)
 {
@@ -31,6 +47,12 @@ void Strawberry::Initialize()
 {
 	logWrite("Client initializing.");
 
+	EnumWindows(_windowEnumHandler, (LPARAM)this);
+	logWrite("Window handle: %p", m_hWnd);
+
+	GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(&ui_screenWidth, &ui_screenHeight);
+	logWrite("Resolution: %d x %d", ui_screenWidth, ui_screenHeight);
+
 	PED::ADD_RELATIONSHIP_GROUP("SYNCPED", (Hash*)&m_pedRelGroup);
 
 	m_player.Initialize();
@@ -38,14 +60,14 @@ void Strawberry::Initialize()
 	m_chat.Initialize();
 }
 
-static int TestGetGameTimer()
-{
-	return _pGame->m_gameTime;
-}
-
 void Strawberry::Update()
 {
 	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
+
+	//TODO: This should be an option (it slows down keyboard input outside of the game sadly)
+	if (GetForegroundWindow() != m_hWnd) {
+		Sleep(17);
+	}
 
 	m_player.Update();
 	m_network.Update();
@@ -53,6 +75,8 @@ void Strawberry::Update()
 	if (m_network.IsConnected()) {
 		m_chat.Update();
 	}
+
+	m_fpsCounter.Render();
 }
 
 void Strawberry::OnConnected()

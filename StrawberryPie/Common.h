@@ -24,6 +24,7 @@
 #include <string>
 #include <queue>
 #include <unordered_map>
+#include <chrono>
 
 // Custom includes
 #include <Memory.h>
@@ -33,6 +34,7 @@
 
 // Libraries
 #include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/quaternion.hpp>
 
@@ -41,3 +43,9 @@
 #undef assert
 #endif
 #define assert(x) { if (!(x)) { NAMESPACE_NAME::logAssertFailed(#x, __FILE__, __LINE__); } }
+
+// Custom typedefs
+typedef std::chrono::high_resolution_clock Clock;
+typedef std::chrono::time_point<std::chrono::steady_clock> ClockTime;
+#define MilliDuration std::chrono::duration_cast<std::chrono::milliseconds>
+#define MicroDuration std::chrono::duration_cast<std::chrono::microseconds>
