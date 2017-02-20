@@ -7,6 +7,7 @@
 #include <Network/NetHandle.h>
 #include <Network/NetworkEntityType.h>
 #include <Network/Structs/CreatePed.h>
+#include <GTA/UI/UI.h>
 
 #include <enet/enet.h>
 
@@ -45,9 +46,7 @@ void NetworkManager::Connect(const char* hostname, uint16_t port)
 
 	logWrite("Connecting to %s:%u", hostname, port);
 
-	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Connecting..");
-	UI::_DRAW_NOTIFICATION(false, true);
+	uiNotify("Connecting..");
 
 	ENetAddress addr;
 	enet_address_set_host(&addr, hostname);
@@ -63,9 +62,7 @@ void NetworkManager::Disconnect()
 
 	logWrite("Disconnecting from %08x", m_localPeer->address.host);
 
-	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Disconnecting..");
-	UI::_DRAW_NOTIFICATION(false, true);
+	uiNotify("Disconnecting..");
 
 	enet_peer_disconnect(m_localPeer, 0);
 	m_localPeer = nullptr;
@@ -194,9 +191,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		logWrite("Server disconnected us: '%s'", reason.c_str());
 
-		UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(reason.c_str());
-		UI::_DRAW_NOTIFICATION(false, true);
+		uiNotify(reason);
 
 		enet_peer_disconnect(m_localPeer, 0);
 		m_localPeer = nullptr;
@@ -276,9 +271,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		joinMessage += username;
 		joinMessage += "~s~ joined";
 
-		UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(joinMessage.c_str());
-		UI::_DRAW_NOTIFICATION(false, true);
+		uiNotify(joinMessage);
 
 		return;
 	}
@@ -305,10 +298,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		std::string leaveMessage = "~b~";
 		leaveMessage += player->m_username;
 		leaveMessage += "~s~ left";
-
-		UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-		UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(leaveMessage.c_str());
-		UI::_DRAW_NOTIFICATION(false, true);
+		uiNotify(leaveMessage);
 
 		m_entitiesNetwork.erase(it);
 		delete player;

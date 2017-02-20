@@ -34,4 +34,16 @@ void uiAddLongString(const char* str)
 	}
 }
 
+void uiNotify(const char* str)
+{
+	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
+	uiAddLongString(str);
+	UI::_DRAW_NOTIFICATION(false, true);
+}
+
+void uiNotify(const std::string &str)
+{
+	uiNotify(str.c_str());
+}
+
 NAMESPACE_END;
