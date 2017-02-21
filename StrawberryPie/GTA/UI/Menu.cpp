@@ -70,6 +70,9 @@ void UIMenu::GoUp()
 	if (m_itemSelected < 0) {
 		m_itemSelected = (int)m_items.size() - 1;
 	}
+
+	UpdateOffset();
+
 	sndPlayFrontend("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
 }
 
@@ -79,6 +82,9 @@ void UIMenu::GoDown()
 	if (m_itemSelected >= m_items.size()) {
 		m_itemSelected = 0;
 	}
+
+	UpdateOffset();
+
 	sndPlayFrontend("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
 }
 
@@ -90,6 +96,15 @@ void UIMenu::GoLeft()
 void UIMenu::GoRight()
 {
 	//TODO
+}
+
+void UIMenu::UpdateOffset()
+{
+	if (m_itemSelected < m_itemVisibleOffset) {
+		m_itemVisibleOffset = m_itemSelected;
+	} else if (m_itemSelected >= m_itemVisibleOffset + m_maxItemsVisible) {
+		m_itemVisibleOffset = m_itemSelected - m_maxItemsVisible + 1;
+	}
 }
 
 UIMenuItem* UIMenu::SelectedItem()
@@ -108,9 +123,10 @@ int UIMenu::SelectedIndex()
 float UIMenu::ContentsHeight()
 {
 	float ret = 0.0f;
+	int count = 0;
 
-	for (UIMenuItem* item : m_items) {
-		ret += item->m_height;
+	for (int i = m_itemVisibleOffset; i < min(m_items.size(), m_itemVisibleOffset + m_maxItemsVisible); i++) {
+		ret += m_items[i]->m_height;
 	}
 
 	return ret;
@@ -130,6 +146,10 @@ void UIMenu::Render()
 		}
 	}
 
+	if (m_itemVisibleOffset + m_maxItemsVisible > m_items.size()) {
+		m_itemVisibleOffset = (int)m_items.size() - m_maxItemsVisible;
+	}
+
 	glm::vec2 cursor = m_origin;
 
 	if (m_hasBanner) {
@@ -144,7 +164,7 @@ void UIMenu::Render()
 
 	m_texBackground.Render(cursor, glm::vec2(m_width, ContentsHeight()));
 
-	for (int i = 0; i < m_items.size(); i++) {
+	for (int i = m_itemVisibleOffset; i < min(m_items.size(), m_itemVisibleOffset + m_maxItemsVisible); i++) {
 		UIMenuItem* item = m_items[i];
 		item->Render(cursor);
 		cursor += glm::vec2(0, item->m_height);

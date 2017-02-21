@@ -63,10 +63,11 @@ void Strawberry::Initialize()
 	m_testMenu.m_hasBanner = true;
 	m_testMenu.m_strTitle.m_text = "Strawberry UI";
 	m_testMenu.m_strSubTitle.m_text = "Test menu";
-	m_testMenu.AddItem("The first item");
-	m_testMenu.AddItem("The second item");
-	m_testMenu.AddItem("This item is weird");
-	m_testMenu.AddItem("Go back");
+	for (int i = 0; i < 50; i++) {
+		char buffer[128];
+		sprintf(buffer, "Item number #%d", i + 1);
+		m_testMenu.AddItem(buffer);
+	}
 }
 
 void Strawberry::Update(float dt)

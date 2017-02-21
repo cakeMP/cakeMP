@@ -14,7 +14,7 @@ class UIMenuItem
 public:
 	UIMenu* m_parent = nullptr;
 
-	float m_height = 38;
+	float m_height = 38; //TODO: Make this const?
 
 	UIText m_strText;
 

@@ -14,6 +14,7 @@ class UIMenu
 public:
 	glm::vec2 m_origin;
 	float m_width = 431.0f;
+	int m_maxItemsVisible = 10;
 
 	bool m_hasBanner = false;
 
@@ -26,6 +27,7 @@ public:
 private:
 	std::vector<UIMenuItem*> m_items;
 	int m_itemSelected = 0;
+	int m_itemVisibleOffset = 0;
 
 public:
 	UIMenu();
@@ -40,6 +42,8 @@ public:
 	void GoDown();
 	void GoLeft();
 	void GoRight();
+
+	void UpdateOffset();
 
 	UIMenuItem* SelectedItem();
 	int SelectedIndex();
