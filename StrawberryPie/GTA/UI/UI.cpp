@@ -46,4 +46,13 @@ void uiNotify(const std::string &str)
 	uiNotify(str.c_str());
 }
 
+void uiDrawRectangle(const glm::vec2 &pos, const glm::vec2 &size, const glm::vec4 &color)
+{
+	glm::ivec4 col = uiColor(color);
+	glm::vec2 spos = uiScreenScale(uiRectCenter(pos, size));
+	glm::vec2 ssize = uiScreenScale(size);
+
+	GRAPHICS::DRAW_RECT(spos.x, spos.y, ssize.x, ssize.y, col.r, col.g, col.b, col.a);
+}
+
 NAMESPACE_END;

@@ -24,6 +24,8 @@ UIText::~UIText()
 
 void UIText::Render(const glm::vec2 &pos)
 {
+	glm::vec2 spos = uiScreenScale(pos);
+
 	UI::SET_TEXT_FONT(m_font);
 	UI::SET_TEXT_COLOUR((int)(m_color.r * 255.0f), (int)(m_color.g * 255.0f), (int)(m_color.b * 255.0f), (int)(m_color.a * 255.0f));
 	UI::SET_TEXT_SCALE(1.0f, m_scale);
@@ -32,7 +34,7 @@ void UIText::Render(const glm::vec2 &pos)
 		UI::SET_TEXT_CENTRE(TRUE);
 	} else if (m_align == UITA_Right) {
 		UI::SET_TEXT_RIGHT_JUSTIFY(TRUE);
-		UI::SET_TEXT_WRAP(0, pos.x);
+		UI::SET_TEXT_WRAP(0, spos.x);
 	}
 
 	if (m_dropShadow) {
@@ -43,12 +45,12 @@ void UIText::Render(const glm::vec2 &pos)
 	}
 
 	if (m_wrapping) {
-		UI::SET_TEXT_WRAP(pos.x, pos.x + m_wrapSize.x);
+		UI::SET_TEXT_WRAP(spos.x, spos.x + m_wrapSize.x);
 	}
 
 	UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("jamyfafi"); //TODO: What is this magic string?
 	uiAddLongString(m_text.c_str());
-	UI::END_TEXT_COMMAND_DISPLAY_TEXT(pos.x, pos.y);
+	UI::END_TEXT_COMMAND_DISPLAY_TEXT(spos.x, spos.y);
 }
 
 float UIText::Measure(const std::string &text, int font, float scale)

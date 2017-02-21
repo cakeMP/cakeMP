@@ -4,6 +4,8 @@
 
 #include <System/Entity.h>
 
+#include <Enums/OnFootMoveTypes.h>
+
 NAMESPACE_BEGIN;
 
 class Ped : public Entity

@@ -10,7 +10,7 @@
 
 #include <Entities/LocalPlayer.h>
 
-#include <GTA/UI/Text.h>
+#include <GTA/UI/Menu.h>
 
 NAMESPACE_BEGIN;
 
@@ -28,6 +28,8 @@ public:
 
 	Chat m_chat;
 	FPSCounter m_fpsCounter;
+
+	UIMenu m_testMenu;
 
 	int m_gameTime = 0;
 

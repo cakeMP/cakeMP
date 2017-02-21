@@ -58,6 +58,15 @@ void Strawberry::Initialize()
 	m_player.Initialize();
 	m_network.Initialize();
 	m_chat.Initialize();
+
+	m_testMenu.m_origin = glm::vec2(128, 256);
+	m_testMenu.m_hasBanner = true;
+	m_testMenu.m_strTitle.m_text = "Strawberry UI";
+	m_testMenu.m_strSubTitle.m_text = "Test menu";
+	m_testMenu.AddItem("The first item");
+	m_testMenu.AddItem("The second item");
+	m_testMenu.AddItem("This item is weird");
+	m_testMenu.AddItem("Go back");
 }
 
 void Strawberry::Update(float dt)
@@ -85,13 +94,13 @@ void Strawberry::Render()
 		m_chat.Render();
 	}
 	m_fpsCounter.Render();
+
+	m_testMenu.Render();
 }
 
 void Strawberry::OnConnected()
 {
-	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~g~Connected");
-	UI::_DRAW_NOTIFICATION(false, true);
+	uiNotify("~g~Connected");
 }
 
 void Strawberry::OnDisconnected()
@@ -101,9 +110,7 @@ void Strawberry::OnDisconnected()
 	//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
 	m_network.ClearEntities();
 
-	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("~r~Disconnected");
-	UI::_DRAW_NOTIFICATION(false, true);
+	uiNotify("~r~Disconnected");
 }
 
 void Strawberry::OnKeyDown(uint32_t key)

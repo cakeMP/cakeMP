@@ -100,7 +100,10 @@
     <ClCompile Include="Entities\LocalPlayer.cpp" />
     <ClCompile Include="Entities\Ped.cpp" />
     <ClCompile Include="GTA\Scaleform.cpp" />
+    <ClCompile Include="GTA\UI\Menu.cpp" />
+    <ClCompile Include="GTA\UI\MenuItem.cpp" />
     <ClCompile Include="GTA\UI\Text.cpp" />
+    <ClCompile Include="GTA\UI\Texture.cpp" />
     <ClCompile Include="GTA\UI\UI.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="System\Chat.cpp" />
@@ -129,8 +132,11 @@
     <ClInclude Include="Enums\GameScripts.h" />
     <ClInclude Include="Enums\OnFootMoveTypes.h" />
     <ClInclude Include="GTA\Scaleform.h" />
+    <ClInclude Include="GTA\UI\Menu.h" />
+    <ClInclude Include="GTA\UI\MenuItem.h" />
     <ClInclude Include="GTA\UI\Text.h" />
     <ClInclude Include="GTA\UI\UI.h" />
+    <ClInclude Include="GTA\UI\Texture.h" />
     <ClInclude Include="Libs\inih\ini.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />

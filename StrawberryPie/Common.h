@@ -30,12 +30,12 @@
 #include <Memory.h>
 #include <Utils.h>
 #include <SharedUtils.h>
-#include <Enums/OnFootMoveTypes.h>
 
 // Libraries
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <glm/gtx/quaternion.hpp>
 
 // Custom assertions
