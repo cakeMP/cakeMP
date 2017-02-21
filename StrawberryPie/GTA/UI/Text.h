@@ -25,17 +25,17 @@ public:
 	bool m_outline = false;
 
 	bool m_wrapping = false;
-	glm::vec2 m_wrapSize;
+	float m_wrapSize = 0.0f;
 
 public:
 	UIText();
 	UIText(const std::string &text);
 	~UIText();
 
-	void Render(const glm::vec2 &pos);
+	float Measure();
+	int LineCount();
 
-public:
-	static float Measure(const std::string &text, int font, float scale = 1.0f);
+	void Render(const glm::vec2 &pos);
 };
 
 NAMESPACE_END;

@@ -22,6 +22,24 @@ UIText::~UIText()
 {
 }
 
+float UIText::Measure()
+{
+	UI::_SET_TEXT_ENTRY_FOR_WIDTH("STRING");
+	uiAddLongString(m_text.c_str());
+	return UI::_GET_TEXT_SCREEN_WIDTH(m_font);
+}
+
+int UIText::LineCount()
+{
+	if (!m_wrapping) {
+		return 1;
+	}
+
+	UI::_SET_TEXT_GXT_ENTRY("STRING");
+	uiAddLongString(m_text.c_str());
+	return UI::_GET_TEXT_SCREEN_LINE_COUNT(0.0f, 0.5f);
+}
+
 void UIText::Render(const glm::vec2 &pos)
 {
 	glm::vec2 spos = uiScreenScale(pos);
@@ -45,19 +63,13 @@ void UIText::Render(const glm::vec2 &pos)
 	}
 
 	if (m_wrapping) {
-		UI::SET_TEXT_WRAP(spos.x, spos.x + m_wrapSize.x);
+		float sWrapSize = m_wrapSize / (float)ui_screenWidth;
+		UI::SET_TEXT_WRAP(spos.x, spos.x + sWrapSize);
 	}
 
 	UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("jamyfafi"); //TODO: What is this magic string?
 	uiAddLongString(m_text.c_str());
 	UI::END_TEXT_COMMAND_DISPLAY_TEXT(spos.x, spos.y);
-}
-
-float UIText::Measure(const std::string &text, int font, float scale)
-{
-	UI::_SET_TEXT_ENTRY_FOR_WIDTH("STRING");
-	uiAddLongString(text.c_str());
-	return UI::_GET_TEXT_SCREEN_WIDTH(font);
 }
 
 NAMESPACE_END;

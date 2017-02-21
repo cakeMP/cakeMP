@@ -20,6 +20,10 @@ UIMenu::UIMenu()
 	m_strSubTitle.m_scale = 0.35f;
 	m_strSubTitle.m_color = uiColor(glm::ivec4(93, 182, 229, 255));
 
+	m_strDescription.m_font = 0;
+	m_strDescription.m_scale = 0.35f;
+	m_strDescription.m_wrapping = true;
+
 	m_texBanner.Set("commonmenu", "interaction_bgd");
 	m_texBackground.Set("commonmenu", "gradient_bgd");
 }
@@ -105,6 +109,13 @@ void UIMenu::UpdateOffset()
 	} else if (m_itemSelected >= m_itemVisibleOffset + m_maxItemsVisible) {
 		m_itemVisibleOffset = m_itemSelected - m_maxItemsVisible + 1;
 	}
+
+	UIMenuItem* item = SelectedItem();
+	if (item == nullptr) {
+		return;
+	}
+
+	m_strDescription.m_text = item->m_description;
 }
 
 UIMenuItem* UIMenu::SelectedItem()
@@ -168,6 +179,18 @@ void UIMenu::Render()
 		UIMenuItem* item = m_items[i];
 		item->Render(cursor);
 		cursor += glm::vec2(0, item->m_height);
+	}
+
+	if (m_strDescription.m_text != "") {
+		cursor += glm::vec2(0, 5);
+
+		uiDrawRectangle(cursor, glm::vec2(m_width, 4), glm::vec4(0, 0, 0, 1));
+		cursor += glm::vec2(0, 4);
+
+		m_texBackground.Render(cursor, glm::vec2(m_width, 70));
+
+		m_strDescription.m_wrapSize = m_width - 20;
+		m_strDescription.Render(cursor + glm::vec2(10, 2));
 	}
 }
 

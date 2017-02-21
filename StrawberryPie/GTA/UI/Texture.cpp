@@ -37,8 +37,6 @@ void UITexture::Set(const std::string &dict, const std::string &name)
 {
 	m_dict = dict;
 	m_name = name;
-
-	EnsureLoaded();
 }
 
 void UITexture::EnsureLoaded() const

@@ -17,6 +17,7 @@ public:
 	float m_height = 38; //TODO: Make this const?
 
 	UIText m_strText;
+	std::string m_description;
 
 	UITexture m_texHovering;
 

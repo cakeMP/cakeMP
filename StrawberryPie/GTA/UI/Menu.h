@@ -20,6 +20,7 @@ public:
 
 	UIText m_strTitle;
 	UIText m_strSubTitle;
+	UIText m_strDescription;
 
 	UITexture m_texBanner;
 	UITexture m_texBackground;

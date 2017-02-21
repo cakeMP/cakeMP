@@ -6,6 +6,7 @@
 #include <Scripts/Game.h>
 
 #include <GTA/UI/UI.h>
+#include <GTA/UI/MenuItem.h>
 
 #include <shv/main.h>
 #include <shv/natives.h>
@@ -66,7 +67,13 @@ void Strawberry::Initialize()
 	for (int i = 0; i < 50; i++) {
 		char buffer[128];
 		sprintf(buffer, "Item number #%d", i + 1);
-		m_testMenu.AddItem(buffer);
+		UIMenuItem* newItem = m_testMenu.AddItem(buffer);
+		if (i >= 5) {
+			newItem->m_description = "This is the description of the amazing and wonderful ";
+			newItem->m_description += buffer;
+		} else if (i == 1) {
+			newItem->m_description = "The second item.";
+		}
 	}
 }
 
