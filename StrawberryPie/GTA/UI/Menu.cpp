@@ -158,7 +158,7 @@ void UIMenu::Render()
 	}
 
 	if (m_itemVisibleOffset + m_maxItemsVisible > m_items.size()) {
-		m_itemVisibleOffset = (int)m_items.size() - m_maxItemsVisible;
+		m_itemVisibleOffset = max(0, (int)m_items.size() - m_maxItemsVisible);
 	}
 
 	glm::vec2 cursor = m_origin;

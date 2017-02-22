@@ -14,6 +14,9 @@ extern void uiAddLongString(const char* str);
 extern void uiNotify(const char* str);
 extern void uiNotify(const std::string &str);
 
+extern void uiSubtitle(const char* fmt, ...);
+extern void uiSubtitle(int duration, const char* fmt, ...);
+
 extern void uiDrawRectangle(const glm::vec2 &pos, const glm::vec2 &size, const glm::vec4 &color);
 
 // Transforms a normalized color [0..1] into an integer color [0..255]

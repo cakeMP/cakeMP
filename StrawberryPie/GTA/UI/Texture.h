@@ -19,7 +19,9 @@ public:
 	glm::ivec2 Size() const;
 
 	void Set(const std::string &dict, const std::string &name);
+	void Set(const std::string &name);
 
+	bool IsValid() const;
 	void EnsureLoaded() const;
 
 	void Render(const glm::vec2 &pos);

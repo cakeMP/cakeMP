@@ -39,6 +39,16 @@ void UITexture::Set(const std::string &dict, const std::string &name)
 	m_name = name;
 }
 
+void UITexture::Set(const std::string &name)
+{
+	m_name = name;
+}
+
+bool UITexture::IsValid() const
+{
+	return m_dict != "" && m_name != "" && GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(m_dict.c_str());
+}
+
 void UITexture::EnsureLoaded() const
 {
 	if (!GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(m_dict.c_str())) {

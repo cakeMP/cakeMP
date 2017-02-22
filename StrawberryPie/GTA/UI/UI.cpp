@@ -46,6 +46,34 @@ void uiNotify(const std::string &str)
 	uiNotify(str.c_str());
 }
 
+void uiSubtitle(const char* fmt, ...)
+{
+	char buffer[1024];
+
+	va_list args;
+	va_start(args, fmt);
+	vsprintf(buffer, fmt, args);
+	va_end(args);
+
+	UI::BEGIN_TEXT_COMMAND_PRINT("CELL_EMAIL_BCON");
+	uiAddLongString(buffer);
+	UI::END_TEXT_COMMAND_PRINT(1000, true);
+}
+
+void uiSubtitle(int duration, const char* fmt, ...)
+{
+	char buffer[1024];
+
+	va_list args;
+	va_start(args, fmt);
+	vsprintf(buffer, fmt, args);
+	va_end(args);
+
+	UI::BEGIN_TEXT_COMMAND_PRINT("CELL_EMAIL_BCON");
+	uiAddLongString(buffer);
+	UI::END_TEXT_COMMAND_PRINT(duration, true);
+}
+
 void uiDrawRectangle(const glm::vec2 &pos, const glm::vec2 &size, const glm::vec4 &color)
 {
 	glm::ivec4 col = uiColor(color);

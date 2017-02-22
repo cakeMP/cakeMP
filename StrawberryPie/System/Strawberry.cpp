@@ -64,17 +64,10 @@ void Strawberry::Initialize()
 	m_testMenu.m_hasBanner = true;
 	m_testMenu.m_strTitle.m_text = "Strawberry UI";
 	m_testMenu.m_strSubTitle.m_text = "Test menu";
-	for (int i = 0; i < 50; i++) {
-		char buffer[128];
-		sprintf(buffer, "Item number #%d", i + 1);
-		UIMenuItem* newItem = m_testMenu.AddItem(buffer);
-		if (i >= 5) {
-			newItem->m_description = "This is the description of the amazing and wonderful ";
-			newItem->m_description += buffer;
-		} else if (i == 1) {
-			newItem->m_description = "The second item.";
-		}
-	}
+	m_testMenu.AddItem("Normal item");
+	m_testMenu.AddItem("Checkable item")->m_checkable = true;
+	m_testMenu.AddItem("Item with ammo")->m_badgeRight = BadgeStyleAmmo;
+	m_testMenu.AddItem("Item with car")->m_badgeLeft = BadgeStyleCar;
 }
 
 void Strawberry::Update(float dt)
