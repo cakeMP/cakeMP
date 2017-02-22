@@ -32,6 +32,18 @@ bool UIMenuItem::IsHovering()
 	return m_parent->SelectedItem() == this;
 }
 
+void UIMenuItem::GoLeft()
+{
+}
+
+void UIMenuItem::GoRight()
+{
+}
+
+void UIMenuItem::Accept()
+{
+}
+
 void UIMenuItem::Render(const glm::vec2 &pos)
 {
 	bool isHovering = IsHovering();

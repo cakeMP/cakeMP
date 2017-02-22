@@ -3,6 +3,7 @@
 #include <GTA/UI/Menu.h>
 
 #include <GTA/UI/MenuItem.h>
+#include <GTA/UI/MenuItemCheckable.h>
 #include <GTA/UI/UI.h>
 
 #include <Enums/GameControl.h>
@@ -45,6 +46,20 @@ UIMenuItem* UIMenu::AddItem()
 UIMenuItem* UIMenu::AddItem(const std::string &text)
 {
 	UIMenuItem* newItem = AddItem();
+	newItem->m_strText.m_text = text;
+	return newItem;
+}
+
+UIMenuItemCheckable* UIMenu::AddItemCheckable()
+{
+	UIMenuItemCheckable* newItem = new UIMenuItemCheckable(this);
+	m_items.push_back(newItem);
+	return newItem;
+}
+
+UIMenuItemCheckable* UIMenu::AddItemCheckable(const std::string &text)
+{
+	UIMenuItemCheckable* newItem = AddItemCheckable();
 	newItem->m_strText.m_text = text;
 	return newItem;
 }
@@ -94,12 +109,41 @@ void UIMenu::GoDown()
 
 void UIMenu::GoLeft()
 {
-	//TODO
+	UIMenuItem* item = SelectedItem();
+	if (item == nullptr) {
+		return;
+	}
+
+	sndPlayFrontend("NAV_LEFT_RIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+	item->GoLeft();
 }
 
 void UIMenu::GoRight()
 {
-	//TODO
+	UIMenuItem* item = SelectedItem();
+	if (item == nullptr) {
+		return;
+	}
+
+	sndPlayFrontend("NAV_LEFT_RIGHT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+	item->GoRight();
+}
+
+void UIMenu::GoAccept()
+{
+	UIMenuItem* item = SelectedItem();
+	if (item == nullptr) {
+		sndPlayFrontend("ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+		return;
+	}
+
+	sndPlayFrontend("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+	item->Accept();
+}
+
+void UIMenu::GoBack()
+{
+	m_visible = false;
 }
 
 void UIMenu::UpdateOffset()
@@ -145,15 +189,23 @@ float UIMenu::ContentsHeight()
 
 void UIMenu::Render()
 {
+	if (!m_visible) {
+		return;
+	}
+
 	if (m_items.size() > 0) {
-		if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneUp)) {
+		if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneUp) || CONTROLS::IS_CONTROL_PRESSED(0, GC_CursorScrollUp)) {
 			GoUp();
-		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneDown)) {
+		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneDown) || CONTROLS::IS_CONTROL_PRESSED(0, GC_CursorScrollDown)) {
 			GoDown();
 		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneLeft)) {
 			GoLeft();
 		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneRight)) {
 			GoRight();
+		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_FrontendAccept)) {
+			GoAccept();
+		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneCancel) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause)) {
+			GoBack();
 		}
 	}
 

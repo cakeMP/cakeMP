@@ -81,6 +81,9 @@
     <ClCompile Include="GTA\UI\MenuItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GTA\UI\MenuItemCheckable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GTA\UI\MenuItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GTA\UI\MenuItemCheckable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

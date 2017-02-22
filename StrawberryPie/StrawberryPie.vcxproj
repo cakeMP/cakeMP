@@ -102,6 +102,7 @@
     <ClCompile Include="GTA\Scaleform.cpp" />
     <ClCompile Include="GTA\UI\Menu.cpp" />
     <ClCompile Include="GTA\UI\MenuItem.cpp" />
+    <ClCompile Include="GTA\UI\MenuItemCheckable.cpp" />
     <ClCompile Include="GTA\UI\Text.cpp" />
     <ClCompile Include="GTA\UI\Texture.cpp" />
     <ClCompile Include="GTA\UI\UI.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="GTA\Scaleform.h" />
     <ClInclude Include="GTA\UI\Menu.h" />
     <ClInclude Include="GTA\UI\MenuItem.h" />
+    <ClInclude Include="GTA\UI\MenuItemCheckable.h" />
     <ClInclude Include="GTA\UI\Text.h" />
     <ClInclude Include="GTA\UI\UI.h" />
     <ClInclude Include="GTA\UI\Texture.h" />

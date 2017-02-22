@@ -60,12 +60,13 @@ void Strawberry::Initialize()
 	m_network.Initialize();
 	m_chat.Initialize();
 
+	m_testMenu.m_visible = true;
 	m_testMenu.m_origin = glm::vec2(128, 256);
 	m_testMenu.m_hasBanner = true;
 	m_testMenu.m_strTitle.m_text = "Strawberry UI";
 	m_testMenu.m_strSubTitle.m_text = "Test menu";
 	m_testMenu.AddItem("Normal item");
-	m_testMenu.AddItem("Checkable item")->m_checkable = true;
+	m_testMenu.AddItemCheckable("Checkable item");
 	m_testMenu.AddItem("Item with ammo")->m_badgeRight = BadgeStyleAmmo;
 	m_testMenu.AddItem("Item with car")->m_badgeLeft = BadgeStyleCar;
 }

@@ -50,12 +50,10 @@ public:
 	UIText m_strText;
 	std::string m_description;
 
-	bool m_checkable = false;
-
 	UIMenuItemBadgeStyle m_badgeLeft = BadgeStyleNone;
 	UIMenuItemBadgeStyle m_badgeRight = BadgeStyleNone;
 
-private:
+protected:
 	UITexture m_texHovering;
 
 	UITexture m_texBadgeLeft;
@@ -63,11 +61,15 @@ private:
 
 public:
 	UIMenuItem(UIMenu* parent);
-	~UIMenuItem();
+	virtual ~UIMenuItem();
 
-	bool IsHovering();
+	virtual bool IsHovering();
 
-	void Render(const glm::vec2 &pos);
+	virtual void GoLeft();
+	virtual void GoRight();
+	virtual void Accept();
+
+	virtual void Render(const glm::vec2 &pos);
 
 public:
 	static const char* BadgeToTextureName(UIMenuItemBadgeStyle style, bool hovering);

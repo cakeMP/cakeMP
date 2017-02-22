@@ -8,10 +8,13 @@
 NAMESPACE_BEGIN;
 
 class UIMenuItem;
+class UIMenuItemCheckable;
 
 class UIMenu
 {
 public:
+	bool m_visible = false;
+
 	glm::vec2 m_origin;
 	float m_width = 431.0f;
 	int m_maxItemsVisible = 10;
@@ -36,6 +39,8 @@ public:
 
 	UIMenuItem* AddItem();
 	UIMenuItem* AddItem(const std::string &text);
+	UIMenuItemCheckable* AddItemCheckable();
+	UIMenuItemCheckable* AddItemCheckable(const std::string &text);
 	void DeleteItem(int index);
 	void DeleteItem(UIMenuItem* item);
 
@@ -43,6 +48,8 @@ public:
 	void GoDown();
 	void GoLeft();
 	void GoRight();
+	void GoAccept();
+	void GoBack();
 
 	void UpdateOffset();
 
