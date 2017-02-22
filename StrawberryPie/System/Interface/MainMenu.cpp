@@ -88,9 +88,11 @@ void MainMenu::Update()
 void MainMenu::Render()
 {
 	if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPauseAlternate)) {
-		m_visible = !m_visible;
-		Update();
-		return;
+		if (!_pGame->m_chat.IsFocused()) {
+			m_visible = !m_visible;
+			Update();
+			return;
+		}
 	}
 
 	//TODO: If menu is visible, disable player controls
