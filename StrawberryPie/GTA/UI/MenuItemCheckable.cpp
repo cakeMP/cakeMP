@@ -25,6 +25,7 @@ void UIMenuItemCheckable::Accept()
 void UIMenuItemCheckable::Render(const glm::vec2 &pos)
 {
 	m_badgeRight = BadgeStyleNone;
+	m_strTextRight.m_text = "";
 
 	UIMenuItem::Render(pos);
 

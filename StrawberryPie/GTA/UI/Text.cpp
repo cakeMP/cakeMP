@@ -29,19 +29,12 @@ float UIText::Measure()
 	return UI::_GET_TEXT_SCREEN_WIDTH(m_font);
 }
 
-int UIText::LineCount()
-{
-	if (!m_wrapping) {
-		return 1;
-	}
-
-	UI::_SET_TEXT_GXT_ENTRY("STRING");
-	uiAddLongString(m_text.c_str());
-	return UI::_GET_TEXT_SCREEN_LINE_COUNT(0.0f, 0.5f);
-}
-
 void UIText::Render(const glm::vec2 &pos)
 {
+	if (m_text == "") {
+		return;
+	}
+
 	glm::vec2 spos = uiScreenScale(pos);
 
 	UI::SET_TEXT_FONT(m_font);

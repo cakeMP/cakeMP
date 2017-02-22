@@ -14,6 +14,10 @@ UIMenuItem::UIMenuItem(UIMenu* parent)
 	m_strText.m_font = 0;
 	m_strText.m_scale = 0.35f;
 
+	m_strTextRight.m_font = 0;
+	m_strTextRight.m_scale = 0.35f;
+	m_strTextRight.m_align = UITA_Right;
+
 	m_texHovering.Set("commonmenu", "gradient_nav");
 
 	m_texBadgeLeft.Set("commonmenu", "");
@@ -54,8 +58,10 @@ void UIMenuItem::Render(const glm::vec2 &pos)
 	} else {
 		m_strText.m_color = glm::vec4(1, 1, 1, 1);
 	}
+	m_strTextRight.m_color = m_strText.m_color;
 
 	glm::vec2 textOffset = glm::vec2(10, 2);
+	glm::vec2 textOffsetRight = glm::vec2(m_parent->m_width - 10, 2);
 
 	if (m_badgeLeft != BadgeStyleNone) {
 		m_texBadgeLeft.Set(BadgeToTextureName(m_badgeLeft, isHovering));
@@ -71,8 +77,11 @@ void UIMenuItem::Render(const glm::vec2 &pos)
 		m_texBadgeRight.Set(BadgeToTextureName(m_badgeRight, isHovering));
 		if (m_texBadgeRight.IsValid()) {
 			m_texBadgeRight.Render(pos + glm::vec2(m_parent->m_width - m_height - 5, 0), glm::vec2(m_height));
+			textOffsetRight.x -= m_height + 5;
 		}
 	}
+
+	m_strTextRight.Render(pos + textOffsetRight);
 }
 
 const char* UIMenuItem::BadgeToTextureName(UIMenuItemBadgeStyle style, bool hovering)

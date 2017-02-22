@@ -48,6 +48,7 @@ public:
 	float m_height = 38; //TODO: Make this const?
 
 	UIText m_strText;
+	UIText m_strTextRight;
 	std::string m_description;
 
 	UIMenuItemBadgeStyle m_badgeLeft = BadgeStyleNone;

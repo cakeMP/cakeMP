@@ -33,7 +33,6 @@ public:
 	~UIText();
 
 	float Measure();
-	int LineCount();
 
 	void Render(const glm::vec2 &pos);
 };

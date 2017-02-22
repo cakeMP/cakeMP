@@ -69,6 +69,7 @@ void Strawberry::Initialize()
 	m_testMenu.AddItemCheckable("Checkable item");
 	m_testMenu.AddItem("Item with ammo")->m_badgeRight = BadgeStyleAmmo;
 	m_testMenu.AddItem("Item with car")->m_badgeLeft = BadgeStyleCar;
+	m_testMenu.AddItem("Your name")->m_strTextRight.m_text = m_player.m_nickname;
 }
 
 void Strawberry::Update(float dt)
