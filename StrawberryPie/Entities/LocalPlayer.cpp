@@ -4,6 +4,7 @@
 
 #include <System/Strawberry.h>
 #include <Network/NetworkMessage.h>
+#include <Utils/Models.h>
 
 #include <shv/natives.h>
 

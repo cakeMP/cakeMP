@@ -6,6 +6,8 @@
 #include <GTA/UI/MenuItemCheckable.h>
 #include <GTA/UI/UI.h>
 
+#include <Utils/Sounds.h>
+
 #include <Enums/GameControl.h>
 
 #include <shv/natives.h>

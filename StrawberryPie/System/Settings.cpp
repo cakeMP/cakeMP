@@ -1,6 +1,8 @@
 #include <Common.h>
 #include <System/Settings.h>
 
+#include <Build.h>
+
 #include <Libs/inih/ini.h>
 
 NAMESPACE_BEGIN;

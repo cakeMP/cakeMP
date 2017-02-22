@@ -3,6 +3,7 @@
 #include <Entities/Ped.h>
 
 #include <System/Strawberry.h>
+#include <Utils/Models.h>
 
 #include <shv/natives.h>
 

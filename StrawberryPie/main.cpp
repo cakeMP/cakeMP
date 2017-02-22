@@ -2,6 +2,8 @@
 
 #include <System/Strawberry.h>
 
+#include <Build.h>
+
 #include <Windows.h>
 
 #include <shv/main.h>

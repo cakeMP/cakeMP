@@ -5,8 +5,8 @@
 #include <Network/NetworkManager.h>
 
 #include <System/Settings.h>
-#include <System/Chat.h>
-#include <System/FPSCounter.h>
+#include <System/Interface/Chat.h>
+#include <System/Interface/FPSCounter.h>
 
 #include <Entities/LocalPlayer.h>
 

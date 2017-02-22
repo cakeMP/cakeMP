@@ -2,6 +2,8 @@
 
 #include <Common.h>
 
+NAMESPACE_BEGIN;
+
 template<int TM>
 class Interval
 {
@@ -26,3 +28,5 @@ public:
 		return false;
 	}
 };
+
+NAMESPACE_END;

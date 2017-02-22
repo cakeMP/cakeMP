@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <System/FPSCounter.h>
+#include <System/Interface/FPSCounter.h>
 
 #include <GTA/UI/UI.h>
 

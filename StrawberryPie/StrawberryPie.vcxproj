@@ -63,6 +63,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Common.h</PrecompiledHeaderFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -107,7 +108,7 @@
     <ClCompile Include="GTA\UI\Texture.cpp" />
     <ClCompile Include="GTA\UI\UI.cpp" />
     <ClCompile Include="Memory.cpp" />
-    <ClCompile Include="System\Chat.cpp" />
+    <ClCompile Include="System\Interface\Chat.cpp" />
     <ClCompile Include="Libs\inih\ini.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Entities\Player.cpp" />
@@ -118,10 +119,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="System\Entity.cpp" />
-    <ClCompile Include="System\FPSCounter.cpp" />
+    <ClCompile Include="System\Interface\FPSCounter.cpp" />
     <ClCompile Include="System\Settings.cpp" />
     <ClCompile Include="System\Strawberry.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Utils\Logging.cpp" />
+    <ClCompile Include="Utils\Models.cpp" />
+    <ClCompile Include="Utils\Sounds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\LocalPlayer.h" />
@@ -142,16 +145,19 @@
     <ClInclude Include="Libs\inih\ini.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />
-    <ClInclude Include="System\Chat.h" />
+    <ClInclude Include="System\Interface\Chat.h" />
     <ClInclude Include="System\Entity.h" />
-    <ClInclude Include="System\FPSCounter.h" />
-    <ClInclude Include="System\Interpolator.h" />
-    <ClInclude Include="System\Interval.h" />
+    <ClInclude Include="System\Interface\FPSCounter.h" />
+    <ClInclude Include="Utils\Interpolator.h" />
+    <ClInclude Include="Utils\Interval.h" />
     <ClInclude Include="System\Settings.h" />
     <ClInclude Include="System\Strawberry.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />
     <ClInclude Include="Scripts\Game.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Utils\Logging.h" />
+    <ClInclude Include="Utils\Models.h" />
+    <ClInclude Include="Build.h" />
+    <ClInclude Include="Utils\Sounds.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Licenses.txt" />

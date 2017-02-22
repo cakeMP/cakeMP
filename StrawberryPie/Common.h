@@ -1,10 +1,5 @@
 #pragma once
 
-// This needs to move someplace else eventually (we don't want this in pch)
-#define PROJECT_NAME "Strawberry Pie"
-#define PROJECT_NAME_SHORT "Strawberry"
-#define PROJECT_VERSION "0.1.000.000"
-
 // Global defines
 #define NAMESPACE_NAME sbp
 #define NAMESPACE_BEGIN namespace NAMESPACE_NAME {
@@ -28,7 +23,7 @@
 
 // Custom includes
 #include <Memory.h>
-#include <Utils.h>
+#include <Utils/Logging.h>
 #include <SharedUtils.h>
 
 // Libraries
