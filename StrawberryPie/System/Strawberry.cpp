@@ -8,6 +8,8 @@
 #include <GTA/UI/UI.h>
 #include <GTA/UI/MenuItem.h>
 
+#include <Build.h>
+
 #include <shv/main.h>
 #include <shv/natives.h>
 
@@ -15,6 +17,7 @@ NAMESPACE_BEGIN;
 
 Strawberry* _pGame = nullptr;
 
+/*
 static BOOL CALLBACK _windowEnumHandler(HWND hwnd, LPARAM lparam)
 {
 	Strawberry* pGame = (Strawberry*)lparam;
@@ -28,6 +31,7 @@ static BOOL CALLBACK _windowEnumHandler(HWND hwnd, LPARAM lparam)
 
 	return TRUE;
 }
+*/
 
 Strawberry::Strawberry(HMODULE hInstance)
 {
@@ -48,8 +52,10 @@ void Strawberry::Initialize()
 {
 	logWrite("Client initializing.");
 
+	/*
 	EnumWindows(_windowEnumHandler, (LPARAM)this);
 	logWrite("Window handle: %p", m_hWnd);
+	*/
 
 	GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(&ui_screenWidth, &ui_screenHeight);
 	logWrite("Resolution: %d x %d", ui_screenWidth, ui_screenHeight);
@@ -58,38 +64,46 @@ void Strawberry::Initialize()
 
 	m_player.Initialize();
 	m_network.Initialize();
+
+	m_mainMenu.Initialize();
 	m_chat.Initialize();
 
-	m_testMenu.m_visible = true;
-	m_testMenu.m_origin = glm::vec2(128, 256);
-	m_testMenu.m_hasBanner = true;
-	m_testMenu.m_strTitle.m_text = "Strawberry UI";
-	m_testMenu.m_strSubTitle.m_text = "Test menu";
-	m_testMenu.AddItem("Normal item");
-	m_testMenu.AddItemCheckable("Checkable item");
-	m_testMenu.AddItem("Item with ammo")->m_badgeRight = BadgeStyleAmmo;
-	m_testMenu.AddItem("Item with car")->m_badgeLeft = BadgeStyleCar;
-	m_testMenu.AddItem("Your name")->m_strTextRight.m_text = m_player.m_nickname;
+	m_strVersion.m_font = 0;
+	m_strVersion.m_scale = 0.3f;
+	m_strVersion.m_align = UITA_Center;
+	m_strVersion.m_color = glm::vec4(1, 1, 1, 0.4f);
+	m_strVersion.m_text = PROJECT_NAME " " PROJECT_VERSION "~n~" PROJECT_BUILDTYPE " (" + m_player.m_username + ")";
+
+	m_mainMenu.m_visible = true;
 }
 
 void Strawberry::Update(float dt)
 {
 	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
 
+	m_mainMenu.Update();
 	m_player.Update();
 	m_network.Update();
 
 	if (m_network.IsConnected()) {
 		m_chat.Update();
 	}
+
+	if (uiTextInputVisible()) {
+		uiTextInputUpdate();
+	}
 }
 
 void Strawberry::Render()
 {
+	/*
 	//TODO: This should be an option (it slows down keyboard input outside of the game sadly)
 	if (GetForegroundWindow() != m_hWnd) {
 		Sleep(17);
 	}
+	*/
+
+	m_mainMenu.Render();
 
 	m_player.Render();
 
@@ -98,7 +112,7 @@ void Strawberry::Render()
 	}
 	m_fpsCounter.Render();
 
-	m_testMenu.Render();
+	m_strVersion.Render(glm::vec2(ui_screenWidth / 2.0f, 0));
 }
 
 void Strawberry::OnConnected()

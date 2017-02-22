@@ -29,6 +29,8 @@ public:
 
 	void Connect(const char* hostname, uint16_t port);
 	void Disconnect();
+
+	bool IsConnecting();
 	bool IsConnected();
 
 	void ClearEntities();

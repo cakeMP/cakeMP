@@ -68,6 +68,11 @@ void NetworkManager::Disconnect()
 	m_localPeer = nullptr;
 }
 
+bool NetworkManager::IsConnecting()
+{
+	return m_localPeer != nullptr && !m_connected;
+}
+
 bool NetworkManager::IsConnected()
 {
 	return m_connected;

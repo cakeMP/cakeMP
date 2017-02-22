@@ -35,29 +35,31 @@ private:
 
 public:
 	UIMenu();
-	~UIMenu();
+	virtual ~UIMenu();
 
-	UIMenuItem* AddItem();
-	UIMenuItem* AddItem(const std::string &text);
-	UIMenuItemCheckable* AddItemCheckable();
-	UIMenuItemCheckable* AddItemCheckable(const std::string &text);
-	void DeleteItem(int index);
-	void DeleteItem(UIMenuItem* item);
+	virtual UIMenuItem* AddItem();
+	virtual UIMenuItem* AddItem(const std::string &text);
+	virtual UIMenuItemCheckable* AddItemCheckable();
+	virtual UIMenuItemCheckable* AddItemCheckable(const std::string &text);
+	virtual void DeleteItem(int index);
+	virtual void DeleteItem(UIMenuItem* item);
 
-	void GoUp();
-	void GoDown();
-	void GoLeft();
-	void GoRight();
-	void GoAccept();
-	void GoBack();
+	virtual void GoUp();
+	virtual void GoDown();
+	virtual void GoLeft();
+	virtual void GoRight();
+	virtual void GoAccept();
+	virtual void GoBack();
 
-	void UpdateOffset();
+	virtual void UpdateOffset();
 
-	UIMenuItem* SelectedItem();
-	int SelectedIndex();
+	virtual UIMenuItem* SelectedItem();
+	virtual int SelectedIndex();
 
-	float ContentsHeight();
-	void Render();
+	virtual float ContentsHeight();
+
+	virtual void Update();
+	virtual void Render();
 };
 
 NAMESPACE_END;

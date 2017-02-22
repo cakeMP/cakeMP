@@ -20,10 +20,12 @@
 #include <queue>
 #include <unordered_map>
 #include <chrono>
+#include <functional>
 
 // Custom includes
 #include <Memory.h>
 #include <Utils/Logging.h>
+#include <Utils/Parsing.h>
 #include <SharedUtils.h>
 
 // Libraries

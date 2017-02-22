@@ -78,8 +78,8 @@ void scriptCleanWorld()
 		MOBILE::DESTROY_MOBILE_PHONE();
 
 		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_EnterCheatCode, true);
-		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendPause, true);
-		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendPauseAlternate, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendPause, true);
+		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendPauseAlternate, true);
 		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendSocialClub, true);
 		//CONTROLS::DISABLE_CONTROL_ACTION(0, GC_FrontendSocialClubSecondary, true);
 		CONTROLS::DISABLE_CONTROL_ACTION(0, GC_SpecialAbility, true);

@@ -189,6 +189,13 @@ float UIMenu::ContentsHeight()
 	return ret;
 }
 
+void UIMenu::Update()
+{
+	if (!m_visible) {
+		return;
+	}
+}
+
 void UIMenu::Render()
 {
 	if (!m_visible) {

@@ -5,12 +5,11 @@
 #include <Network/NetworkManager.h>
 
 #include <System/Settings.h>
+#include <System/Interface/MainMenu.h>
 #include <System/Interface/Chat.h>
 #include <System/Interface/FPSCounter.h>
 
 #include <Entities/LocalPlayer.h>
-
-#include <GTA/UI/Menu.h>
 
 NAMESPACE_BEGIN;
 
@@ -18,7 +17,7 @@ class Strawberry
 {
 public:
 	HMODULE m_hInstance;
-	HWND m_hWnd = nullptr;
+	//HWND m_hWnd = nullptr;
 	uint8_t m_keyStates[256];
 
 	NetworkManager m_network;
@@ -26,10 +25,11 @@ public:
 
 	LocalPlayer m_player;
 
+	//TODO: Move these somewhere else
+	MainMenu m_mainMenu;
 	Chat m_chat;
 	FPSCounter m_fpsCounter;
-
-	UIMenu m_testMenu;
+	UIText m_strVersion;
 
 	int m_gameTime = 0;
 

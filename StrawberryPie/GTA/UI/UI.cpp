@@ -9,6 +9,8 @@ NAMESPACE_BEGIN;
 int ui_screenWidth = 0;
 int ui_screenHeight = 0;
 
+static UITextInputCallback ui_textInputCallback;
+
 void uiAddLongString(const char* str)
 {
 	size_t len = strlen(str);
@@ -72,6 +74,26 @@ void uiSubtitle(int duration, const char* fmt, ...)
 	UI::BEGIN_TEXT_COMMAND_PRINT("CELL_EMAIL_BCON");
 	uiAddLongString(buffer);
 	UI::END_TEXT_COMMAND_PRINT(duration, true);
+}
+
+bool uiTextInputVisible()
+{
+	return ui_textInputCallback != nullptr;
+}
+
+void uiTextInputUpdate()
+{
+	if (GAMEPLAY::UPDATE_ONSCREEN_KEYBOARD() != 0) {
+		UITextInputCallback callback = ui_textInputCallback;
+		ui_textInputCallback = nullptr;
+		callback(GAMEPLAY::GET_ONSCREEN_KEYBOARD_RESULT());
+	}
+}
+
+void uiTextInput(const std::string &windowTitle, const std::string &defaultText, int maxLen, UITextInputCallback callback)
+{
+	ui_textInputCallback = callback;
+	GAMEPLAY::DISPLAY_ONSCREEN_KEYBOARD(1, windowTitle.c_str(), "", defaultText.c_str(), "", "", "", maxLen + 1);
 }
 
 void uiDrawRectangle(const glm::vec2 &pos, const glm::vec2 &size, const glm::vec4 &color)

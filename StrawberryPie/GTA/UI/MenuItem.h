@@ -54,6 +54,8 @@ public:
 	UIMenuItemBadgeStyle m_badgeLeft = BadgeStyleNone;
 	UIMenuItemBadgeStyle m_badgeRight = BadgeStyleNone;
 
+	std::function<void()> m_onAccept;
+
 protected:
 	UITexture m_texHovering;
 

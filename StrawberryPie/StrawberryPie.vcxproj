@@ -120,10 +120,12 @@
     </ClCompile>
     <ClCompile Include="System\Entity.cpp" />
     <ClCompile Include="System\Interface\FPSCounter.cpp" />
+    <ClCompile Include="System\Interface\MainMenu.cpp" />
     <ClCompile Include="System\Settings.cpp" />
     <ClCompile Include="System\Strawberry.cpp" />
     <ClCompile Include="Utils\Logging.cpp" />
     <ClCompile Include="Utils\Models.cpp" />
+    <ClCompile Include="Utils\Parsing.cpp" />
     <ClCompile Include="Utils\Sounds.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +150,7 @@
     <ClInclude Include="System\Interface\Chat.h" />
     <ClInclude Include="System\Entity.h" />
     <ClInclude Include="System\Interface\FPSCounter.h" />
+    <ClInclude Include="System\Interface\MainMenu.h" />
     <ClInclude Include="Utils\Interpolator.h" />
     <ClInclude Include="Utils\Interval.h" />
     <ClInclude Include="System\Settings.h" />
@@ -157,6 +160,7 @@
     <ClInclude Include="Utils\Logging.h" />
     <ClInclude Include="Utils\Models.h" />
     <ClInclude Include="Build.h" />
+    <ClInclude Include="Utils\Parsing.h" />
     <ClInclude Include="Utils\Sounds.h" />
   </ItemGroup>
   <ItemGroup>

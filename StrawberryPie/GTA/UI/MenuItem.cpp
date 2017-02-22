@@ -46,6 +46,9 @@ void UIMenuItem::GoRight()
 
 void UIMenuItem::Accept()
 {
+	if (m_onAccept != nullptr) {
+		m_onAccept();
+	}
 }
 
 void UIMenuItem::Render(const glm::vec2 &pos)
