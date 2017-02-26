@@ -94,21 +94,23 @@ void Player::HandleMessage(NetworkMessage* message)
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
 		// Send a list of existing entities to the client
-		//TODO: Make this nicer by delegating this to some other place
+		//TODO: This should be part of streaming code, we shouldn't send the entire world
+		/*
 		NetworkMessage* msgCreateEntities = new NetworkMessage(NMT_CreateEntities);
 		//TODO: This looks unsafe; we assume there's always X entities - 1 (the current player)
-		uint32_t numEntities = _pServer->m_network.m_entities.size() - 1;
+		uint32_t numEntities = _pServer->m_world.m_allEntities.size() - 1;
 		msgCreateEntities->Write(numEntities);
-		for (auto &pair : _pServer->m_network.m_entities) {
+		for (auto &pair : _pServer->m_world.m_allEntities) {
 			if (pair.second == this) {
 				continue;
 			}
 			pair.second->NetworkSerialize(msgCreateEntities);
 		}
 		_pServer->m_network.SendMessageTo(m_peer, msgCreateEntities);
+		*/
 
 		// Tell everyone else we joined
-		//TODO: This shouldn't create a ped on the client! We can just use NMT_CreateEntities for this.
+		//TODO: This shouldn't create a ped on the client! We have to use streaming for this.
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
 		msgJoin->Write(GetNetworkCreatePedStruct());
 		msgJoin->Write(m_username);
@@ -183,7 +185,7 @@ void Player::Update()
 		msgPos->Write(m_rotation.z);
 		msgPos->Write(m_velocity);
 		msgPos->Write(m_moveType);
-		_pServer->m_network.SendMessageToAll(msgPos, GetPeer());
+		_pServer->m_network.SendMessageToRange(m_position, _pServer->m_settings.StreamingRange, msgPos, GetPeer());
 	}
 
 	Entity::Update();

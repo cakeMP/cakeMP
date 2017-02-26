@@ -16,6 +16,7 @@ static void IntHandler(int dummy)
 GameServer* _pServer = nullptr;
 
 GameServer::GameServer()
+	: m_network(this)
 {
 }
 

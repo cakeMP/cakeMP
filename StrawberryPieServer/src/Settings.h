@@ -12,6 +12,8 @@ public:
 
 	uint32_t TickRate = 60;
 
+	float StreamingRange = 20.0f;
+
 public:
 	Settings();
 };

@@ -18,17 +18,24 @@ add_executable(StrawberryServer
 	src/Settings.cpp
 	src/Settings.h
 
-	src/Network/NetworkManager.cpp
-	src/Network/NetworkManager.h
+	src/World.cpp
+	src/World.h
 
 	src/Entity.cpp
 	src/Entity.h
 
+	src/Network/NetworkManager.cpp
+	src/Network/NetworkManager.h
+
 	src/Entities/Player.cpp
 	src/Entities/Player.h
 
+	src/World/Queries/Range.cpp
+	src/World/Queries/Range.h
+
 	# Shared sources
 	../StrawberryPieShared/SharedUtils.h
+	../StrawberryPieShared/Octree.h
 	../StrawberryPieShared/Enums/NetworkMessageType.h
 	../StrawberryPieShared/Network/NetworkMessage.h
 	../StrawberryPieShared/Network/NetHandle.h

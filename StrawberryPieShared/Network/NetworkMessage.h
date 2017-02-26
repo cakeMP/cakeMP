@@ -17,6 +17,8 @@ public:
 	bool m_handled = false;
 	ENetPeer* m_forPeer = nullptr;
 	ENetPeer* m_exceptPeer = nullptr;
+	glm::vec3 m_emitPosition;
+	float m_emitRange = 0;
 
 	uint8_t* m_data = nullptr;
 	size_t m_length = 0;

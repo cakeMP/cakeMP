@@ -2,6 +2,8 @@
 
 #include <Network/NetworkManager.h>
 
+#include <GameServer.h>
+
 static void networkMessageFree(ENetPacket* packet)
 {
 	assert(packet->userData != nullptr);
@@ -9,8 +11,10 @@ static void networkMessageFree(ENetPacket* packet)
 	delete (NetworkMessage*)packet->userData;
 }
 
-NetworkManager::NetworkManager()
+NetworkManager::NetworkManager(GameServer* server)
 {
+	m_server = server;
+
 	if (enet_initialize() < 0) {
 		logWrite("Failed to initialize ENet!");
 	}
@@ -88,14 +92,32 @@ void NetworkManager::SendMessageToAll(NetworkMessage* message, ENetPeer* except)
 	m_outgoingMessages.push(message);
 }
 
+void NetworkManager::SendMessageToRange(const glm::vec3 &pos, float range, NetworkMessage* message)
+{
+	message->m_handled = false;
+	message->m_outgoing = true;
+	message->m_forPeer = nullptr;
+	message->m_exceptPeer = nullptr;
+	message->m_emitPosition = pos;
+	message->m_emitRange = (uint32_t)(range * range);
+	m_outgoingMessages.push(message);
+}
+
+void NetworkManager::SendMessageToRange(const glm::vec3 &pos, float range, NetworkMessage* message, ENetPeer* except)
+{
+	message->m_handled = false;
+	message->m_outgoing = true;
+	message->m_forPeer = nullptr;
+	message->m_exceptPeer = except;
+	message->m_emitPosition = pos;
+	message->m_emitRange = range;
+	m_outgoingMessages.push(message);
+}
+
 void NetworkManager::Update()
 {
 	if (m_hostListen == nullptr) {
 		return;
-	}
-
-	for (auto &pair : m_entities) {
-		pair.second->Update();
 	}
 
 	//TODO: Make a thread just for network message queueing
@@ -110,7 +132,7 @@ void NetworkManager::Update()
 			ev.peer->data = newPlayer;
 			m_players.push_back(newPlayer);
 
-			m_entities[newPlayerHandle] = newPlayer;
+			m_server->m_world.AddEntity(newPlayer);
 
 			newPlayer->OnConnected();
 
@@ -121,7 +143,7 @@ void NetworkManager::Update()
 			assert(player != nullptr);
 			if (player != nullptr) {
 				m_players.erase(std::find(m_players.begin(), m_players.end(), player));
-				m_entities.erase(m_entities.find(player->m_handle));
+				m_server->m_world.RemoveEntity(player);
 				player->OnDisconnected();
 				delete player;
 			}
@@ -168,11 +190,28 @@ void NetworkManager::Update()
 		newPacket->freeCallback = networkMessageFree;
 
 		if (message->m_forPeer == nullptr) {
-			for (Player* player : m_players) {
-				if (message->m_exceptPeer != nullptr && message->m_exceptPeer == player->GetPeer()) {
-					continue;
+			if (message->m_emitRange > 0.0f) {
+				//TODO: Consider using the flat m_players array instead. This is faster if there are
+				//      a lot of non-player entities in a world node.
+				std::vector<Entity*> result;
+				m_server->m_world.QueryRange(message->m_emitPosition, message->m_emitRange, result);
+				for (Entity* ent : result) {
+					Player* player = dynamic_cast<Player*>(ent);
+					if (player == nullptr) {
+						continue;
+					}
+					if (message->m_exceptPeer != nullptr && message->m_exceptPeer == player->GetPeer()) {
+						continue;
+					}
+					enet_peer_send(player->GetPeer(), 0, newPacket);
 				}
-				enet_peer_send(player->GetPeer(), 0, newPacket);
+			} else {
+				for (Player* player : m_players) {
+					if (message->m_exceptPeer != nullptr && message->m_exceptPeer == player->GetPeer()) {
+						continue;
+					}
+					enet_peer_send(player->GetPeer(), 0, newPacket);
+				}
 			}
 		} else {
 			enet_peer_send(message->m_forPeer, 0, newPacket);
