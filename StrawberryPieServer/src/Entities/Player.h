@@ -18,6 +18,8 @@ private:
 
 	ClockTime m_tmSyncLastPosition;
 
+	std::vector<Entity*> m_streamedEntities;
+
 public:
 	std::string m_nickname;
 	std::string m_username;
@@ -33,6 +35,8 @@ public:
 	void Close();
 
 	void HandleMessage(NetworkMessage* message);
+
+	void CheckStreamingEntities();
 
 	NetStructs::CreatePed GetNetworkCreatePedStruct();
 	virtual void NetworkSerialize(NetworkMessage* message);

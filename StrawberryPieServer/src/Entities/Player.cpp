@@ -93,7 +93,8 @@ void Player::HandleMessage(NetworkMessage* message)
 		msgHandshake->Write(m_model);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
-		// Send a list of existing entities to the client
+		// See if we have to stream any entities in
+		CheckStreamingEntities();
 		//TODO: This should be part of streaming code, we shouldn't send the entire world
 		/*
 		NetworkMessage* msgCreateEntities = new NetworkMessage(NMT_CreateEntities);
@@ -155,6 +156,56 @@ void Player::HandleMessage(NetworkMessage* message)
 	}
 }
 
+void Player::CheckStreamingEntities()
+{
+	std::vector<Entity*> newStreaming;
+	_pServer->m_world.QueryRange(m_position, _pServer->m_settings.StreamingRange, newStreaming);
+
+	std::vector<Entity*> streamedIn;
+	std::vector<Entity*> streamedOut;
+
+	auto itOld = m_streamedEntities.begin();
+	auto itNew = newStreaming.begin();
+
+	while (itOld != m_streamedEntities.end() && itNew != newStreaming.end()) {
+		if (*itOld < *itNew) {
+			streamedOut.push_back(*itOld++);
+		} else if (*itNew < *itOld) {
+			streamedIn.push_back(*itNew++);
+		} else {
+			itOld++;
+			itNew++;
+		}
+	}
+
+	while (itOld != m_streamedEntities.end()) {
+		streamedOut.push_back(*itOld++);
+	}
+	while (itNew != newStreaming.end()) {
+		streamedIn.push_back(*itNew++);
+	}
+
+	m_streamedEntities = newStreaming;
+
+	if (streamedIn.size() > 0) {
+		NetworkMessage* msgStreamIn = new NetworkMessage(NMT_StreamIn);
+		msgStreamIn->Write((uint32_t)streamedIn.size());
+		for (Entity* ent : streamedIn) {
+			ent->NetworkSerialize(msgStreamIn);
+		}
+		_pServer->m_network.SendMessageTo(m_peer, msgStreamIn);
+	}
+
+	if (streamedOut.size() > 0) {
+		NetworkMessage* msgStreamOut = new NetworkMessage(NMT_StreamOut);
+		msgStreamOut->Write((uint32_t)streamedOut.size());
+		for (Entity* ent : streamedOut) {
+			msgStreamOut->Write(ent->m_handle);
+		}
+		_pServer->m_network.SendMessageTo(m_peer, msgStreamOut);
+	}
+}
+
 NetStructs::CreatePed Player::GetNetworkCreatePedStruct()
 {
 	NetStructs::CreatePed ret;
@@ -185,7 +236,7 @@ void Player::Update()
 		msgPos->Write(m_rotation.z);
 		msgPos->Write(m_velocity);
 		msgPos->Write(m_moveType);
-		_pServer->m_network.SendMessageToRange(m_position, _pServer->m_settings.StreamingRange, msgPos, GetPeer());
+		_pServer->m_network.SendMessageToRange(m_position, _pServer->m_settings.StreamingRange, msgPos, m_peer);
 	}
 
 	Entity::Update();

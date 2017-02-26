@@ -6,9 +6,10 @@
 
 World::World()
 	: m_entities(
-			glm::vec3(-1000.0f, -1000.0f, -1000.0f), // Min
-			glm::vec3(1000.0f, 1000.0f, 1000.0f), // Max
-			glm::vec3(25.0f, 25.0f, 25.0f) // Cell Size
+			//TODO: Make cell size configurable in settings
+			glm::vec3(-4000.0f, -4000.0f, -1000.0f), // Min
+			glm::vec3(6000.0f, 8000.0f, 10000.0f), // Max
+			glm::vec3(200.0f, 200.0f, 200.0f) // Cell Size
 		)
 {
 }
@@ -60,7 +61,8 @@ void World::QueryRange(const glm::vec3 &pos, float range, std::vector<Entity*> &
 	WorldQueryRange query(pos, range);
 	m_entities.traverse(query);
 	for (Entity* ent : query.m_entities) {
-		out.push_back(ent);
+		auto insertPos = std::lower_bound(out.begin(), out.end(), ent);
+		out.insert(insertPos, ent);
 	}
 }
 

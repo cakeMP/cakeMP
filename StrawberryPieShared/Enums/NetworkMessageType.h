@@ -28,7 +28,7 @@ enum NetworkMessageType
 	//  * uint32: The player's model hash.
 	NMT_Handshake,
 
-	// Server to client: Sending over a batch of entities for the client to create.
+	// Server to client: Sending over a batch of entities for the client to stream in.
 	//  * uint32: Amount of entities to create.
 	//  * for n:
 	//    * NetworkEntityType: The type of entity.
@@ -37,7 +37,13 @@ enum NetworkMessageType
 	//      * NetStructs::CreatePed: The ped that must be created for the player.
 	//      * string: The player's Social Club username.
 	//      * string: The player's nickname;
-	NMT_CreateEntities,
+	NMT_StreamIn,
+
+	// Server to client: Sending a batch of nethandles for the client to stream out.
+	//  * uint32: Amount of entities to delete.
+	//  * for n:
+	//    * NetHandle: The entity's handle
+	NMT_StreamOut,
 
 	// Server to client: A new player has joined the game.
 	//  * NetStructs::CreatePed: The ped that must be created for the player.
