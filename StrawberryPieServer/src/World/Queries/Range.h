@@ -1,6 +1,6 @@
 #pragma once
 
-#include <World.h>
+#include <World/World.h>
 
 class WorldQueryRange : public Octree<WorldNode>::Callback
 {

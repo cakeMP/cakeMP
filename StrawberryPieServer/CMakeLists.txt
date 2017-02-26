@@ -18,17 +18,17 @@ add_executable(StrawberryServer
 	src/Settings.cpp
 	src/Settings.h
 
-	src/World.cpp
-	src/World.h
-
-	src/Entity.cpp
-	src/Entity.h
-
 	src/Network/NetworkManager.cpp
 	src/Network/NetworkManager.h
 
 	src/Entities/Player.cpp
 	src/Entities/Player.h
+
+	src/World/World.cpp
+	src/World/World.h
+
+	src/World/Entity.cpp
+	src/World/Entity.h
 
 	src/World/Queries/Range.cpp
 	src/World/Queries/Range.h

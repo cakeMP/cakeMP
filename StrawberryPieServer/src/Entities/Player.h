@@ -2,7 +2,7 @@
 
 #include <Common.h>
 
-#include <Entity.h>
+#include <World/Entity.h>
 
 #include <Network/NetworkMessage.h>
 #include <Network/NetHandle.h>

@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <Entity.h>
+#include <World/Entity.h>
 
 Entity::Entity(const NetHandle &handle)
 {

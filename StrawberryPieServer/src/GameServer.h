@@ -3,7 +3,7 @@
 #include <Network/NetworkManager.h>
 #include <Settings.h>
 
-#include <World.h>
+#include <World/World.h>
 
 class GameServer
 {

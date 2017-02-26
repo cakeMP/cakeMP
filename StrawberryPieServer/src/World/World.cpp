@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <World.h>
+#include <World/World.h>
 
 #include <World/Queries/Range.h>
 
