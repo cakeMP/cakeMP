@@ -129,8 +129,6 @@ void NetworkManager::Update()
 			NetHandle newPlayerHandle = AssignHandle();
 
 			Player* newPlayer = new Player(ev.peer, newPlayerHandle);
-			newPlayer->m_refCountDebug = true;
-
 			ev.peer->data = newPlayer;
 			m_players.push_back(newPlayer);
 

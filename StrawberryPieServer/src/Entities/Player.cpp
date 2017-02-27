@@ -116,8 +116,6 @@ void Player::HandleMessage(NetworkMessage* message)
 		msgJoin->Write(m_nickname);
 		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
 
-		m_refCountDebugName = m_username;
-
 		return;
 	}
 
