@@ -107,13 +107,21 @@ int main()
 					printf("  Our position is: %f, %f, %f\n", position.x, position.y, position.z);
 					printf("  Our skin is: %08X\n", skin);
 
-				} else if (msg->m_type == NMT_CreateEntities) {
+				} else if (msg->m_type == NMT_StreamIn) {
 					uint32_t numEntities;
 
 					msg->Read(numEntities);
 
-					printf("NMT_CreateEntities received:\n");
+					printf("NMT_StreamIn received:\n");
 					printf("  Number of entities: %u\n", numEntities);
+
+				} else if (msg->m_type == NMT_StreamOut) {
+					uint32_t numEntities;
+
+					msg->Read(numEntities);
+
+					printf("NMT_StreamOut received:\n");
+					printf("  Number of entities: %u\n");
 
 				} else {
 					printf("Other packet received: %d\n", msg->m_type);

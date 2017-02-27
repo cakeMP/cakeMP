@@ -47,5 +47,6 @@ void GameServer::Run()
 
 void GameServer::Update()
 {
+	m_world.Update();
 	m_network.Update();
 }

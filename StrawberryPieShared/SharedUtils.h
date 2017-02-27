@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <RefCounted.h>
+
 // From: https://en.wikipedia.org/wiki/Jenkins_hash_function#one-at-a-time
 inline uint32_t hashGet(const char* str)
 {

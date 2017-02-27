@@ -129,6 +129,8 @@ void NetworkManager::Update()
 			NetHandle newPlayerHandle = AssignHandle();
 
 			Player* newPlayer = new Player(ev.peer, newPlayerHandle);
+			newPlayer->m_refCountDebug = true;
+
 			ev.peer->data = newPlayer;
 			m_players.push_back(newPlayer);
 
@@ -145,7 +147,7 @@ void NetworkManager::Update()
 				m_players.erase(std::find(m_players.begin(), m_players.end(), player));
 				m_server->m_world.RemoveEntity(player);
 				player->OnDisconnected();
-				delete player;
+				player->Release();
 			}
 
 		} else if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
@@ -195,6 +197,7 @@ void NetworkManager::Update()
 				//      a lot of non-player entities in a world node.
 				std::vector<Entity*> result;
 				m_server->m_world.QueryRange(message->m_emitPosition, message->m_emitRange, result);
+				logWrite("there are %u entities in range", result.size());
 				for (Entity* ent : result) {
 					Player* player = dynamic_cast<Player*>(ent);
 					if (player == nullptr) {

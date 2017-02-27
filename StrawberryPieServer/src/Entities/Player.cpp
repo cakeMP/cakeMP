@@ -17,6 +17,9 @@ Player::Player(ENetPeer* peer, const NetHandle &handle)
 	m_position.z = 179.050201;
 
 	m_model = hashGet("a_f_y_bevhills_02");
+
+	m_tmSyncLastPosition = Clock::now();
+	m_tmLastStreaming = Clock::now();
 }
 
 Player::~Player()
@@ -37,6 +40,11 @@ void Player::OnDisconnected()
 	_pServer->m_network.SendMessageToAll(msgLeave);
 
 	m_peer = nullptr;
+
+	for (Entity* ent : m_streamedEntities) {
+		ent->Release();
+	}
+	m_streamedEntities.clear();
 }
 
 void Player::Kick(const std::string &reason)
@@ -67,6 +75,11 @@ void Player::Close()
 		return;
 	}
 
+	for (Entity* ent : m_streamedEntities) {
+		ent->Release();
+	}
+	m_streamedEntities.clear();
+
 	enet_peer_disconnect_now(m_peer, 0);
 	m_peer = nullptr;
 }
@@ -95,28 +108,15 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		// See if we have to stream any entities in
 		CheckStreamingEntities();
-		//TODO: This should be part of streaming code, we shouldn't send the entire world
-		/*
-		NetworkMessage* msgCreateEntities = new NetworkMessage(NMT_CreateEntities);
-		//TODO: This looks unsafe; we assume there's always X entities - 1 (the current player)
-		uint32_t numEntities = _pServer->m_world.m_allEntities.size() - 1;
-		msgCreateEntities->Write(numEntities);
-		for (auto &pair : _pServer->m_world.m_allEntities) {
-			if (pair.second == this) {
-				continue;
-			}
-			pair.second->NetworkSerialize(msgCreateEntities);
-		}
-		_pServer->m_network.SendMessageTo(m_peer, msgCreateEntities);
-		*/
 
 		// Tell everyone else we joined
-		//TODO: This shouldn't create a ped on the client! We have to use streaming for this.
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
 		msgJoin->Write(GetNetworkCreatePedStruct());
 		msgJoin->Write(m_username);
 		msgJoin->Write(m_nickname);
 		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
+
+		m_refCountDebugName = m_username;
 
 		return;
 	}
@@ -147,7 +147,7 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		//TODO: Process vectors for validity (maybe even do NaN checks for floats and vectors in NetworkMessage::Read())
 
-		m_position = newPosition;
+		SetPosition(newPosition);
 		m_rotation.z = newHeading;
 		m_velocity = newVelocity;
 		m_moveType = newMoveType;
@@ -158,8 +158,10 @@ void Player::HandleMessage(NetworkMessage* message)
 
 void Player::CheckStreamingEntities()
 {
+	m_tmLastStreaming = Clock::now();
+
 	std::vector<Entity*> newStreaming;
-	_pServer->m_world.QueryRange(m_position, _pServer->m_settings.StreamingRange, newStreaming);
+	_pServer->m_world.QueryRange(m_position, _pServer->m_settings.StreamingRange, newStreaming, this);
 
 	std::vector<Entity*> streamedIn;
 	std::vector<Entity*> streamedOut;
@@ -192,6 +194,7 @@ void Player::CheckStreamingEntities()
 		msgStreamIn->Write((uint32_t)streamedIn.size());
 		for (Entity* ent : streamedIn) {
 			ent->NetworkSerialize(msgStreamIn);
+			ent->AddRef();
 		}
 		_pServer->m_network.SendMessageTo(m_peer, msgStreamIn);
 	}
@@ -201,6 +204,7 @@ void Player::CheckStreamingEntities()
 		msgStreamOut->Write((uint32_t)streamedOut.size());
 		for (Entity* ent : streamedOut) {
 			msgStreamOut->Write(ent->m_handle);
+			ent->Release();
 		}
 		_pServer->m_network.SendMessageTo(m_peer, msgStreamOut);
 	}
@@ -226,6 +230,14 @@ void Player::NetworkSerialize(NetworkMessage* message)
 
 void Player::Update()
 {
+	if (m_peer == nullptr) {
+		return;
+	}
+
+	if ((int)ClockDuration(Clock::now() - m_tmLastStreaming).count() > 500) {
+		CheckStreamingEntities();
+	}
+
 	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 250) {
 		m_tmSyncLastPosition = Clock::now();
 

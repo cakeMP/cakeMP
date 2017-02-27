@@ -35,6 +35,7 @@ add_executable(StrawberryServer
 
 	# Shared sources
 	../StrawberryPieShared/SharedUtils.h
+	../StrawberryPieShared/RefCounted.h
 	../StrawberryPieShared/Octree.h
 	../StrawberryPieShared/Enums/NetworkMessageType.h
 	../StrawberryPieShared/Network/NetworkMessage.h

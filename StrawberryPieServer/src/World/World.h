@@ -27,7 +27,7 @@ public:
 	void RemoveFromOctree(Entity* ent);
 	void RebuildOctree();
 
-	void QueryRange(const glm::vec3 &pos, float range, std::vector<Entity*> &out);
+	void QueryRange(const glm::vec3 &pos, float range, std::vector<Entity*> &out, Entity* except = nullptr);
 
 	void AddEntity(Entity* ent);
 	void RemoveEntity(Entity* ent);

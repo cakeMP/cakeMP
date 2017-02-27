@@ -23,7 +23,7 @@ void World::Delete()
 {
 	m_entities.clear();
 	for (auto &pair : m_allEntities) {
-		delete pair.second;
+		pair.second->ReleaseForce();
 	}
 	m_allEntities.clear();
 }
@@ -31,14 +31,14 @@ void World::Delete()
 void World::AddToOctree(Entity* ent)
 {
 	//TODO: Use cached WorldNode value to assert we're not already added to a node
-	WorldNode &node = m_entities.getCell(ent->m_position);
+	WorldNode &node = m_entities.getCell(ent->GetPosition());
 	node.m_entities.push_back(ent);
 }
 
 void World::RemoveFromOctree(Entity* ent)
 {
 	//TODO: Cache the WorldNode inside of the entity so we can fetch it easily without having to traverse
-	WorldNode &node = m_entities.getCell(ent->m_position);
+	WorldNode &node = m_entities.getCell(ent->GetPosition());
 	auto it = std::find(node.m_entities.begin(), node.m_entities.end(), ent);
 	if (it == node.m_entities.end()) {
 		assert(false);
@@ -56,12 +56,15 @@ void World::RebuildOctree()
 	}
 }
 
-void World::QueryRange(const glm::vec3 &pos, float range, std::vector<Entity*> &out)
+void World::QueryRange(const glm::vec3 &pos, float range, std::vector<Entity*> &out, Entity* except)
 {
 	WorldQueryRange query(pos, range);
 	m_entities.traverse(query);
 	for (Entity* ent : query.m_entities) {
 		auto insertPos = std::lower_bound(out.begin(), out.end(), ent);
+		if (except != nullptr && ent == except) {
+			continue;
+		}
 		out.insert(insertPos, ent);
 	}
 }
@@ -86,7 +89,7 @@ void World::RemoveEntity(Entity* ent)
 void World::EntityMoved(Entity* ent, const glm::vec3 &oldPos)
 {
 	WorldNode &oldNode = m_entities.getCell(oldPos); //TODO: Use cached value instead!
-	WorldNode &newNode = m_entities.getCell(ent->m_position);
+	WorldNode &newNode = m_entities.getCell(ent->GetPosition());
 
 	// We're still in the same node, no need to switch
 	if (&oldNode == &newNode) {

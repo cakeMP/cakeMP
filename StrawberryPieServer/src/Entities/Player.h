@@ -17,6 +17,7 @@ private:
 	bool m_orderedToDisconnect = false;
 
 	ClockTime m_tmSyncLastPosition;
+	ClockTime m_tmLastStreaming;
 
 	std::vector<Entity*> m_streamedEntities;
 
