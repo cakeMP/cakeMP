@@ -19,6 +19,8 @@ public:
 	Ped(int localHandle, const NetHandle &netHandle);
 	virtual ~Ped();
 
+	virtual NetworkEntityType GetType();
+
 	virtual void Update();
 
 	virtual void SetModel(uint32_t hash);

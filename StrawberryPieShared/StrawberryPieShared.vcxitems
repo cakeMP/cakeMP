@@ -19,6 +19,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Network\NetworkEntityType.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Network\NetworkMessage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Network\Structs\CreatePed.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Octree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RefCounted.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedUtils.h" />
   </ItemGroup>
 </Project>

@@ -14,9 +14,11 @@ public:
 
 public:
 	Player();
-	Player(const NetStructs::CreatePed &createPed);
+	Player(const NetHandle &handle, const NetStructs::CreatePed &createPed);
 	Player(int localHandle, const NetHandle &netHandle);
 	virtual ~Player();
+
+	virtual NetworkEntityType GetType();
 };
 
 NAMESPACE_END;

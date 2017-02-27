@@ -38,7 +38,7 @@ public:
 	void SendToHost(NetworkMessage* message);
 
 	template<typename T>
-	T* GetEntityFromHandle(const NetHandle &handle);
+	T* GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle);
 
 	void Initialize();
 	void Update();

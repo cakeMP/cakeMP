@@ -36,16 +36,23 @@ void uiAddLongString(const char* str)
 	}
 }
 
-void uiNotify(const char* str)
+void uiNotify(const char* fmt, ...)
 {
+	char buffer[1024];
+
+	va_list args;
+	va_start(args, fmt);
+	vsprintf(buffer, fmt, args);
+	va_end(args);
+
 	UI::_SET_NOTIFICATION_TEXT_ENTRY("CELL_EMAIL_BCON");
-	uiAddLongString(str);
+	uiAddLongString(buffer);
 	UI::_DRAW_NOTIFICATION(false, true);
 }
 
 void uiNotify(const std::string &str)
 {
-	uiNotify(str.c_str());
+	uiNotify("%s", str.c_str());
 }
 
 void uiSubtitle(const char* fmt, ...)

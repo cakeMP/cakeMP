@@ -22,6 +22,11 @@ Ped::~Ped()
 {
 }
 
+NetworkEntityType Ped::GetType()
+{
+	return ET_Ped;
+}
+
 void Ped::Update()
 {
 	Entity::Update();

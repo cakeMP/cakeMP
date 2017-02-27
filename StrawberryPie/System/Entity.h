@@ -4,6 +4,7 @@
 
 #include <Network/NetHandle.h>
 #include <Utils/Interpolator.h>
+#include <Network/NetworkEntityType.h>
 
 NAMESPACE_BEGIN;
 
@@ -21,6 +22,8 @@ public:
 	Entity();
 	Entity(int localHandle, const NetHandle &netHandle);
 	virtual ~Entity();
+
+	virtual NetworkEntityType GetType() = 0;
 
 	virtual void Update();
 

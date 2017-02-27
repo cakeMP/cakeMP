@@ -11,7 +11,7 @@ extern int ui_screenHeight;
 
 extern void uiAddLongString(const char* str);
 
-extern void uiNotify(const char* str);
+extern void uiNotify(const char* fmt, ...);
 extern void uiNotify(const std::string &str);
 
 extern void uiSubtitle(const char* fmt, ...);

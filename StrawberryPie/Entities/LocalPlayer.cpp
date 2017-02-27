@@ -5,6 +5,7 @@
 #include <System/Strawberry.h>
 #include <Network/NetworkMessage.h>
 #include <Utils/Models.h>
+#include <GTA/UI/UI.h>
 
 #include <shv/natives.h>
 
@@ -60,6 +61,9 @@ void LocalPlayer::Initialize()
 
 void LocalPlayer::Update()
 {
+	glm::vec3 pos = GetPosition();
+	uiSubtitle("~b~%f~s~, ~b~%f~s~, ~b~%f", pos.x, pos.y, pos.z);
+
 	if (_pGame->m_network.IsConnected()) {
 		glm::vec3 vel = GetVelocity();
 

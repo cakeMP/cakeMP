@@ -100,7 +100,7 @@ void NetworkManager::SendToHost(NetworkMessage* message)
 }
 
 template<typename T>
-T* NetworkManager::GetEntityFromHandle(const NetHandle &handle)
+T* NetworkManager::GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle)
 {
 	auto it = m_entitiesNetwork.find(handle);
 	if (it == m_entitiesNetwork.end()) {
@@ -108,7 +108,11 @@ T* NetworkManager::GetEntityFromHandle(const NetHandle &handle)
 		return nullptr;
 	}
 
-	return dynamic_cast<T*>(it->second);
+	if (it->second->GetType() != expectedType) {
+		return nullptr;
+	}
+
+	return static_cast<T*>(it->second);
 }
 
 void NetworkManager::Initialize()
@@ -224,17 +228,20 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		return;
 	}
 
-	if (message->m_type == NMT_CreateEntities) {
-		logWrite("Creating entities:");
+	if (message->m_type == NMT_StreamIn) {
+		logWrite("Streaming in:");
 
 		uint32_t numEntities;
 		message->Read(numEntities);
 
 		for (uint32_t i = 0; i < numEntities; i++) {
 			NetworkEntityType entityType = ET_None;
-			message->Read(entityType);
+			NetHandle entityHandle;
 
-			logWrite("  %d", (int)entityType);
+			message->Read(entityType);
+			message->Read(entityHandle);
+
+			logWrite("  %u (%d)", entityHandle.m_value, (int)entityType);
 
 			//TODO: Clean this up a bit, it's gonna become huge if we leave this like this
 			if (entityType == ET_Player) {
@@ -245,15 +252,38 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 				message->Read(username);
 				message->Read(nickname);
 
-				Player* newPlayer = new Player(createPedPlayer);
+				Player* newPlayer = new Player(entityHandle, createPedPlayer);
 				newPlayer->m_username = username;
 				newPlayer->m_nickname = nickname;
-				m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
+				m_entitiesNetwork[entityHandle] = newPlayer;
 
 			} else {
 				assert(false);
 				break;
 			}
+		}
+	}
+
+	if (message->m_type == NMT_StreamOut) {
+		logWrite("Streaming out:");
+
+		uint32_t numEntities;
+		message->Read(numEntities);
+
+		for (uint32_t i = 0; i < numEntities; i++) {
+			NetHandle handle;
+			message->Read(handle);
+
+			auto it = m_entitiesNetwork.find(handle);
+			if (it == m_entitiesNetwork.end()) {
+				assert(false);
+				return;
+			}
+
+			logWrite("  %u (%d)", handle.m_value, (int)it->second->GetType());
+
+			m_entitiesNetwork.erase(it);
+			delete it->second;
 		}
 	}
 
@@ -267,16 +297,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		logWrite("Player joined: %s (%s)", username.c_str(), nickname.c_str());
 
-		Player* newPlayer = new Player(createPedPlayer);
-		newPlayer->m_username = username;
-		newPlayer->m_nickname = nickname;
-		m_entitiesNetwork[createPedPlayer.m_handle] = newPlayer;
-
-		std::string joinMessage = "~b~";
-		joinMessage += username;
-		joinMessage += "~s~ joined";
-
-		uiNotify(joinMessage);
+		uiNotify("~b~%s~s~ joined", nickname.c_str());
 
 		return;
 	}
@@ -292,21 +313,16 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		Player* player = dynamic_cast<Player*>(it->second);
-		if (player == nullptr) {
+		if (it->second->GetType() != ET_Player) {
 			assert(false);
 			return;
 		}
 
+		Player* player = static_cast<Player*>(it->second);
+
 		logWrite("Player left: %s (%s)", player->m_username.c_str(), player->m_nickname.c_str());
 
-		std::string leaveMessage = "~b~";
-		leaveMessage += player->m_username;
-		leaveMessage += "~s~ left";
-		uiNotify(leaveMessage);
-
-		m_entitiesNetwork.erase(it);
-		delete player;
+		uiNotify("~b~%s~s~ left", player->m_nickname.c_str());
 
 		return;
 	}
@@ -318,7 +334,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		message->Read(handle);
 		message->Read(text);
 
-		Player* player = GetEntityFromHandle<Player>(handle);
+		Player* player = GetEntityFromHandle<Player>(ET_Player, handle);
 		if (player == nullptr) {
 			assert(false);
 			return;
@@ -337,7 +353,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		message->Read(handle);
 
-		Player* player = GetEntityFromHandle<Player>(handle);
+		Player* player = GetEntityFromHandle<Player>(ET_Player, handle);
 		if (player == nullptr) {
 			assert(false);
 			return;

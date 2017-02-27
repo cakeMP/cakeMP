@@ -32,6 +32,7 @@ enum NetworkMessageType
 	//  * uint32: Amount of entities to create.
 	//  * for n:
 	//    * NetworkEntityType: The type of entity.
+	//    * NetHandle: The entity's NetHandle.
 	//    * <serialized data based on entity type, see Entity::NetworkSerialize>
 	//      if t == ET_Player:
 	//      * NetStructs::CreatePed: The ped that must be created for the player.
