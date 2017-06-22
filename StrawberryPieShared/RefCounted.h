@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <assert.h>
 
 class RefCounted
 {
