@@ -46,7 +46,7 @@ and improve on the project. I might also accept pull requests, depending on thei
 ## License
 
 	quinMP, a multiplayer mod for GTA5.
-	Copyright (C) 2017 Melissa Cat
+	Copyright (C) 2017 github.com/codecat
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
