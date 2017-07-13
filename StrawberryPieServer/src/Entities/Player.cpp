@@ -14,7 +14,7 @@ Player::Player(ENetPeer* peer, const NetHandle &handle)
 	//TODO: Make spawn position configurable (or something)
 	m_position.x = -0.341730f;
 	m_position.y = 525.319763f;
-	m_position.z = 179.050201;
+	m_position.z = 179.050201f;
 
 	m_model = hashGet("a_f_y_bevhills_02");
 
@@ -211,7 +211,6 @@ void Player::CheckStreamingEntities()
 NetStructs::CreatePed Player::GetNetworkCreatePedStruct()
 {
 	NetStructs::CreatePed ret;
-	ret.m_handle = m_handle;
 	ret.m_model = m_model;
 	ret.m_position = m_position;
 	ret.m_rotation = m_rotation;

@@ -38,6 +38,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <assert.h>
 
+#ifdef _MSC_VER
+#ifdef max
+#undef max
+#endif
+#ifdef min
+#undef min
+#endif
+#endif
+
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/vec3.hpp>
