@@ -97,6 +97,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)src;$(SolutionDir)Libs\glm;$(SolutionDir)StrawberryPieShared;$(SolutionDir)Libs\ENet\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libs\ENet;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
