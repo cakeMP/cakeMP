@@ -1,7 +1,7 @@
-#include <Common.h>
+#include "..\Common.h"
 
-#include <Entities/Player.h>
-#include <GameServer.h>
+#include "Player.h"
+#include "..\GameServer.h"
 
 #include <Network/NetworkEntityType.h>
 #include <Network/Structs/CreatePed.h>

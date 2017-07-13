@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Common.h>
+#include "..\Common.h"
 
 #include <Network/NetworkMessage.h>
 #include <Network/NetHandle.h>
-#include <Entities/Player.h>
+#include "..\Entities\Player.h"
 
 #include <enet/enet.h>
 

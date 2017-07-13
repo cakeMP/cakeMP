@@ -1,6 +1,6 @@
-#include <Common.h>
+#include "Common.h"
 
-#include <Settings.h>
+#include "Settings.h"
 
 Settings::Settings()
 {

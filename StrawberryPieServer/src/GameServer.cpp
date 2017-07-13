@@ -1,6 +1,6 @@
-#include <Common.h>
+#include "Common.h"
 
-#include <GameServer.h>
+#include "GameServer.h"
 
 static volatile bool g_running = true;
 

@@ -1,8 +1,8 @@
-#include <Common.h>
+#include "..\Common.h"
 
-#include <Network/NetworkManager.h>
+#include "NetworkManager.h"
 
-#include <GameServer.h>
+#include "..\GameServer.h"
 
 static void networkMessageFree(ENetPacket* packet)
 {

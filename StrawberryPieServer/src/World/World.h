@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Common.h>
-#include <World/Entity.h>
+#include "..\Common.h"
+#include "Entity.h"
 
 #include <Octree.h>
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Network/NetworkManager.h>
-#include <Settings.h>
+#include "Network\NetworkManager.h"
+#include "Settings.h"
 
-#include <World/World.h>
+#include "World\World.h"
 
 class GameServer
 {
