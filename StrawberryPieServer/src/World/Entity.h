@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Common.h>
+#include "..\Common.h"
 #include <Network/NetHandle.h>
 #include <Network/NetworkMessage.h>
 

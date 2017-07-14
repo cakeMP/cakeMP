@@ -1,8 +1,8 @@
-#include <Common.h>
+#include "..\Common.h"
 
-#include <World/World.h>
+#include "World.h"
 
-#include <World/Queries/Range.h>
+#include "Queries\Range.h"
 
 World::World()
 	: m_entities(

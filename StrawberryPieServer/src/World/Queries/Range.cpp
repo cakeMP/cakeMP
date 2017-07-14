@@ -1,6 +1,6 @@
-#include <Common.h>
+#include "..\..\Common.h"
 
-#include <World/Queries/Range.h>
+#include "Range.h"
 
 WorldQueryRange::WorldQueryRange(const glm::vec3 &pos, float range)
 {

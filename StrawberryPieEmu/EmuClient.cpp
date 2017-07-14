@@ -155,7 +155,11 @@ int main()
 			sendPosC = 0;
 		}
 
-		usleep(17 * 1000);
+		#ifdef _MSC_VER
+			Sleep(17 * 1000);
+		#else
+			usleep(17 * 1000);
+		#endif
 	}
 
 	if (connected) {

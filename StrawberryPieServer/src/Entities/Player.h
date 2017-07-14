@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Common.h>
+#include "..\Common.h"
 
-#include <World/Entity.h>
+#include "..\World\Entity.h"
 
 #include <Network/NetworkMessage.h>
 #include <Network/NetHandle.h>

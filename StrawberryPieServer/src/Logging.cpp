@@ -1,9 +1,9 @@
-#include <Common.h>
+#include "Common.h"
 
 #include <cstdarg>
 #include <ctime>
 
-#include <Logging.h>
+#include "Logging.h"
 
 static std::mutex _mutexLog;
 
