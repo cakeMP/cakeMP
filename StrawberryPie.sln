@@ -9,10 +9,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrawberryPieShared", "Stra
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrawberryPieServer", "StrawberryPieServer\StrawberryPieServer.vcxproj", "{1B134F3E-227F-4EB8-ADE0-B2A9BB7E78BA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrawberryPieEmu", "StrawberryPieEmu\StrawberryPieEmu.vcxproj", "{532C40DF-2450-4531-8809-A817B8D68D4A}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		StrawberryPieShared\StrawberryPieShared.vcxitems*{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}*SharedItemsImports = 9
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -35,6 +34,14 @@ Global
 		{1B134F3E-227F-4EB8-ADE0-B2A9BB7E78BA}.Release|x64.Build.0 = Release|x64
 		{1B134F3E-227F-4EB8-ADE0-B2A9BB7E78BA}.Release|x86.ActiveCfg = Release|Win32
 		{1B134F3E-227F-4EB8-ADE0-B2A9BB7E78BA}.Release|x86.Build.0 = Release|Win32
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Debug|x64.ActiveCfg = Debug|x64
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Debug|x64.Build.0 = Debug|x64
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Debug|x86.ActiveCfg = Debug|Win32
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Debug|x86.Build.0 = Debug|Win32
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Release|x64.ActiveCfg = Release|x64
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Release|x64.Build.0 = Release|x64
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Release|x86.ActiveCfg = Release|Win32
+		{532C40DF-2450-4531-8809-A817B8D68D4A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
