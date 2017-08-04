@@ -43,6 +43,10 @@ via `cmake`. On Linux you will need to have the ENet library installed (eg. on D
 Whether this mod will have its development continued is questionable, so feel free to fork this repository
 and improve on the project. I might also accept pull requests, depending on their quality.
 
+## Support
+
+Want to donate? Send me some bitcoin: `19ndVDT5KnZXAEydtr5yT7td67Zoi9sQxc`
+
 ## License
 
 	quinMP, a multiplayer mod for GTA5.
