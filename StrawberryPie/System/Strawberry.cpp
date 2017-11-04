@@ -57,7 +57,7 @@ void Strawberry::Initialize()
 	logWrite("Window handle: %p", m_hWnd);
 	*/
 
-	GRAPHICS::_GET_SCREEN_ACTIVE_RESOLUTION(&ui_screenWidth, &ui_screenHeight);
+	GRAPHICS::_GET_ACTIVE_SCREEN_RESOLUTION(&ui_screenWidth, &ui_screenHeight);
 	logWrite("Resolution: %d x %d", ui_screenWidth, ui_screenHeight);
 
 	PED::ADD_RELATIONSHIP_GROUP("SYNCPED", (Hash*)&m_pedRelGroup);

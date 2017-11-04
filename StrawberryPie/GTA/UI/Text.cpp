@@ -24,9 +24,9 @@ UIText::~UIText()
 
 float UIText::Measure()
 {
-	UI::_SET_TEXT_ENTRY_FOR_WIDTH("STRING");
+	UI::_BEGIN_TEXT_COMMAND_WIDTH("STRING");
 	uiAddLongString(m_text.c_str());
-	return UI::_GET_TEXT_SCREEN_WIDTH(m_font);
+	return UI::_END_TEXT_COMMAND_GET_WIDTH(m_font);
 }
 
 void UIText::Render(const glm::vec2 &pos)
