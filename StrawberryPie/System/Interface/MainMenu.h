@@ -25,6 +25,8 @@ public:
 
 	void Initialize();
 
+	virtual void GoBack();
+
 	virtual void Update();
 	virtual void Render();
 };

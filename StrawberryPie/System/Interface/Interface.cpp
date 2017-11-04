@@ -61,7 +61,10 @@ void Interface::Render()
 
 	if (_pGame->m_network.IsConnected()) {
 		m_chat.Render();
+	} else {
+		UI::HIDE_HUD_AND_RADAR_THIS_FRAME();
 	}
+
 	m_fpsCounter.Render();
 
 	m_strVersion.Render(glm::vec2(ui_screenWidth / 2.0f, 0));

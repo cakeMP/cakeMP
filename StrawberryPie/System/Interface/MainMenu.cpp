@@ -70,6 +70,13 @@ void MainMenu::Initialize()
 	};
 }
 
+void MainMenu::GoBack()
+{
+	if (_pGame->m_network.IsConnected()) {
+		UIMenu::GoBack();
+	}
+}
+
 void MainMenu::Update()
 {
 	if (!m_visible) {
@@ -87,11 +94,13 @@ void MainMenu::Update()
 
 void MainMenu::Render()
 {
-	if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPauseAlternate)) {
-		if (!_pGame->m_interface.m_chat.IsFocused()) {
-			m_visible = !m_visible;
-			Update();
-			return;
+	if (_pGame->m_network.IsConnected()) {
+		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPauseAlternate)) {
+			if (!_pGame->m_interface.m_chat.IsFocused()) {
+				m_visible = !m_visible;
+				Update();
+				return;
+			}
 		}
 	}
 
