@@ -6,7 +6,6 @@
 #include <Scripts/Game.h>
 
 #include <GTA/UI/UI.h>
-#include <GTA/UI/MenuItem.h>
 
 #include <Build.h>
 
@@ -57,37 +56,25 @@ void Strawberry::Initialize()
 	logWrite("Window handle: %p", m_hWnd);
 	*/
 
-	GRAPHICS::_GET_ACTIVE_SCREEN_RESOLUTION(&ui_screenWidth, &ui_screenHeight);
-	logWrite("Resolution: %d x %d", ui_screenWidth, ui_screenHeight);
-
 	PED::ADD_RELATIONSHIP_GROUP("SYNCPED", (Hash*)&m_pedRelGroup);
+
+	GAMEPLAY::SET_WEATHER_TYPE_NOW_PERSIST("CLEAR");
+	TIME::SET_CLOCK_TIME(12, 0, 0);
+	TIME::PAUSE_CLOCK(true);
 
 	m_player.Initialize();
 	m_network.Initialize();
-
-	m_mainMenu.Initialize();
-	m_chat.Initialize();
-
-	m_strVersion.m_font = 0;
-	m_strVersion.m_scale = 0.3f;
-	m_strVersion.m_align = UITA_Center;
-	m_strVersion.m_color = glm::vec4(1, 1, 1, 0.4f);
-	m_strVersion.m_text = PROJECT_NAME " " PROJECT_VERSION "~n~" PROJECT_BUILDTYPE " (" + m_player.m_username + ")";
-
-	m_mainMenu.m_visible = true;
+	m_interface.Initialize();
 }
 
 void Strawberry::Update(float dt)
 {
 	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
 
-	m_mainMenu.Update();
+	m_interface.Update(dt);
+
 	m_player.Update();
 	m_network.Update();
-
-	if (m_network.IsConnected()) {
-		m_chat.Update();
-	}
 
 	if (uiTextInputVisible()) {
 		uiTextInputUpdate();
@@ -103,31 +90,22 @@ void Strawberry::Render()
 	}
 	*/
 
-	m_mainMenu.Render();
+	m_interface.Render();
 
 	m_player.Render();
-
-	if (m_network.IsConnected()) {
-		m_chat.Render();
-	}
-	m_fpsCounter.Render();
-
-	m_strVersion.Render(glm::vec2(ui_screenWidth / 2.0f, 0));
 }
 
 void Strawberry::OnConnected()
 {
-	uiNotify("~g~Connected");
+	m_interface.OnConnected();
 }
 
 void Strawberry::OnDisconnected()
 {
-	m_chat.Clear();
+	m_interface.OnDisconnected();
 
 	//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
 	m_network.ClearEntities();
-
-	uiNotify("~r~Disconnected");
 }
 
 void Strawberry::OnKeyDown(uint32_t key)
@@ -152,7 +130,7 @@ void Strawberry::OnKeyDown(uint32_t key)
 	}
 
 	if (m_network.IsConnected()) {
-		m_chat.OnKeyDown(key);
+		m_interface.OnKeyDown(key);
 	}
 }
 

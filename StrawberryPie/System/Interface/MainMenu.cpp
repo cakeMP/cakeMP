@@ -88,14 +88,16 @@ void MainMenu::Update()
 void MainMenu::Render()
 {
 	if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPauseAlternate)) {
-		if (!_pGame->m_chat.IsFocused()) {
+		if (!_pGame->m_interface.m_chat.IsFocused()) {
 			m_visible = !m_visible;
 			Update();
 			return;
 		}
 	}
 
-	//TODO: If menu is visible, disable player controls
+	if (m_visible) {
+		CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(0);
+	}
 
 	UIMenu::Render();
 }

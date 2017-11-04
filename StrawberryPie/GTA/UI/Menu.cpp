@@ -203,17 +203,17 @@ void UIMenu::Render()
 	}
 
 	if (m_items.size() > 0) {
-		if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneUp) || CONTROLS::IS_CONTROL_PRESSED(0, GC_CursorScrollUp)) {
+		if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_PhoneUp) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_CursorScrollUp)) {
 			GoUp();
-		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneDown) || CONTROLS::IS_CONTROL_PRESSED(0, GC_CursorScrollDown)) {
+		} else if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_PhoneDown) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_CursorScrollDown)) {
 			GoDown();
-		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneLeft)) {
+		} else if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_PhoneLeft)) {
 			GoLeft();
-		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneRight)) {
+		} else if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_PhoneRight)) {
 			GoRight();
-		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_FrontendAccept)) {
+		} else if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendAccept)) {
 			GoAccept();
-		} else if (CONTROLS::IS_CONTROL_JUST_PRESSED(0, GC_PhoneCancel) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause)) {
+		} else if (CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_PhoneCancel) || CONTROLS::IS_DISABLED_CONTROL_JUST_PRESSED(0, GC_FrontendPause)) {
 			GoBack();
 		}
 	}

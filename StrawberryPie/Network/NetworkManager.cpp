@@ -340,7 +340,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		_pGame->m_chat.AddMessage(player->m_nickname.c_str(), text.c_str());
+		_pGame->m_interface.m_chat.AddMessage(player->m_nickname.c_str(), text.c_str());
 
 		return;
 	}

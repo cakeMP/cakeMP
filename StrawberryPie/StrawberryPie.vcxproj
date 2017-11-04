@@ -121,7 +121,9 @@
     </ClCompile>
     <ClCompile Include="System\Entity.cpp" />
     <ClCompile Include="System\Interface\FPSCounter.cpp" />
+    <ClCompile Include="System\Interface\Interface.cpp" />
     <ClCompile Include="System\Interface\MainMenu.cpp" />
+    <ClCompile Include="GTA\ScriptCam.cpp" />
     <ClCompile Include="System\Settings.cpp" />
     <ClCompile Include="System\Strawberry.cpp" />
     <ClCompile Include="Utils\Logging.cpp" />
@@ -151,7 +153,9 @@
     <ClInclude Include="System\Interface\Chat.h" />
     <ClInclude Include="System\Entity.h" />
     <ClInclude Include="System\Interface\FPSCounter.h" />
+    <ClInclude Include="System\Interface\Interface.h" />
     <ClInclude Include="System\Interface\MainMenu.h" />
+    <ClInclude Include="GTA\ScriptCam.h" />
     <ClInclude Include="Utils\Interpolator.h" />
     <ClInclude Include="Utils\Interval.h" />
     <ClInclude Include="System\Settings.h" />

@@ -5,9 +5,7 @@
 #include <Network/NetworkManager.h>
 
 #include <System/Settings.h>
-#include <System/Interface/MainMenu.h>
-#include <System/Interface/Chat.h>
-#include <System/Interface/FPSCounter.h>
+#include <System/Interface/Interface.h>
 
 #include <Entities/LocalPlayer.h>
 
@@ -25,11 +23,7 @@ public:
 
 	LocalPlayer m_player;
 
-	//TODO: Move these somewhere else
-	MainMenu m_mainMenu;
-	Chat m_chat;
-	FPSCounter m_fpsCounter;
-	UIText m_strVersion;
+	Interface m_interface;
 
 	int m_gameTime = 0;
 
