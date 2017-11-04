@@ -195,7 +195,6 @@ void NetworkManager::Update()
 				//      a lot of non-player entities in a world node.
 				std::vector<Entity*> result;
 				m_server->m_world.QueryRange(message->m_emitPosition, message->m_emitRange, result);
-				logWrite("there are %u entities in range", result.size());
 				for (Entity* ent : result) {
 					Player* player = dynamic_cast<Player*>(ent);
 					if (player == nullptr) {
