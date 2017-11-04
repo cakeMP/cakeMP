@@ -377,6 +377,28 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		return;
 	}
+
+	if (message->m_type == NMT_Weather) {
+		std::string weatherType;
+
+		message->Read(weatherType);
+
+		GAMEPLAY::SET_WEATHER_TYPE_PERSIST(weatherType.c_str());
+
+		return;
+	}
+
+	if (message->m_type == NMT_ClockTime) {
+		int hours, minutes, seconds;
+
+		message->Read(hours);
+		message->Read(minutes);
+		message->Read(seconds);
+
+		TIME::SET_CLOCK_TIME(hours, minutes, seconds);
+
+		return;
+	}
 }
 
 NAMESPACE_END;
