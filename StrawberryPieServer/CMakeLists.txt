@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 project(Strawberry)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(StrawberryServer
+set(SRC
 	src/main.cpp
 
 	src/Common.h
@@ -18,12 +18,15 @@ add_executable(StrawberryServer
 	src/Settings.cpp
 	src/Settings.h
 
+	# Network
 	src/Network/NetworkManager.cpp
 	src/Network/NetworkManager.h
 
+	# Entities
 	src/Entities/Player.cpp
 	src/Entities/Player.h
 
+	# World
 	src/World/World.cpp
 	src/World/World.h
 
@@ -32,8 +35,9 @@ add_executable(StrawberryServer
 
 	src/World/Queries/Range.cpp
 	src/World/Queries/Range.h
+)
 
-	# Shared sources
+set(SHARED_SRC
 	../StrawberryPieShared/SharedUtils.h
 	../StrawberryPieShared/RefCounted.h
 	../StrawberryPieShared/Octree.h
@@ -43,6 +47,14 @@ add_executable(StrawberryServer
 	../StrawberryPieShared/Network/NetworkEntityType.h
 	../StrawberryPieShared/Network/Structs/CreatePed.h
 )
+
+add_executable(StrawberryServer
+	${SRC}
+	${SHARED_SRC}
+)
+
+source_group(TREE "${CMAKE_SOURCE_DIR}/src/" PREFIX Src FILES ${SRC})
+source_group(TREE "${CMAKE_SOURCE_DIR}/../StrawberryPieShared/" PREFIX Shared FILES ${SHARED_SRC})
 
 find_package(ENet REQUIRED)
 
