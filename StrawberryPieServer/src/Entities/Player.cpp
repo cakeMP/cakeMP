@@ -106,6 +106,17 @@ void Player::HandleMessage(NetworkMessage* message)
 		msgHandshake->Write(m_model);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
+		// Give the client the current world state
+		NetworkMessage* msgWeather = new NetworkMessage(NMT_Weather);
+		msgWeather->Write("CLEAR");
+		_pServer->m_network.SendMessageTo(m_peer, msgWeather);
+
+		NetworkMessage* msgTime = new NetworkMessage(NMT_ClockTime);
+		msgTime->Write(12);
+		msgTime->Write(0);
+		msgTime->Write(0);
+		_pServer->m_network.SendMessageTo(m_peer, msgTime);
+
 		// See if we have to stream any entities in
 		CheckStreamingEntities();
 

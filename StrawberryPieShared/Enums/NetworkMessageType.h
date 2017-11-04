@@ -77,4 +77,14 @@ enum NetworkMessageType
 	//  * vec3: The client's new velocity.
 	//  * uint8: The client's new movement type.
 	NMT_PlayerMove,
+
+	// Server to client: The weather has changed.
+	//  * string: The weather type.
+	NMT_Weather,
+
+	// Server to client: The clock time has changed.
+	//  * int: Hours
+	//  * int: Minutes
+	//  * int: Seconds
+	NMT_ClockTime,
 };
