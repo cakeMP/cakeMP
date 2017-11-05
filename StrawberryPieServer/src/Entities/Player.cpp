@@ -136,7 +136,7 @@ void Player::HandleMessage(NetworkMessage* message)
 		logWrite("%s: %s", m_username.c_str(), chatMessage.c_str());
 
 		NetworkMessage* msgChat = new NetworkMessage(NMT_ChatMessage);
-		msgChat->Write(m_handle);
+		msgChat->Write(m_nickname);
 		msgChat->Write(chatMessage);
 		_pServer->m_network.SendMessageToAll(msgChat, m_peer);
 
