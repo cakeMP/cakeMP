@@ -344,19 +344,13 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 	}
 
 	if (message->m_type == NMT_ChatMessage) {
-		NetHandle handle;
+		std::string name;
 		std::string text;
 
-		message->Read(handle);
+		message->Read(name);
 		message->Read(text);
 
-		Player* player = GetEntityFromHandle<Player>(ET_Player, handle);
-		if (player == nullptr) {
-			assert(false);
-			return;
-		}
-
-		_pGame->m_interface.m_chat.AddMessage(player->m_nickname.c_str(), text.c_str());
+		_pGame->m_interface.m_chat.AddMessage(name.c_str(), text.c_str());
 
 		return;
 	}
@@ -371,7 +365,6 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		Player* player = GetEntityFromHandle<Player>(ET_Player, handle);
 		if (player == nullptr) {
-			assert(false);
 			return;
 		}
 
