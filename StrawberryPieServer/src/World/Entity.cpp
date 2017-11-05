@@ -22,3 +22,10 @@ void Entity::SetPosition(const glm::vec3 &pos)
 	m_position = pos;
 	_pServer->m_world.EntityMoved(this, oldPos);
 }
+
+void Entity::SetRotation(const glm::vec3 &rot)
+{
+	glm::vec3 oldRot = m_rotation;
+	m_rotation = rot;
+	_pServer->m_world.EntityMoved(this, oldRot);
+}

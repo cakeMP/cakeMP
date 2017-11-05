@@ -3,7 +3,6 @@
 #include <Entities/Player.h>
 #include <GameServer.h>
 
-#include <Network/NetworkEntityType.h>
 #include <Network/Structs/CreatePed.h>
 
 Player::Player(ENetPeer* peer, const NetHandle &handle)
@@ -202,6 +201,8 @@ void Player::CheckStreamingEntities()
 		NetworkMessage* msgStreamIn = new NetworkMessage(NMT_StreamIn);
 		msgStreamIn->Write((uint32_t)streamedIn.size());
 		for (Entity* ent : streamedIn) {
+			msgStreamIn->Write(ent->GetType());
+			msgStreamIn->Write(ent->m_handle);
 			ent->NetworkSerialize(msgStreamIn);
 			ent->AddRef();
 		}
@@ -219,6 +220,11 @@ void Player::CheckStreamingEntities()
 	}
 }
 
+NetworkEntityType Player::GetType()
+{
+	return ET_Player;
+}
+
 NetStructs::CreatePed Player::GetNetworkCreatePedStruct()
 {
 	NetStructs::CreatePed ret;
@@ -230,7 +236,6 @@ NetStructs::CreatePed Player::GetNetworkCreatePedStruct()
 
 void Player::NetworkSerialize(NetworkMessage* message)
 {
-	message->Write(ET_Player);
 	message->Write(GetNetworkCreatePedStruct());
 	message->Write(m_username);
 	message->Write(m_nickname);

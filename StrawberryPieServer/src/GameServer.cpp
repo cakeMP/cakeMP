@@ -36,6 +36,8 @@ void GameServer::Run()
 
 	m_network.Listen(m_settings.ListenHost.c_str(), m_settings.ListenPort, m_settings.MaxClients);
 
+	m_world.Initialize();
+
 	while (m_running && g_running) {
 		Update();
 

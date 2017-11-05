@@ -1,8 +1,11 @@
 #include <Common.h>
 
 #include <World/World.h>
-
 #include <World/Queries/Range.h>
+
+#include <GameServer.h>
+
+#include <Entities/Vehicle.h>
 
 World::World()
 	: m_entities(
@@ -17,6 +20,19 @@ World::World()
 World::~World()
 {
 	Delete();
+}
+
+void World::Initialize()
+{
+	logWrite("Initializing world...");
+
+	Vehicle* newVehicle = new Vehicle(_pServer->m_network.AssignHandle());
+	AddEntity(newVehicle);
+
+	newVehicle->m_model = hashGet("asea");
+	newVehicle->SetPosition(glm::vec3(-4.31804f, 546.8f, 173.75f));
+
+	logWrite("Initialized.");
 }
 
 void World::Delete()

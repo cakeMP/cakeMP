@@ -41,6 +41,8 @@ public:
 
 	void CheckStreamingEntities();
 
+	virtual NetworkEntityType GetType();
+
 	NetStructs::CreatePed GetNetworkCreatePedStruct();
 	virtual void NetworkSerialize(NetworkMessage* message);
 

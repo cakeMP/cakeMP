@@ -21,6 +21,8 @@ public:
 	World();
 	~World();
 
+	void Initialize();
+
 	void Delete();
 
 	void AddToOctree(Entity* ent);

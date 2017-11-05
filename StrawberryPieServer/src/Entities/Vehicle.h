@@ -16,7 +16,8 @@ public:
 	Vehicle(const NetHandle &handle);
 	virtual ~Vehicle();
 
-	NetStructs::CreateVehicle GetNetworkCreateVehicleStruct();
+	virtual NetworkEntityType GetType();
 
+	NetStructs::CreateVehicle GetNetworkCreateVehicleStruct();
 	virtual void NetworkSerialize(NetworkMessage* message);
 };

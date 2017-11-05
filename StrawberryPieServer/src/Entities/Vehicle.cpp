@@ -14,6 +14,11 @@ Vehicle::~Vehicle()
 {
 }
 
+NetworkEntityType Vehicle::GetType()
+{
+	return ET_Vehicle;
+}
+
 NetStructs::CreateVehicle Vehicle::GetNetworkCreateVehicleStruct()
 {
 	NetStructs::CreateVehicle ret;
@@ -25,6 +30,5 @@ NetStructs::CreateVehicle Vehicle::GetNetworkCreateVehicleStruct()
 
 void Vehicle::NetworkSerialize(NetworkMessage* message)
 {
-	message->Write(ET_Vehicle);
 	message->Write(GetNetworkCreateVehicleStruct());
 }
