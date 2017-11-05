@@ -124,10 +124,11 @@ public:
 	}
 
 	template<typename T>
-	inline void Read(T &dst)
+	inline size_t Read(T &dst)
 	{
 		size_t sz = ReadRaw(&dst, sizeof(T));
 		assert(sz == sizeof(T));
+		return sz;
 	}
 
 	inline void Read(std::string &dst)

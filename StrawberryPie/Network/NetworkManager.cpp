@@ -92,6 +92,11 @@ void NetworkManager::ClearEntities()
 	m_entitiesNetwork.clear();
 }
 
+int NetworkManager::GetEntityCount()
+{
+	return (int)m_entitiesNetwork.size();
+}
+
 void NetworkManager::SendToHost(NetworkMessage* message)
 {
 	if (m_localPeer == nullptr) {

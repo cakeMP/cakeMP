@@ -34,6 +34,7 @@ public:
 	bool IsConnected();
 
 	void ClearEntities();
+	int GetEntityCount();
 
 	void SendToHost(NetworkMessage* message);
 

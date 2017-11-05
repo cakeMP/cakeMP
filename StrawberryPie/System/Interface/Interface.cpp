@@ -43,6 +43,12 @@ void Interface::Initialize()
 	m_strVersion.m_color = glm::vec4(1, 1, 1, 0.4f);
 	m_strVersion.m_text = PROJECT_NAME " " PROJECT_VERSION "~n~" PROJECT_BUILDTYPE " (" + _pGame->m_player.m_username + ")";
 
+	m_strDebug.m_font = 0;
+	m_strDebug.m_outline = true;
+	m_strDebug.m_scale = 0.3f;
+	m_strDebug.m_align = UITA_Left;
+	m_strDebug.m_color = glm::vec4(1, 1, 1, 1);
+
 	m_mainMenu.m_visible = true;
 }
 
@@ -53,6 +59,18 @@ void Interface::Update(float dt)
 	if (_pGame->m_network.IsConnected()) {
 		m_chat.Update();
 	}
+
+	std::stringstream debugText;
+	debugText << "DEBUG:~n~";
+
+	glm::vec3 playerPos = _pGame->m_player.GetPosition();
+	glm::vec3 playerRot = _pGame->m_player.GetRotation();
+	debugText << "~c~Player position: ~w~" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << "~n~";
+	debugText << "~c~Player rotation: ~w~" << playerRot.x << ", " << playerRot.y << ", " << playerRot.z << "~n~";
+
+	debugText << "~c~Streamed entities: ~w~" << _pGame->m_network.GetEntityCount() << "~n~";
+
+	m_strDebug.m_text = debugText.str();
 }
 
 void Interface::Render()
@@ -68,6 +86,7 @@ void Interface::Render()
 	m_fpsCounter.Render();
 
 	m_strVersion.Render(glm::vec2(ui_screenWidth / 2.0f, 0));
+	m_strDebug.Render(glm::vec2());
 }
 
 void Interface::OnConnected()

@@ -17,6 +17,7 @@
 #include <thread>
 #include <mutex>
 #include <string>
+#include <sstream>
 #include <queue>
 #include <unordered_map>
 #include <chrono>

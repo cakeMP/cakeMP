@@ -21,7 +21,7 @@ std::string prsToString(uint32_t x)
 std::string prsToString(int64_t x)
 {
 	char buffer[22];
-	sprintf(buffer, "%ll", x);
+	sprintf(buffer, "%lld", x);
 	return buffer;
 }
 
@@ -51,12 +51,12 @@ int prsToInteger(const std::string &str)
 
 float prsToFloat(const char* str)
 {
-	return atof(str);
+	return (float)atof(str);
 }
 
 float prsToFloat(const std::string &str)
 {
-	return atof(str.c_str());
+	return (float)atof(str.c_str());
 }
 
 NAMESPACE_END;

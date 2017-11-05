@@ -19,6 +19,7 @@ public:
 	Chat m_chat;
 	FPSCounter m_fpsCounter;
 	UIText m_strVersion;
+	UIText m_strDebug;
 
 public:
 	Interface();
