@@ -3,10 +3,13 @@
 #include <Network/NetworkManager.h>
 
 #include <Entities/LocalPlayer.h>
+#include <Entities/Vehicle.h>
+
 #include <System/Strawberry.h>
 #include <Network/NetHandle.h>
 #include <Network/NetworkEntityType.h>
 #include <Network/Structs/CreatePed.h>
+#include <Network/Structs/CreateVehicle.h>
 #include <GTA/UI/UI.h>
 
 #include <enet/enet.h>
@@ -256,6 +259,14 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 				newPlayer->m_username = username;
 				newPlayer->m_nickname = nickname;
 				m_entitiesNetwork[entityHandle] = newPlayer;
+
+			} else if (entityType == ET_Vehicle) {
+				NetStructs::CreateVehicle createVehicle;
+
+				message->Read(createVehicle);
+
+				Vehicle* newVehicle = new Vehicle(entityHandle, createVehicle);
+				m_entitiesNetwork[entityHandle] = newVehicle;
 
 			} else {
 				assert(false);

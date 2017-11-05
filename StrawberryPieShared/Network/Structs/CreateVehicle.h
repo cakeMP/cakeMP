@@ -2,7 +2,7 @@
 
 namespace NetStructs
 {
-	struct CreatePed
+	struct CreateVehicle
 	{
 		uint32_t m_model = 0;
 

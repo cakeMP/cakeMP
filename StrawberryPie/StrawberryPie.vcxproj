@@ -101,6 +101,7 @@
   <ItemGroup>
     <ClCompile Include="Entities\LocalPlayer.cpp" />
     <ClCompile Include="Entities\Ped.cpp" />
+    <ClCompile Include="Entities\Vehicle.cpp" />
     <ClCompile Include="GTA\Scaleform.cpp" />
     <ClCompile Include="GTA\UI\Menu.cpp" />
     <ClCompile Include="GTA\UI\MenuItem.cpp" />
@@ -134,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="Entities\LocalPlayer.h" />
     <ClInclude Include="Entities\Ped.h" />
+    <ClInclude Include="Entities\Vehicle.h" />
     <ClInclude Include="Enums\AudioFlags.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entities\Player.h" />

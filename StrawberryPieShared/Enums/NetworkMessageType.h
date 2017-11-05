@@ -38,6 +38,8 @@ enum NetworkMessageType
 	//      * NetStructs::CreatePed: The ped that must be created for the player.
 	//      * string: The player's Social Club username.
 	//      * string: The player's nickname;
+	//      if t == ET_Vehicle:
+	//      * NetStructs::CreateVehicle: The vehicle that must be created.
 	NMT_StreamIn,
 
 	// Server to client: Sending a batch of nethandles for the client to stream out.
