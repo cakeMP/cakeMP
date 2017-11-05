@@ -8,7 +8,7 @@ class RefCounted
 public:
 	std::atomic<int> m_refCount;
 #ifndef NDEBUG
-	bool m_refCountDebug;
+	bool m_refCountDebug = false;
 	std::string m_refCountDebugName;
 #endif
 
