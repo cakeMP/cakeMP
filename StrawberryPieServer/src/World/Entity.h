@@ -16,9 +16,6 @@ protected:
 	uint8_t m_moveType = 0;
 
 public:
-	uint32_t m_model = 0;
-
-public:
 	Entity(const NetHandle &handle);
 	virtual ~Entity();
 

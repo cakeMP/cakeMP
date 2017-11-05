@@ -25,6 +25,8 @@ set(SRC
 	# Entities
 	src/Entities/Player.cpp
 	src/Entities/Player.h
+	src/Entities/Vehicle.cpp
+	src/Entities/Vehicle.h
 
 	# World
 	src/World/World.cpp
@@ -46,6 +48,7 @@ set(SHARED_SRC
 	../StrawberryPieShared/Network/NetHandle.h
 	../StrawberryPieShared/Network/NetworkEntityType.h
 	../StrawberryPieShared/Network/Structs/CreatePed.h
+	../StrawberryPieShared/Network/Structs/CreateVehicle.h
 )
 
 add_executable(StrawberryServer

@@ -33,6 +33,9 @@ public:
 	void Listen(const char* host, uint16_t port, uint32_t maxClients);
 	void Close();
 
+	void OnClientConnect(ENetPeer* peer);
+	void OnClientDisconnect(ENetPeer* peer);
+
 	//TODO: Deprecate these functions and have only one SendMessage() instead
 	void SendMessageTo(ENetPeer* peer, NetworkMessage* message);
 	void SendMessageToAll(NetworkMessage* message);

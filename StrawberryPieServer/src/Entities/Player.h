@@ -22,6 +22,8 @@ private:
 	std::vector<Entity*> m_streamedEntities;
 
 public:
+	uint32_t m_model = 0;
+
 	std::string m_nickname;
 	std::string m_username;
 

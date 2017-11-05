@@ -65,6 +65,35 @@ void NetworkManager::Close()
 	m_hostListen = nullptr;
 }
 
+void NetworkManager::OnClientConnect(ENetPeer* peer)
+{
+	logWrite("New connection from: %08x:%d", peer->address.host, peer->address.port);
+
+	NetHandle newPlayerHandle = AssignHandle();
+
+	Player* newPlayer = new Player(peer, newPlayerHandle);
+	peer->data = newPlayer;
+	m_players.push_back(newPlayer);
+
+	m_server->m_world.AddEntity(newPlayer);
+
+	newPlayer->OnConnected();
+}
+
+void NetworkManager::OnClientDisconnect(ENetPeer* peer)
+{
+	logWrite("Client disconnected: %08x", peer->address.host);
+
+	Player* player = (Player*)peer->data;
+	assert(player != nullptr);
+	if (player != nullptr) {
+		m_players.erase(std::find(m_players.begin(), m_players.end(), player));
+		m_server->m_world.RemoveEntity(player);
+		player->OnDisconnected();
+		player->Release();
+	}
+}
+
 void NetworkManager::SendMessageTo(ENetPeer* peer, NetworkMessage* message)
 {
 	message->m_handled = false;
@@ -124,30 +153,9 @@ void NetworkManager::Update()
 	ENetEvent ev;
 	while (enet_host_service(m_hostListen, &ev, 0) > 0) {
 		if (ev.type == ENET_EVENT_TYPE_CONNECT) {
-			logWrite("New connection from: %08x:%d", ev.peer->address.host, ev.peer->address.port);
-
-			NetHandle newPlayerHandle = AssignHandle();
-
-			Player* newPlayer = new Player(ev.peer, newPlayerHandle);
-			ev.peer->data = newPlayer;
-			m_players.push_back(newPlayer);
-
-			m_server->m_world.AddEntity(newPlayer);
-
-			newPlayer->OnConnected();
-
+			OnClientConnect(ev.peer);
 		} else if (ev.type == ENET_EVENT_TYPE_DISCONNECT) {
-			logWrite("Client disconnected: %08x", ev.peer->address.host);
-
-			Player* player = (Player*)ev.peer->data;
-			assert(player != nullptr);
-			if (player != nullptr) {
-				m_players.erase(std::find(m_players.begin(), m_players.end(), player));
-				m_server->m_world.RemoveEntity(player);
-				player->OnDisconnected();
-				player->Release();
-			}
-
+			OnClientDisconnect(ev.peer);
 		} else if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
 			NetworkMessage* newMessage = new NetworkMessage(ev.peer, ev.packet);
 			m_incomingMessages.push(newMessage);
