@@ -111,7 +111,7 @@ void Player::HandleMessage(NetworkMessage* message)
 		_pServer->m_network.SendMessageTo(m_peer, msgWeather);
 
 		NetworkMessage* msgTime = new NetworkMessage(NMT_ClockTime);
-		msgTime->Write(19);
+		msgTime->Write(12);
 		msgTime->Write(0);
 		msgTime->Write(0);
 		_pServer->m_network.SendMessageTo(m_peer, msgTime);
