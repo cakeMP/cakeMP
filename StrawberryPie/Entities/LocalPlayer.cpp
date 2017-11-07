@@ -62,8 +62,6 @@ void LocalPlayer::Initialize()
 
 void LocalPlayer::Update()
 {
-	Player::Update();
-
 	glm::vec3 pos = GetPosition();
 
 	if (_pGame->m_network.IsConnected()) {
