@@ -38,6 +38,10 @@ void Entity::Update()
 	}
 }
 
+void Entity::Frame()
+{
+}
+
 void Entity::InterpolatePosition(const glm::vec3 &start, const glm::vec3 &end, int ms)
 {
 	m_lerpPos.Set(start, end, ms);

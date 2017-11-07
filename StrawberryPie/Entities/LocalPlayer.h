@@ -26,8 +26,8 @@ public:
 
 	void Initialize();
 
-	void Update();
-	void Render();
+	virtual void Update();
+	virtual void Frame();
 };
 
 NAMESPACE_END;

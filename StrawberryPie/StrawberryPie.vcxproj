@@ -127,6 +127,7 @@
     <ClCompile Include="GTA\ScriptCam.cpp" />
     <ClCompile Include="System\Settings.cpp" />
     <ClCompile Include="System\Strawberry.cpp" />
+    <ClCompile Include="Utils\AppMem.cpp" />
     <ClCompile Include="Utils\Logging.cpp" />
     <ClCompile Include="Utils\Models.cpp" />
     <ClCompile Include="Utils\Parsing.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="System\Interface\Interface.h" />
     <ClInclude Include="System\Interface\MainMenu.h" />
     <ClInclude Include="GTA\ScriptCam.h" />
+    <ClInclude Include="Utils\AppMem.h" />
     <ClInclude Include="Utils\Interpolator.h" />
     <ClInclude Include="Utils\Interval.h" />
     <ClInclude Include="System\Settings.h" />
