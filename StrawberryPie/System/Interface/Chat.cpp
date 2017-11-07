@@ -8,7 +8,7 @@
 
 NAMESPACE_BEGIN;
 
-#include <windows.h> //Winuser.h
+#include <Windows.h> //Winuser.h
 
 Chat::Chat()
 {
