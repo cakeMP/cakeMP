@@ -28,8 +28,12 @@ private:
 public:
 	Average<uint32_t> m_statsIncomingMessages;
 	Average<uint32_t> m_statsIncomingBytes;
+	uint64_t m_statsIncomingMessagesTotal = 0;
+	uint64_t m_statsIncomingBytesTotal = 0;
 	Average<uint32_t> m_statsOutgoingMessages;
 	Average<uint32_t> m_statsOutgoingBytes;
+	uint64_t m_statsOutgoingMessagesTotal = 0;
+	uint64_t m_statsOutgoingBytesTotal = 0;
 
 public:
 	NetworkManager();

@@ -174,8 +174,10 @@ void NetworkManager::Update()
 		}
 	}
 
+	m_statsIncomingMessagesTotal += m_incomingMessages.size();
 	m_statsIncomingMessages.Add((uint32_t)m_incomingMessages.size());
 	m_statsIncomingBytes.Add(incomingBytes);
+	m_statsIncomingBytesTotal += incomingBytes;
 
 	while (m_incomingMessages.size() > 0) {
 		NetworkMessage* message = m_incomingMessages.front();
@@ -192,6 +194,7 @@ void NetworkManager::Update()
 		}
 	}
 
+	m_statsOutgoingMessagesTotal += m_outgoingMessages.size();
 	m_statsOutgoingMessages.Add((uint32_t)m_outgoingMessages.size());
 
 	uint32_t outgoingBytes = 0;
@@ -211,6 +214,7 @@ void NetworkManager::Update()
 	}
 
 	m_statsOutgoingBytes.Add(outgoingBytes);
+	m_statsOutgoingBytesTotal += outgoingBytes;
 }
 
 //TODO: Perhaps this should move to some other place?

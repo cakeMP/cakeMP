@@ -2,6 +2,8 @@
 #include <System/Interface/Interface.h>
 #include <System/Strawberry.h>
 
+#include <Utils/Formatting.h>
+
 #include <GTA/UI/UI.h>
 #include <GTA/UI/MenuItem.h>
 
@@ -63,10 +65,13 @@ void Interface::Update(float dt)
 	std::stringstream debugText;
 	debugText << "DEBUG:~n~";
 
-	glm::vec3 playerPos = _pGame->m_player.GetPosition();
-	glm::vec3 playerRot = _pGame->m_player.GetRotation();
+	LocalPlayer &player = _pGame->m_player;
+	glm::vec3 playerPos = player.GetPosition();
+	glm::vec3 playerRot = player.GetRotation();
+	glm::vec3 playerVel = player.GetVelocity();
 	debugText << "~c~Player position: ~w~" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << "~n~";
 	debugText << "~c~Player rotation: ~w~" << playerRot.x << ", " << playerRot.y << ", " << playerRot.z << "~n~";
+	debugText << "~c~Player velocity: ~w~" << playerVel.x << ", " << playerVel.y << ", " << playerVel.z << "~n~";
 
 	NetworkManager &network = _pGame->m_network;
 
@@ -78,9 +83,12 @@ void Interface::Update(float dt)
 		<< network.m_statsIncomingMessages.Max();
 
 	debugText << " ~w~(~g~"
-		<< network.m_statsIncomingBytes.Min() << "b ~w~&lt; "
-		<< network.m_statsIncomingBytes.Value() << "b &lt; ~r~"
-		<< network.m_statsIncomingBytes.Max() << "b~w~)~n~";
+		<< fmtBytes(network.m_statsIncomingBytes.Min()) << " ~w~&lt; "
+		<< fmtBytes(network.m_statsIncomingBytes.Value()) << " &lt; ~r~"
+		<< fmtBytes(network.m_statsIncomingBytes.Max()) << "~w~)";
+
+	debugText << " ~b~" << network.m_statsIncomingMessagesTotal;
+	debugText << "~w~: ~b~" << fmtBytes(network.m_statsIncomingBytesTotal) << "~n~";
 
 	debugText << "~c~Msgs out: ~g~"
 		<< network.m_statsOutgoingMessages.Min() << " ~w~&lt; "
@@ -88,9 +96,12 @@ void Interface::Update(float dt)
 		<< network.m_statsOutgoingMessages.Max();
 
 	debugText << " ~w~(~g~"
-		<< network.m_statsOutgoingBytes.Min() << "b ~w~&lt; "
-		<< network.m_statsOutgoingBytes.Value() << "b &lt; ~r~"
-		<< network.m_statsOutgoingBytes.Max() << "b~w~)~n~";
+		<< fmtBytes(network.m_statsOutgoingBytes.Min()) << " ~w~&lt; "
+		<< fmtBytes(network.m_statsOutgoingBytes.Value()) << " &lt; ~r~"
+		<< fmtBytes(network.m_statsOutgoingBytes.Max()) << "~w~)";
+
+	debugText << " ~b~" << network.m_statsOutgoingMessagesTotal;
+	debugText << "~w~: ~b~" << fmtBytes(network.m_statsOutgoingBytesTotal) << "~n~";
 
 	m_strDebug.m_text = debugText.str();
 }

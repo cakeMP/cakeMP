@@ -67,7 +67,7 @@ void LocalPlayer::Update()
 	if (_pGame->m_network.IsConnected()) {
 		glm::vec3 vel = GetVelocity();
 
-		if (vel.length() > 0.5f) {
+		if (glm::length2(vel) > 0.5f) {
 			glm::vec3 pos = GetPosition();
 			float heading = GetHeading();
 
