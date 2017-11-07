@@ -8,6 +8,8 @@
 
 NAMESPACE_BEGIN;
 
+#include <windows.h> //Winuser.h
+
 Chat::Chat()
 {
 }
@@ -108,21 +110,29 @@ void Chat::OnKeyDown(uint32_t c)
 		return;
 	}
 
-	if (c >= 32 && c <= 126) {
-		//TODO: Handle unicode using ToUnicodeEx
+	if (c >= 0 && c <= 255) {
+		wchar_t wcharBuffer[10];
 
-		char buffer[12];
-		if (_pGame->IsKeyDown(VK_SHIFT)) {
-			sprintf(buffer, "%c", toupper(c));
-		} else {
-			sprintf(buffer, "%c", tolower(c));
-		}
+		unsigned char keystate[256]; //using _pGame->m_keyStates does not work
+		GetKeyboardState(keystate);
+
+		auto keyboardLayout = GetKeyboardLayout(GetCurrentThreadId());
+		int scanCodeEx = MapVirtualKeyExW(c, MAPVK_VK_TO_VSC_EX, keyboardLayout);
+		int ret = ToUnicodeEx(c, scanCodeEx, keystate, wcharBuffer, 10, 0, keyboardLayout);
+
+		if (ret < 1) return; //invalid key or dead key. Dead keys should get proper handling tho
+
+		char *buffer = (char *)malloc(ret + 1);
+		wcstombs(buffer, wcharBuffer, ret);
+		buffer[ret] = '\0';
 
 		m_currentInput += buffer;
 
 		m_scaleform.StartFunction("ADD_TEXT");
 		m_scaleform.PushParam(buffer);
 		m_scaleform.FinishFunction();
+
+		free(buffer);
 	}
 }
 
