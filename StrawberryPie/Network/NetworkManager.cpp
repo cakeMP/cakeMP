@@ -227,9 +227,10 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		logWrite("We have received our local handle: %u", handle.m_value);
 
-		_pGame->m_player.SetNetHandle(handle);
-		_pGame->m_player.SetModel(skinHash);
-		_pGame->m_player.SetPositionNoOffset(position);
+		LocalPlayer &player = _pGame->m_player;
+		player.SetNetHandle(handle);
+		player.SetModel(skinHash);
+		player.SetPositionNoOffset(position);
 
 		_pGame->OnConnected();
 
@@ -365,6 +366,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		Player* player = GetEntityFromHandle<Player>(ET_Player, handle);
 		if (player == nullptr) {
+			// Can happen if the player has *just* been streamed out
 			return;
 		}
 
