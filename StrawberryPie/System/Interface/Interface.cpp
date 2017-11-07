@@ -68,7 +68,29 @@ void Interface::Update(float dt)
 	debugText << "~c~Player position: ~w~" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << "~n~";
 	debugText << "~c~Player rotation: ~w~" << playerRot.x << ", " << playerRot.y << ", " << playerRot.z << "~n~";
 
-	debugText << "~c~Streamed entities: ~w~" << _pGame->m_network.GetEntityCount() << "~n~";
+	NetworkManager &network = _pGame->m_network;
+
+	debugText << "~c~Streamed entities: ~w~" << network.GetEntityCount() << "~n~";
+
+	debugText << "~c~Msgs in: ~g~"
+		<< network.m_statsIncomingMessages.Min() << " ~w~&lt; "
+		<< network.m_statsIncomingMessages.Value() << " &lt; ~r~"
+		<< network.m_statsIncomingMessages.Max();
+
+	debugText << " ~w~(~g~"
+		<< network.m_statsIncomingBytes.Min() << "b ~w~&lt; "
+		<< network.m_statsIncomingBytes.Value() << "b &lt; ~r~"
+		<< network.m_statsIncomingBytes.Max() << "b~w~)~n~";
+
+	debugText << "~c~Msgs out: ~g~"
+		<< network.m_statsOutgoingMessages.Min() << " ~w~&lt; "
+		<< network.m_statsOutgoingMessages.Value() << " &lt; ~r~"
+		<< network.m_statsOutgoingMessages.Max();
+
+	debugText << " ~w~(~g~"
+		<< network.m_statsOutgoingBytes.Min() << "b ~w~&lt; "
+		<< network.m_statsOutgoingBytes.Value() << "b &lt; ~r~"
+		<< network.m_statsOutgoingBytes.Max() << "b~w~)~n~";
 
 	m_strDebug.m_text = debugText.str();
 }

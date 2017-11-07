@@ -160,6 +160,7 @@
     <ClInclude Include="System\Interface\MainMenu.h" />
     <ClInclude Include="GTA\ScriptCam.h" />
     <ClInclude Include="Utils\AppMem.h" />
+    <ClInclude Include="Utils\Average.h" />
     <ClInclude Include="Utils\Interpolator.h" />
     <ClInclude Include="Utils\Interval.h" />
     <ClInclude Include="System\Settings.h" />

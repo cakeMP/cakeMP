@@ -6,6 +6,8 @@
 
 #include <System/Entity.h>
 
+#include <Utils/Average.h>
+
 #include <enet/enet.h>
 
 NAMESPACE_BEGIN;
@@ -22,6 +24,12 @@ private:
 	std::queue<NetworkMessage*> m_outgoingMessages;
 
 	std::unordered_map<uint32_t, Entity*> m_entitiesNetwork;
+
+public:
+	Average<uint32_t> m_statsIncomingMessages;
+	Average<uint32_t> m_statsIncomingBytes;
+	Average<uint32_t> m_statsOutgoingMessages;
+	Average<uint32_t> m_statsOutgoingBytes;
 
 public:
 	NetworkManager();

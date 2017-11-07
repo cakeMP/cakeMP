@@ -4,15 +4,15 @@
 
 #include <GTA/UI/Text.h>
 
+#include <Utils/Average.h>
+
 NAMESPACE_BEGIN;
 
 class FPSCounter
 {
 private:
-	const static int NumFrameAvg = 60;
-
 	UIText m_text;
-	float m_lastFrames[NumFrameAvg];
+	Average<float> m_framerate;
 
 public:
 	FPSCounter();

@@ -143,6 +143,8 @@ void NetworkManager::Update()
 		pair.second->Update();
 	}
 
+	uint32_t incomingBytes = 0;
+
 	//TODO: Make a thread just for network message queueing
 	ENetEvent ev;
 	while (enet_host_service(m_localHost, &ev, 0) > 0) {
@@ -167,9 +169,13 @@ void NetworkManager::Update()
 
 		} else if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
 			NetworkMessage* newMessage = new NetworkMessage(ev.peer, ev.packet);
+			incomingBytes += (uint32_t)newMessage->m_length;
 			m_incomingMessages.push(newMessage);
 		}
 	}
+
+	m_statsIncomingMessages.Add((uint32_t)m_incomingMessages.size());
+	m_statsIncomingBytes.Add(incomingBytes);
 
 	while (m_incomingMessages.size() > 0) {
 		NetworkMessage* message = m_incomingMessages.front();
@@ -186,9 +192,15 @@ void NetworkManager::Update()
 		}
 	}
 
+	m_statsOutgoingMessages.Add((uint32_t)m_outgoingMessages.size());
+
+	uint32_t outgoingBytes = 0;
+
 	while (m_outgoingMessages.size() > 0) {
 		NetworkMessage* message = m_outgoingMessages.front();
 		m_outgoingMessages.pop();
+
+		outgoingBytes += (uint32_t)message->m_length;
 
 		ENetPacket* newPacket = enet_packet_create(message->m_data, message->m_length, ENET_PACKET_FLAG_RELIABLE | ENET_PACKET_FLAG_NO_ALLOCATE);
 		newPacket->userData = message;
@@ -197,6 +209,8 @@ void NetworkManager::Update()
 
 		// Note: We don't delete this packet here, we wait until ENet tells us it's no longer in use and delete it in the free callback (networkMessageFree)
 	}
+
+	m_statsOutgoingBytes.Add(outgoingBytes);
 }
 
 //TODO: Perhaps this should move to some other place?

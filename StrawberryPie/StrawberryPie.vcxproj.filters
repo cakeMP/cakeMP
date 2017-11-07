@@ -221,6 +221,9 @@
     <ClInclude Include="Utils\AppMem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\Average.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Licenses.txt" />
