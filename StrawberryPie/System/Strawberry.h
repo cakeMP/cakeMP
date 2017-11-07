@@ -35,7 +35,7 @@ public:
 
 	void Initialize();
 	void Update(float dt);
-	void Render();
+	void Frame();
 
 	void OnConnected();
 	void OnDisconnected();

@@ -81,7 +81,7 @@ void Strawberry::Update(float dt)
 	}
 }
 
-void Strawberry::Render()
+void Strawberry::Frame()
 {
 	/*
 	//TODO: This should be an option (it slows down keyboard input outside of the game sadly)
@@ -92,7 +92,7 @@ void Strawberry::Render()
 
 	m_interface.Render();
 
-	m_player.Render();
+	m_player.Frame();
 }
 
 void Strawberry::OnConnected()

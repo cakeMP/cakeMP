@@ -36,7 +36,7 @@ void scriptGame()
 			tmLastUpdate = tmNow;
 			_pGame->Update(tmSinceLastUpdate.count() / 1000.0f);
 		}
-		_pGame->Render();
+		_pGame->Frame();
 
 		WAIT(0);
 	}

@@ -26,6 +26,7 @@ public:
 	virtual NetworkEntityType GetType() = 0;
 
 	virtual void Update();
+	virtual void Frame();
 
 	virtual void InterpolatePosition(const glm::vec3 &start, const glm::vec3 &end, int ms);
 	virtual void InterpolateQuaternion(const glm::quat &start, const glm::quat &end, int ms);
