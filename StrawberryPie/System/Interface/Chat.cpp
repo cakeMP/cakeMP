@@ -110,7 +110,7 @@ void Chat::OnKeyDown(uint32_t c)
 		return;
 	}
 
-	if (c >= 0 && c <= 255) {
+	if (c <= 255) {
 		wchar_t wcharBuffer[10];
 
 		unsigned char keystate[256]; //using _pGame->m_keyStates does not work
