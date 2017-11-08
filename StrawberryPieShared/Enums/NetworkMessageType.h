@@ -89,4 +89,13 @@ enum NetworkMessageType
 	//  * int: Minutes
 	//  * int: Seconds
 	NMT_ClockTime,
+
+	// Server to client: A player started tring to enter a vehicle.
+	//  * NetHandle: The player that is trying to enter the vehicle.
+	//  * NetHandle: The vehicle that is trying to get entered.
+	//
+	// Client to server: Player started trying to enter a vehicle.
+	//  * NetHandle: The vehicle that is being entered.
+	//  * int: The seat of the vehicle that is trying to be entered.
+	NMT_EnteringVehicle,
 };
