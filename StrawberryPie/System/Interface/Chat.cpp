@@ -3,6 +3,8 @@
 #include <System/Interface/Chat.h>
 #include <System/Strawberry.h>
 
+#include <GTA/UI/UI.h>
+
 #include <shv/main.h>
 #include <shv/natives.h>
 
@@ -20,46 +22,37 @@ Chat::~Chat()
 
 void Chat::Initialize()
 {
-	m_scaleform.Load("multiplayer_chat");
-	// Visible states:
-	//  * VISIBLE_STATE_HIDDEN: 0
-	//  * VISIBLE_STATE_DEFAULT: 1
-	//  * VISIBLE_STATE_TYPING: 2
-	// Focus modes:
-	//  * FOCUS_MODE_LOBBY: 0
-	//  * FOCUS_MODE_GAME: 1
-	// Default display config:
-	//  * screenWidth: 1280
-	//  * screenHeight: 720
-	//  * safeTop: 0.5
-	//  * safeBottom: 0.95
-	//  * safeLeft: 0.05
-	//  * safeRight: 0.95
-	//  * isWideScreen: true
-	//  * isCircleAccept: false
-	//  * isHiDef: true
-	//  * isAsian: false
-	// SET_DISPLAY_CONFIG(_screenWidthPixels, _screenHeightPixels, _safeTopPercent, _safeBottomPercent, _safeLeftPercent, _safeRightPercent, _isWideScreen, _isCircleAccept)
-	// ADD_TEXT(text)
-	// DELETE_TEXT()
-	// ABORT_TEXT()
-	// COMPLETE_TEXT()
-	// SET_TYPING_DONE()
-	// ADD_MESSAGE(player, message, scope, teamOnly, eHudColour)
-	// SET_FOCUS(eVisibleState, scopeType, scope, player, eHudColour)
-	// SET_FOCUS_MODE(focusMode)
-	// PAGE_UP()
-	// PAGE_DOWN()
-	// RESET()
+	m_chatInput.m_font = 0;
+	m_chatInput.m_scale = 0.35f;
+	m_chatInput.m_outline = true;
 }
 
-void Chat::Update()
+void Chat::Update(float dt)
 {
+	//
 }
 
 void Chat::Render()
 {
-	m_scaleform.Render();
+	glm::vec2 cursorPos = glm::vec2(20, 128 + m_height);
+
+	if (IsFocused()) {
+		glm::vec2 textSize = m_chatInput.Measure();
+		if (textSize.x < 50) {
+			textSize.x = 50;
+		}
+		uiDrawRectangle(cursorPos, textSize, glm::vec4(0.2f, 0.2f, 0.2f, 0.7f));
+		m_chatInput.Render(cursorPos);
+	}
+
+	for (int i = (int)m_chatLines.size() - 1; i >= 0; i--) {
+		UIText &chatLine = m_chatLines[i];
+		chatLine.m_font = 0;
+		chatLine.m_scale = 0.35f;
+		chatLine.m_outline = true;
+		cursorPos.y -= chatLine.Measure().y;
+		chatLine.Render(cursorPos);
+	}
 
 	//TODO: This could go into Update() if we write a controls helper class
 	if (IsFocused()) {
@@ -84,29 +77,32 @@ void Chat::OnKeyDown(uint32_t c)
 		_pGame->m_network.SendToHost(msgChat);
 
 		m_currentInput = "";
-		m_scaleform.CallFunction("COMPLETE_TEXT");
+		m_chatInput.m_text = m_currentInput;
+		//m_scaleform.CallFunction("COMPLETE_TEXT");
 		SetFocused(false);
 		return;
 
 	} else if (c == VK_BACK) {
 		if (m_currentInput.size() > 0) {
 			m_currentInput.pop_back();
-			m_scaleform.CallFunction("DELETE_TEXT");
+			m_chatInput.m_text = m_currentInput;
+			//m_scaleform.CallFunction("DELETE_TEXT");
 		}
 		return;
 
 	} else if (c == VK_ESCAPE) {
 		m_currentInput = "";
-		m_scaleform.CallFunction("ABORT_TEXT");
+		m_chatInput.m_text = m_currentInput;
+		//m_scaleform.CallFunction("ABORT_TEXT");
 		SetFocused(false);
 		return;
 
 	} else if (c == VK_PRIOR) {
-		m_scaleform.CallFunction("PAGE_UP");
+		//m_scaleform.CallFunction("PAGE_UP");
 		return;
 
 	} else if (c == VK_NEXT) {
-		m_scaleform.CallFunction("PAGE_DOWN");
+		//m_scaleform.CallFunction("PAGE_DOWN");
 		return;
 	}
 
@@ -127,10 +123,13 @@ void Chat::OnKeyDown(uint32_t c)
 		buffer[ret] = '\0';
 
 		m_currentInput += buffer;
+		m_chatInput.m_text = m_currentInput;
 
+		/*
 		m_scaleform.StartFunction("ADD_TEXT");
 		m_scaleform.PushParam(buffer);
 		m_scaleform.FinishFunction();
+		*/
 
 		free(buffer);
 	}
@@ -138,6 +137,7 @@ void Chat::OnKeyDown(uint32_t c)
 
 void Chat::SetFocused(bool focus)
 {
+	/*
 	if (focus != m_focused) {
 		m_scaleform.StartFunction("SET_FOCUS");
 		if (focus) {
@@ -150,6 +150,7 @@ void Chat::SetFocused(bool focus)
 		m_scaleform.PushParam(_pGame->m_player.m_nickname);
 		m_scaleform.FinishFunction();
 	}
+	*/
 
 	m_focused = focus;
 }
@@ -159,17 +160,18 @@ bool Chat::IsFocused()
 	return m_focused;
 }
 
-void Chat::AddMessage(const char* sender, const char* message)
+void Chat::AddMessage(const std::string &message)
 {
-	m_scaleform.StartFunction("ADD_MESSAGE");
-	m_scaleform.PushParam(sender);
-	m_scaleform.PushParam(message);
-	m_scaleform.FinishFunction();
+	m_chatLines.push_back(UIText(message));
+
+	if ((int)m_chatLines.size() > m_maxLines) {
+		m_chatLines.erase(m_chatLines.begin(), m_chatLines.begin() + (m_chatLines.size() - m_maxLines));
+	}
 }
 
 void Chat::Clear()
 {
-	m_scaleform.CallFunction("RESET");
+	m_chatLines.clear();
 }
 
 NAMESPACE_END;

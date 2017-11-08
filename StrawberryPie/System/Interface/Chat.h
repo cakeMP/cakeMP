@@ -2,23 +2,29 @@
 
 #include <Common.h>
 
-#include <GTA/Scaleform.h>
+#include <GTA/UI/Text.h>
 
 NAMESPACE_BEGIN;
 
 class Chat
 {
 private:
-	Scaleform m_scaleform;
 	bool m_focused = false;
 	std::string m_currentInput;
+
+	float m_width = 300;
+	float m_height = 100;
+	int m_maxLines = 10;
+
+	std::vector<UIText> m_chatLines;
+	UIText m_chatInput;
 
 public:
 	Chat();
 	~Chat();
 
 	void Initialize();
-	void Update();
+	void Update(float dt);
 	void Render();
 
 	void OnKeyDown(uint32_t c);
@@ -26,7 +32,7 @@ public:
 	void SetFocused(bool focus);
 	bool IsFocused();
 
-	void AddMessage(const char* sender, const char* message);
+	void AddMessage(const std::string &message);
 	void Clear();
 };
 

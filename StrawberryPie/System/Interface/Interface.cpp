@@ -59,7 +59,7 @@ void Interface::Update(float dt)
 	m_mainMenu.Update();
 
 	if (_pGame->m_network.IsConnected()) {
-		m_chat.Update();
+		m_chat.Update(dt);
 	}
 
 	std::stringstream debugText;
@@ -67,11 +67,7 @@ void Interface::Update(float dt)
 
 	LocalPlayer &player = _pGame->m_player;
 	glm::vec3 playerPos = player.GetPosition();
-	glm::vec3 playerRot = player.GetRotation();
-	glm::vec3 playerVel = player.GetVelocity();
 	debugText << "~c~Player position: ~w~" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << "~n~";
-	debugText << "~c~Player rotation: ~w~" << playerRot.x << ", " << playerRot.y << ", " << playerRot.z << "~n~";
-	debugText << "~c~Player velocity: ~w~" << playerVel.x << ", " << playerVel.y << ", " << playerVel.z << "~n~";
 
 	NetworkManager &network = _pGame->m_network;
 

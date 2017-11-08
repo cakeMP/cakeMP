@@ -11,6 +11,8 @@ public:
 
 	glm::vec3 m_lastSyncedPosition;
 
+	int m_enteringVehicleHandle = -1;
+
 public:
 	LocalPlayer();
 	virtual ~LocalPlayer();

@@ -10,6 +10,12 @@
 
 NAMESPACE_BEGIN;
 
+struct LogLine
+{
+	std::string m_text;
+	float m_ttl;
+};
+
 class Interface
 {
 public:

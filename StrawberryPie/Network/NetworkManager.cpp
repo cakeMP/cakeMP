@@ -107,8 +107,7 @@ void NetworkManager::SendToHost(NetworkMessage* message)
 	m_outgoingMessages.push(message);
 }
 
-template<typename T>
-T* NetworkManager::GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle)
+Entity* NetworkManager::GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle)
 {
 	auto it = m_entitiesNetwork.find(handle);
 	if (it == m_entitiesNetwork.end()) {
@@ -120,7 +119,17 @@ T* NetworkManager::GetEntityFromHandle(NetworkEntityType expectedType, const Net
 		return nullptr;
 	}
 
-	return static_cast<T*>(it->second);
+	return it->second;
+}
+
+Entity* NetworkManager::GetEntityFromLocalHandle(NetworkEntityType expectedType, int handle)
+{
+	for (auto &pair : m_entitiesNetwork) {
+		if (pair.second->GetLocalHandle() == handle && pair.second->GetType() == expectedType) {
+			return pair.second;
+		}
+	}
+	return nullptr;
 }
 
 void NetworkManager::Initialize()
@@ -363,13 +372,11 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 	}
 
 	if (message->m_type == NMT_ChatMessage) {
-		std::string name;
 		std::string text;
 
-		message->Read(name);
 		message->Read(text);
 
-		_pGame->m_interface.m_chat.AddMessage(name.c_str(), text.c_str());
+		_pGame->m_interface.m_chat.AddMessage(text);
 
 		return;
 	}

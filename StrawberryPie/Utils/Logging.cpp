@@ -1,6 +1,9 @@
 #include <Common.h>
 
 #include <Utils/Logging.h>
+#include <Utils/Formatting.h>
+
+#include <System/Strawberry.h>
 
 #include <Build.h>
 
@@ -46,15 +49,36 @@ void logWrite(const char* fmt, ...)
 		return;
 	}
 
+	char stackBuffer[128];
+	std::string lineString;
+
 	va_list args;
 	va_start(args, fmt);
+	int len = vsnprintf(stackBuffer, 128, fmt, args);
+	va_end(args);
 
-	fprintf(_fhLog, "[%02d:%02d:%02d] ", tm->tm_hour, tm->tm_min, tm->tm_sec);
-	vfprintf(_fhLog, fmt, args);
-	fputc('\n', _fhLog);
+	if (len >= 128) {
+		char* buffer = (char*)malloc(len + 1);
+
+		va_list args;
+		va_start(args, fmt);
+		len = vsnprintf(buffer, len + 1, fmt, args);
+		va_end(args);
+
+		lineString = buffer;
+		free(buffer);
+	} else {
+		lineString = stackBuffer;
+	}
+
+	lineString = fmtString("[%02d:%02d:%02d] %s", tm->tm_hour, tm->tm_min, tm->tm_sec, lineString.c_str());
+
+	fprintf(_fhLog, "%s\n", lineString.c_str());
 	fflush(_fhLog);
 
-	va_end(args);
+	if (_pGame != nullptr) {
+		_pGame->m_interface.m_chat.AddMessage(lineString);
+	}
 
 	_mutexLog.unlock();
 }

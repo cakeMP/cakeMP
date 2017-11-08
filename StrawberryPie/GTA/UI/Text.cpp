@@ -22,11 +22,11 @@ UIText::~UIText()
 {
 }
 
-float UIText::Measure()
+glm::vec2 UIText::Measure()
 {
 	UI::_BEGIN_TEXT_COMMAND_WIDTH("STRING");
 	uiAddLongString(m_text.c_str());
-	return UI::_END_TEXT_COMMAND_GET_WIDTH(m_font);
+	return glm::vec2(UI::_END_TEXT_COMMAND_GET_WIDTH(m_font), 50.0f * m_scale);
 }
 
 void UIText::Render(const glm::vec2 &pos)

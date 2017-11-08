@@ -1,6 +1,7 @@
 #include <Common.h>
 
 #include <Entities/LocalPlayer.h>
+#include <Entities/Vehicle.h>
 
 #include <System/Strawberry.h>
 #include <Network/NetworkMessage.h>
@@ -62,8 +63,6 @@ void LocalPlayer::Initialize()
 
 void LocalPlayer::Update()
 {
-	glm::vec3 pos = GetPosition();
-
 	if (_pGame->m_network.IsConnected()) {
 		glm::vec3 vel = GetVelocity();
 
@@ -88,6 +87,32 @@ void LocalPlayer::Update()
 			msgPos->Write(vel);
 			msgPos->Write(moveType);
 			_pGame->m_network.SendToHost(msgPos);
+		}
+
+		if (PED::IS_PED_GETTING_INTO_A_VEHICLE(GetLocalHandle())) {
+			int vehicleHandle = PED::GET_VEHICLE_PED_IS_TRYING_TO_ENTER(GetLocalHandle());
+
+			if (m_enteringVehicleHandle != vehicleHandle) {
+				m_enteringVehicleHandle = vehicleHandle;
+
+				int vehicleSeat = PED::GET_SEAT_PED_IS_TRYING_TO_ENTER(GetLocalHandle());
+
+				logWrite("Trying to enter vehicle %d in seat %d", vehicleHandle);
+
+				Vehicle* vehicle = _pGame->m_network.GetEntityFromLocalHandle<Vehicle>(ET_Vehicle, vehicleHandle);
+				if (vehicle == nullptr) {
+					logWrite("Vehicle is not synced!!!!");
+				} else {
+					logWrite("NetHandle = %x @ %p", (uint32_t)vehicle->GetNetHandle(), vehicle);
+
+					NetworkMessage* msgEnteringVehicle = new NetworkMessage(NMT_EnteringVehicle);
+					msgEnteringVehicle->Write(vehicle->GetNetHandle());
+					msgEnteringVehicle->Write(vehicleSeat);
+					_pGame->m_network.SendToHost(msgEnteringVehicle);
+				}
+			}
+		} else {
+			m_enteringVehicleHandle = -1;
 		}
 	}
 }

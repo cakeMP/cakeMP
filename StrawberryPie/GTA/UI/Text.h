@@ -32,7 +32,7 @@ public:
 	UIText(const std::string &text);
 	~UIText();
 
-	float Measure();
+	glm::vec2 Measure();
 
 	void Render(const glm::vec2 &pos);
 };

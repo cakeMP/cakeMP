@@ -50,8 +50,20 @@ public:
 
 	void SendToHost(NetworkMessage* message);
 
+	Entity* GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle);
+	Entity* GetEntityFromLocalHandle(NetworkEntityType expectedType, int handle);
+
 	template<typename T>
-	T* GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle);
+	T* GetEntityFromHandle(NetworkEntityType expectedType, const NetHandle &handle)
+	{
+		return static_cast<T*>(GetEntityFromHandle(expectedType, handle));
+	}
+
+	template<typename T>
+	T* GetEntityFromLocalHandle(NetworkEntityType expectedType, int handle)
+	{
+		return static_cast<T*>(GetEntityFromLocalHandle(expectedType, handle));
+	}
 
 	void Initialize();
 	void Update();
