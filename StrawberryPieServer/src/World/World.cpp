@@ -29,7 +29,7 @@ void World::Initialize()
 	Vehicle* newVehicle = new Vehicle(_pServer->m_network.AssignHandle());
 	AddEntity(newVehicle);
 
-	newVehicle->m_model = hashGet("asea");
+	newVehicle->SetModel(hashGet("asea"));
 	newVehicle->SetPosition(glm::vec3(-4.31804f, 546.8f, 173.75f));
 
 	logWrite("Initialized.");

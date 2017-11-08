@@ -59,7 +59,6 @@ enum NetworkMessageType
 	NMT_PlayerLeave,
 
 	// Server to client: A chat message should appear in the chat window.
-	//  * NetHandle: The player that sent the message, if any.
 	//  * string: The message in its entirety.
 	//
 	// Client to server: Client has typed a chat message.
