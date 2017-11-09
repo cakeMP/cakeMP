@@ -13,7 +13,7 @@ private:
 	std::string m_currentInput;
 
 	float m_width = 300;
-	float m_height = 100;
+	float m_height = 230;
 	int m_maxLines = 10;
 
 	std::vector<UIText> m_chatLines;
