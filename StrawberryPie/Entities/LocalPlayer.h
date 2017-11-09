@@ -4,6 +4,8 @@
 
 NAMESPACE_BEGIN;
 
+class Vehicle;
+
 class LocalPlayer : public Player
 {
 public:
@@ -12,6 +14,11 @@ public:
 	glm::vec3 m_lastSyncedPosition;
 
 	int m_enteringVehicleHandle = -1;
+	int m_enteringVehicleSeat = -2;
+
+	int m_inVehicleLocalHandle = -1;
+	Vehicle* m_inVehicle = nullptr;
+	int m_inVehicleSeat = -2;
 
 public:
 	LocalPlayer();

@@ -63,11 +63,17 @@ void LocalPlayer::Initialize()
 
 void LocalPlayer::Update()
 {
-	if (_pGame->m_network.IsConnected()) {
-		glm::vec3 vel = GetVelocity();
+	if (!_pGame->m_network.IsConnected()) {
+		return;
+	}
 
-		if (glm::length2(vel) > 0.5f) {
-			glm::vec3 pos = GetPosition();
+	glm::vec3 pos = GetPosition();
+	glm::vec3 vel = GetVelocity();
+
+	if (glm::length2(vel) > 0.5f) {
+		if (m_inVehicle != nullptr) {
+			logWrite("WARNING: VEHICLE MOVE SYNC IS NOT IMPLEMENTED YET!");
+		} else {
 			float heading = GetHeading();
 
 			m_lastSyncedPosition = pos;
@@ -88,32 +94,59 @@ void LocalPlayer::Update()
 			msgPos->Write(moveType);
 			_pGame->m_network.SendToHost(msgPos);
 		}
+	}
 
-		if (PED::IS_PED_GETTING_INTO_A_VEHICLE(GetLocalHandle())) {
-			int vehicleHandle = PED::GET_VEHICLE_PED_IS_TRYING_TO_ENTER(GetLocalHandle());
+	if (PED::IS_PED_GETTING_INTO_A_VEHICLE(GetLocalHandle())) {
+		int vehicleHandle = PED::GET_VEHICLE_PED_IS_TRYING_TO_ENTER(GetLocalHandle());
 
-			if (m_enteringVehicleHandle != vehicleHandle) {
-				m_enteringVehicleHandle = vehicleHandle;
+		if (vehicleHandle != 0 && m_enteringVehicleHandle != vehicleHandle) {
+			m_enteringVehicleHandle = vehicleHandle;
+			m_enteringVehicleSeat = PED::GET_SEAT_PED_IS_TRYING_TO_ENTER(GetLocalHandle());
 
-				int vehicleSeat = PED::GET_SEAT_PED_IS_TRYING_TO_ENTER(GetLocalHandle());
+			Vehicle* vehicle = _pGame->m_network.GetEntityFromLocalHandle<Vehicle>(ET_Vehicle, vehicleHandle);
+			if (vehicle != nullptr) {
+				logWrite("Entering vehicle %x @ %p", (uint32_t)vehicle->GetNetHandle(), vehicle);
 
-				logWrite("Trying to enter vehicle %d in seat %d", vehicleHandle);
-
-				Vehicle* vehicle = _pGame->m_network.GetEntityFromLocalHandle<Vehicle>(ET_Vehicle, vehicleHandle);
-				if (vehicle == nullptr) {
-					logWrite("Vehicle is not synced!!!!");
-				} else {
-					logWrite("NetHandle = %x @ %p", (uint32_t)vehicle->GetNetHandle(), vehicle);
-
-					NetworkMessage* msgEnteringVehicle = new NetworkMessage(NMT_EnteringVehicle);
-					msgEnteringVehicle->Write(vehicle->GetNetHandle());
-					msgEnteringVehicle->Write(vehicleSeat);
-					_pGame->m_network.SendToHost(msgEnteringVehicle);
-				}
+				NetworkMessage* msgEnteringVehicle = new NetworkMessage(NMT_EnteringVehicle);
+				msgEnteringVehicle->Write(vehicle->GetNetHandle());
+				msgEnteringVehicle->Write(m_enteringVehicleSeat);
+				_pGame->m_network.SendToHost(msgEnteringVehicle);
 			}
-		} else {
-			m_enteringVehicleHandle = -1;
 		}
+	} else {
+		m_enteringVehicleHandle = -1;
+	}
+
+	if (PED::IS_PED_IN_ANY_VEHICLE(GetLocalHandle(), false)) {
+		int vehicleLocalHandle = PED::GET_VEHICLE_PED_IS_IN(GetLocalHandle(), false);
+		if (vehicleLocalHandle != m_inVehicleLocalHandle) {
+			m_inVehicleLocalHandle = vehicleLocalHandle;
+
+			Vehicle* vehicle = _pGame->m_network.GetEntityFromLocalHandle<Vehicle>(ET_Vehicle, vehicleLocalHandle);
+			if (vehicle == nullptr) {
+				logWrite("Player entered unsynced vehicle!");
+			} else {
+				m_inVehicle = vehicle;
+				m_inVehicleSeat = m_enteringVehicleSeat;
+
+				NetworkMessage* msgEnteredVehicle = new NetworkMessage(NMT_EnteredVehicle);
+				msgEnteredVehicle->Write(vehicle->GetNetHandle());
+				msgEnteredVehicle->Write(m_inVehicleSeat);
+				_pGame->m_network.SendToHost(msgEnteredVehicle);
+			}
+		}
+	} else {
+		if (m_inVehicle != nullptr) {
+			logWrite("Player has left vehicle!");
+
+			NetworkMessage* msgEnteredVehicle = new NetworkMessage(NMT_LeftVehicle);
+			msgEnteredVehicle->Write(m_inVehicle->GetNetHandle());
+			msgEnteredVehicle->Write(m_inVehicleSeat);
+			_pGame->m_network.SendToHost(msgEnteredVehicle);
+		}
+
+		m_inVehicleLocalHandle = -1;
+		m_inVehicle = nullptr;
 	}
 }
 

@@ -40,7 +40,7 @@ glm::vec2 UIText::Measure()
 {
 	SetProperties();
 
-	UI::_BEGIN_TEXT_COMMAND_WIDTH("STRING");
+	UI::_BEGIN_TEXT_COMMAND_WIDTH("CELL_EMAIL_BCON");
 	uiAddLongString(m_text.c_str());
 	return glm::vec2(UI::_END_TEXT_COMMAND_GET_WIDTH(1) * ui_screenWidth, 64.0f * m_scale);
 }
@@ -67,7 +67,7 @@ void UIText::Render(const glm::vec2 &pos)
 		UI::SET_TEXT_WRAP(spos.x, spos.x + sWrapSize);
 	}
 
-	UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("jamyfafi"); //TODO: What is this magic string? Scripts don't know it and actually seem to pass "STRING" all the time..
+	UI::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("CELL_EMAIL_BCON");
 	uiAddLongString(m_text.c_str());
 	UI::END_TEXT_COMMAND_DISPLAY_TEXT(spos.x, spos.y, false);
 }
