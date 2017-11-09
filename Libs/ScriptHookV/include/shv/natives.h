@@ -7,7 +7,7 @@
 
 namespace PLAYER
 {
-	static Vehicle GET_PLAYER_PED(Player player) { return invoke<Vehicle>(0x43A66C31C68491C0, player); } // 0x43A66C31C68491C0 0x6E31E993
+	static Ped GET_PLAYER_PED(Player player) { return invoke<Vehicle>(0x43A66C31C68491C0, player); } // 0x43A66C31C68491C0 0x6E31E993
 	static Ped GET_PLAYER_PED_SCRIPT_INDEX(Player player) { return invoke<Ped>(0x50FAC3A3E030A6E1, player); } // 0x50FAC3A3E030A6E1 0x6AC64990
 	static void SET_PLAYER_MODEL(Player player, Hash model) { invoke<Void>(0x00A1CADD00108836, player, model); } // 0x00A1CADD00108836 0x774A4C54
 	static void CHANGE_PLAYER_PED(Player player, Ped ped, BOOL b2, BOOL b3) { invoke<Void>(0x048189FAC643DEEE, player, ped, b2, b3); } // 0x048189FAC643DEEE 0xBE515485
@@ -3051,9 +3051,9 @@ namespace UI
 	static void BEGIN_TEXT_COMMAND_IS_MESSAGE_DISPLAYED(const char* text) { invoke<Void>(0x853648FD1063A213, text); } // 0x853648FD1063A213 0xDD524A11
 	static BOOL END_TEXT_COMMAND_IS_MESSAGE_DISPLAYED() { return invoke<BOOL>(0x8A9BA1AB3E237613); } // 0x8A9BA1AB3E237613 0x672EFB45
 	static void BEGIN_TEXT_COMMAND_DISPLAY_TEXT(const char* text) { invoke<Void>(0x25FBB336DF1804CB, text); } // 0x25FBB336DF1804CB 0x3E35563E
-	static void END_TEXT_COMMAND_DISPLAY_TEXT(float x, float y) { invoke<Void>(0xCD015E5BB0D96A57, x, y); } // 0xCD015E5BB0D96A57 0x6F8350CE
+	static void END_TEXT_COMMAND_DISPLAY_TEXT(float x, float y, BOOL p2) { invoke<Void>(0xCD015E5BB0D96A57, x, y, p2); } // 0xCD015E5BB0D96A57 0x6F8350CE
 	static void _BEGIN_TEXT_COMMAND_WIDTH(const char* text) { invoke<Void>(0x54CE8AC98E120CAB, text); } // 0x54CE8AC98E120CAB 0x51E7A037
-	static float _END_TEXT_COMMAND_GET_WIDTH(int font) { return invoke<float>(0x85F061DA64ED2F67, font); } // 0x85F061DA64ED2F67 0xD12A643A
+	static float _END_TEXT_COMMAND_GET_WIDTH(BOOL p0) { return invoke<float>(0x85F061DA64ED2F67, p0); } // 0x85F061DA64ED2F67 0xD12A643A
 	static void _BEGIN_TEXT_COMMAND_LINE_COUNT(const char* entry) { invoke<Void>(0x521FB041D93DD0E4, entry); } // 0x521FB041D93DD0E4 0x94B82066
 	static int _GET_TEXT_SCREEN_LINE_COUNT(float x, float y) { return invoke<int>(0x9040DFB09BE75706, x, y); } // 0x9040DFB09BE75706 0xAA318785
 	static void BEGIN_TEXT_COMMAND_DISPLAY_HELP(const char* inputType) { invoke<Void>(0x8509B634FBE7DA11, inputType); } // 0x8509B634FBE7DA11 0xB245FC10

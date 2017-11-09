@@ -32,6 +32,8 @@ public:
 	UIText(const std::string &text);
 	~UIText();
 
+	void SetProperties();
+
 	glm::vec2 Measure();
 
 	void Render(const glm::vec2 &pos);
