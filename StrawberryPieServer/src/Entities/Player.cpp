@@ -218,7 +218,7 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		vehicle->RemoveOccupant(this);
 
-		NetworkMessage* msgEnteredVehicle = new NetworkMessage(NMT_EnteredVehicle);
+		NetworkMessage* msgEnteredVehicle = new NetworkMessage(NMT_LeftVehicle);
 		msgEnteredVehicle->Write(m_handle);
 		msgEnteredVehicle->Write(vehicle->m_handle);
 		msgEnteredVehicle->Write(seat);
