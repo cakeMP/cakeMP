@@ -318,6 +318,8 @@ void Player::Update()
 	if ((int)ClockDuration(Clock::now() - m_tmSyncLastPosition).count() > 250) {
 		m_tmSyncLastPosition = Clock::now();
 
+		//TODO: Only send this when player has moved, and only when not in vehicle
+
 		NetworkMessage* msgPos = new NetworkMessage(NMT_PlayerMove);
 		//TODO: Turn this into a NetStruct
 		msgPos->Write(m_handle);
