@@ -448,13 +448,61 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		Vehicle* vehicle = GetEntityFromHandle<Vehicle>(ET_Vehicle, vehicleHandle);
 
 		if (player == nullptr || vehicle == nullptr) {
-			logWrite("WARNING: Player %p (%u) tried entering vehicle %p (%u)", player, (uint32_t)playerHandle, vehicle, (uint32_t)vehicleHandle);
+			logWrite("WARNING: Player %p (%u) tried entering vehicle %p (%u) (entering)", player, (uint32_t)playerHandle, vehicle, (uint32_t)vehicleHandle);
 			return;
 		}
 
 		AI::CLEAR_PED_TASKS(player->GetLocalHandle());
 		//TODO: Speed: 1 = walk, 2 = run
 		AI::TASK_ENTER_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), -1, seat, 1.0f, 1, 0);
+
+		return;
+	}
+
+	if (message->m_type == NMT_EnteredVehicle) {
+		NetHandle playerHandle, vehicleHandle;
+		int seat;
+
+		message->Read(playerHandle);
+		message->Read(vehicleHandle);
+		message->Read(seat);
+
+		Player* player = GetEntityFromHandle<Player>(ET_Player, playerHandle);
+		Vehicle* vehicle = GetEntityFromHandle<Vehicle>(ET_Vehicle, vehicleHandle);
+
+		if (player == nullptr || vehicle == nullptr) {
+			logWrite("WARNING: Player %p (%u) tried entering vehicle %p (%u) (entered)", player, (uint32_t)playerHandle, vehicle, (uint32_t)vehicleHandle);
+			return;
+		}
+
+		AI::CLEAR_PED_TASKS(player->GetLocalHandle());
+		if (PED::GET_VEHICLE_PED_IS_IN(player->GetLocalHandle(), false) != vehicle->GetLocalHandle()) {
+			PED::SET_PED_INTO_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), seat);
+		}
+
+		return;
+	}
+
+	if (message->m_type == NMT_LeftVehicle) {
+		NetHandle playerHandle, vehicleHandle;
+		int seat;
+
+		message->Read(playerHandle);
+		message->Read(vehicleHandle);
+		message->Read(seat);
+
+		Player* player = GetEntityFromHandle<Player>(ET_Player, playerHandle);
+		Vehicle* vehicle = GetEntityFromHandle<Vehicle>(ET_Vehicle, vehicleHandle);
+
+		if (player == nullptr || vehicle == nullptr) {
+			logWrite("WARNING: Player %p (%u) tried leaving vehicle %p (%u)", player, (uint32_t)playerHandle, vehicle, (uint32_t)vehicleHandle);
+			return;
+		}
+
+		if (PED::IS_PED_IN_ANY_VEHICLE(player->GetLocalHandle(), false)) {
+			AI::CLEAR_PED_TASKS(player->GetLocalHandle());
+			AI::TASK_LEAVE_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), 1);
+		}
 
 		return;
 	}
