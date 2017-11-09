@@ -1,6 +1,7 @@
 #include <Common.h>
 
 #include <Entities/Player.h>
+#include <Entities/Vehicle.h>
 #include <GameServer.h>
 
 #include <Network/Structs/CreatePed.h>
@@ -158,6 +159,70 @@ void Player::HandleMessage(NetworkMessage* message)
 		m_rotation.z = newHeading;
 		m_velocity = newVelocity;
 		m_moveType = newMoveType;
+
+		return;
+	}
+
+	if (message->m_type == NMT_EnteringVehicle) {
+		NetHandle vehicleHandle;
+		int seat;
+
+		message->Read(vehicleHandle);
+		message->Read(seat);
+
+		NetworkMessage* msgEnteringVehicle = new NetworkMessage(NMT_EnteringVehicle);
+		msgEnteringVehicle->Write(m_handle);
+		msgEnteringVehicle->Write(vehicleHandle);
+		msgEnteringVehicle->Write(seat);
+		_pServer->m_network.SendMessageToRange(m_position, _pServer->m_settings.StreamingRange, msgEnteringVehicle, m_peer);
+
+		return;
+	}
+
+	if (message->m_type == NMT_EnteredVehicle) {
+		NetHandle vehicleHandle;
+		int seat;
+
+		message->Read(vehicleHandle);
+		message->Read(seat);
+
+		Vehicle* vehicle = _pServer->m_world.GetEntityFromHandle<Vehicle>(vehicleHandle);
+		if (vehicle == nullptr) {
+			logWrite("Player tried entering unknown vehicle!");
+			return;
+		}
+
+		vehicle->AddOccupant(this, seat);
+
+		NetworkMessage* msgEnteredVehicle = new NetworkMessage(NMT_EnteredVehicle);
+		msgEnteredVehicle->Write(m_handle);
+		msgEnteredVehicle->Write(vehicle->m_handle);
+		msgEnteredVehicle->Write(seat);
+		_pServer->m_network.SendMessageToRange(m_position, _pServer->m_settings.StreamingRange, msgEnteredVehicle, m_peer);
+
+		return;
+	}
+
+	if (message->m_type == NMT_LeftVehicle) {
+		NetHandle vehicleHandle;
+		int seat;
+
+		message->Read(vehicleHandle);
+		message->Read(seat);
+
+		Vehicle* vehicle = _pServer->m_world.GetEntityFromHandle<Vehicle>(vehicleHandle);
+		if (vehicle == nullptr) {
+			logWrite("Player tried leaving unknown vehicle!");
+			return;
+		}
+
+		vehicle->RemoveOccupant(this);
+
+		NetworkMessage* msgEnteredVehicle = new NetworkMessage(NMT_EnteredVehicle);
+		msgEnteredVehicle->Write(m_handle);
+		msgEnteredVehicle->Write(vehicle->m_handle);
+		msgEnteredVehicle->Write(seat);
+		_pServer->m_network.SendMessageToRange(m_position, _pServer->m_settings.StreamingRange, msgEnteredVehicle, m_peer);
 
 		return;
 	}

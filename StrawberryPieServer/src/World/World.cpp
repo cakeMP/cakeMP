@@ -102,6 +102,15 @@ void World::RemoveEntity(Entity* ent)
 	m_allEntities.erase(it);
 }
 
+Entity* World::GetEntityFromHandle(const NetHandle &handle)
+{
+	auto it = m_allEntities.find(handle);
+	if (it == m_allEntities.end()) {
+		return nullptr;
+	}
+	return it->second;
+}
+
 void World::EntityMoved(Entity* ent, const glm::vec3 &oldPos)
 {
 	WorldNode &oldNode = m_entities.getCell(oldPos); //TODO: Use cached value instead!

@@ -33,6 +33,13 @@ public:
 
 	void AddEntity(Entity* ent);
 	void RemoveEntity(Entity* ent);
+	Entity* GetEntityFromHandle(const NetHandle &handle);
+	template<typename T>
+	T* GetEntityFromHandle(const NetHandle &handle)
+	{
+		return static_cast<T*>(GetEntityFromHandle(handle));
+	}
+
 	void EntityMoved(Entity* ent, const glm::vec3 &oldPos);
 
 	void Update();

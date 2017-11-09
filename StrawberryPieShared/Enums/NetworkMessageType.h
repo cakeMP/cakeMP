@@ -99,6 +99,23 @@ enum NetworkMessageType
 	//  * int: The seat of the vehicle that is trying to be entered.
 	NMT_EnteringVehicle,
 
+	// Server to client:
+	//  * NetHandle: The player that has entered the vehicle.
+	//  * NetHandle: The vehicle that the player has entered.
+	//  * int: The seat of the vehicle that the player has entered.
+	//
+	// Client to server:
+	//  * NetHandle: The vehicle that the player has entered.
+	//  * int: The seat that the player is in.
 	NMT_EnteredVehicle,
+
+	// Server to client:
+	//  * NetHandle: The player that has left the vehicle.
+	//  * NetHandle: The vehicle that the player has left.
+	//  * int: The seat of the vehicle that the player has left.
+	//
+	// Client to server:
+	//  * NetHandle: The vehicle that the player has left.
+	//  * int: The seat that the player was in.
 	NMT_LeftVehicle,
 };

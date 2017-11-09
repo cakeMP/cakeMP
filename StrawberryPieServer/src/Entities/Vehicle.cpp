@@ -69,7 +69,7 @@ void Vehicle::AddOccupant(Player* player, int seat)
 
 	assert(GetSeatWithPlayer(player) == nullptr);
 	VehicleSeat* s = GetSeatWithIndex(seat);
-	if (s != nullptr) {
+	if (s == nullptr) {
 		s = NewVehicleSeat(seat);
 	}
 	s->m_player = player;
