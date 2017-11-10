@@ -395,6 +395,10 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
+		if (player->m_inVehicle) {
+			return;
+		}
+
 		message->Read(newPosition);
 		message->Read(newHeading);
 		message->Read(newVelocity);
@@ -452,9 +456,8 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		AI::CLEAR_PED_TASKS(player->GetLocalHandle());
-		//TODO: Speed: 1 = walk, 2 = run
-		AI::TASK_ENTER_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), -1, seat, 1.0f, 1, 0);
+		player->m_inVehicle = true;
+		AI::TASK_ENTER_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), 1000, seat, 1.0f, 3, 0);
 
 		return;
 	}
@@ -475,10 +478,7 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		AI::CLEAR_PED_TASKS(player->GetLocalHandle());
-		if (PED::GET_VEHICLE_PED_IS_IN(player->GetLocalHandle(), false) != vehicle->GetLocalHandle()) {
-			PED::SET_PED_INTO_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), seat);
-		}
+		PED::SET_PED_INTO_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), seat);
 
 		return;
 	}
@@ -499,10 +499,10 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			return;
 		}
 
-		if (PED::IS_PED_IN_ANY_VEHICLE(player->GetLocalHandle(), false)) {
-			AI::CLEAR_PED_TASKS(player->GetLocalHandle());
-			AI::TASK_LEAVE_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), 1);
-		}
+		player->m_inVehicle = false;
+
+		//TODO: Somehow wait for this task to finish before allowing movement (like m_inVehicle), to avoid janky animation
+		AI::TASK_LEAVE_VEHICLE(player->GetLocalHandle(), vehicle->GetLocalHandle(), 1);
 
 		return;
 	}

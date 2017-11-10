@@ -14,6 +14,8 @@ public:
 	OnFootMoveTypes m_speedOnFoot;
 	glm::vec3 m_speedOnFootTowards;
 
+	bool m_inVehicle = false;
+
 public:
 	Ped();
 	Ped(int localHandle, const NetHandle &netHandle);
