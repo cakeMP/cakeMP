@@ -1,6 +1,4 @@
-# CakeMP
-
-[![Discord](https://img.shields.io/discord/377450878531272725.svg)](https://discord.gg/4CgdqzA)
+# CakeMP [![Discord](https://img.shields.io/discord/377450878531272725.svg)](https://discord.gg/4CgdqzA)
 
 CakeMP is a GTA 5 multiplayer mod. It originally started as a rewrite for a different multiplayer mod,
 but forked out into its own open source variation instead. Older names include: Strawberry Pie & quinMP.
