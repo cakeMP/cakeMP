@@ -1,6 +1,6 @@
 CFLAGS=-lenet
 CFLAGS+=-I../Libs/glm/
-CFLAGS+=-I../StrawberryPieShared/
+CFLAGS+=-I../CakeMPShared/
 CFLAGS+=-I.
 
 all:

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(Strawberry)
+project(Cake)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
 set(CMAKE_CXX_STANDARD 11)
@@ -40,33 +40,33 @@ set(SRC
 )
 
 set(SHARED_SRC
-	../StrawberryPieShared/SharedUtils.h
-	../StrawberryPieShared/RefCounted.h
-	../StrawberryPieShared/Octree.h
-	../StrawberryPieShared/Enums/NetworkMessageType.h
-	../StrawberryPieShared/Network/NetworkMessage.h
-	../StrawberryPieShared/Network/NetHandle.h
-	../StrawberryPieShared/Network/NetworkEntityType.h
-	../StrawberryPieShared/Network/Structs/CreatePed.h
-	../StrawberryPieShared/Network/Structs/CreateVehicle.h
+	../CakeMPShared/SharedUtils.h
+	../CakeMPShared/RefCounted.h
+	../CakeMPShared/Octree.h
+	../CakeMPShared/Enums/NetworkMessageType.h
+	../CakeMPShared/Network/NetworkMessage.h
+	../CakeMPShared/Network/NetHandle.h
+	../CakeMPShared/Network/NetworkEntityType.h
+	../CakeMPShared/Network/Structs/CreatePed.h
+	../CakeMPShared/Network/Structs/CreateVehicle.h
 )
 
-add_executable(StrawberryServer
+add_executable(CakeServer
 	${SRC}
 	${SHARED_SRC}
 )
 
 source_group(TREE "${CMAKE_SOURCE_DIR}/src/" PREFIX Src FILES ${SRC})
-source_group(TREE "${CMAKE_SOURCE_DIR}/../StrawberryPieShared/" PREFIX Shared FILES ${SHARED_SRC})
+source_group(TREE "${CMAKE_SOURCE_DIR}/../CakeMPShared/" PREFIX Shared FILES ${SHARED_SRC})
 
 find_package(ENet REQUIRED)
 
-target_link_libraries(StrawberryServer
+target_link_libraries(CakeServer
 	${ENet_LIBRARIES}
 )
 
 if(WIN32)
-	target_link_libraries(StrawberryServer
+	target_link_libraries(CakeServer
 		Ws2_32
 		WinMM
 	)
@@ -76,5 +76,5 @@ include_directories(
 	${CMAKE_SOURCE_DIR}/src
 	${ENet_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/../Libs/glm
-	${CMAKE_SOURCE_DIR}/../StrawberryPieShared
+	${CMAKE_SOURCE_DIR}/../CakeMPShared
 )
