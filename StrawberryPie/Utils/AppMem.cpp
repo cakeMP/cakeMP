@@ -24,6 +24,12 @@ uint8_t* memGetBasePointer()
 	return (uint8_t*)ret;
 }
 
+struct PatternByte
+{
+	uint8_t byte;
+	bool mask;
+};
+
 uint8_t* memFindPattern(uint8_t* buffer, size_t size, const char* pattern)
 {
 	PatternByte* compiled = nullptr;
