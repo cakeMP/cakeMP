@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <System/Strawberry.h>
+#include <System/Cake.h>
 
 #include <Utils/AppMem.h>
 
@@ -64,7 +64,7 @@ static void appInitialize(HMODULE hInstance)
 		logWrite("Done!");
 	}
 
-	_pGame = new Strawberry(hInstance);
+	_pGame = new Cake(hInstance);
 
 	keyboardHandlerRegister(appKeyboardHandler);
 }

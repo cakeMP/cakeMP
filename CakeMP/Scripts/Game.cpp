@@ -1,7 +1,7 @@
 #include <Common.h>
 #include <Scripts/Game.h>
 
-#include <System/Strawberry.h>
+#include <System/Cake.h>
 
 #include <shv/main.h>
 #include <shv/natives.h>

@@ -11,7 +11,7 @@
 
 NAMESPACE_BEGIN;
 
-class Strawberry
+class Cake
 {
 public:
 	HMODULE m_hInstance;
@@ -30,8 +30,8 @@ public:
 	uint32_t m_pedRelGroup = 0;
 
 public:
-	Strawberry(HMODULE hInstance);
-	~Strawberry();
+	Cake(HMODULE hInstance);
+	~Cake();
 
 	void Initialize();
 	void Update(float dt);
@@ -46,6 +46,6 @@ public:
 	bool IsKeyDown(uint8_t key);
 };
 
-extern Strawberry* _pGame;
+extern Cake* _pGame;
 
 NAMESPACE_END;

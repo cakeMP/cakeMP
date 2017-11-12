@@ -126,7 +126,7 @@
     <ClCompile Include="System\Interface\MainMenu.cpp" />
     <ClCompile Include="GTA\ScriptCam.cpp" />
     <ClCompile Include="System\Settings.cpp" />
-    <ClCompile Include="System\Strawberry.cpp" />
+    <ClCompile Include="System\Cake.cpp" />
     <ClCompile Include="Utils\AppMem.cpp" />
     <ClCompile Include="Utils\Formatting.cpp" />
     <ClCompile Include="Utils\Logging.cpp" />
@@ -166,7 +166,7 @@
     <ClInclude Include="Utils\Interpolator.h" />
     <ClInclude Include="Utils\Interval.h" />
     <ClInclude Include="System\Settings.h" />
-    <ClInclude Include="System\Strawberry.h" />
+    <ClInclude Include="System\Cake.h" />
     <ClInclude Include="Scripts\CleanWorld.h" />
     <ClInclude Include="Scripts\Game.h" />
     <ClInclude Include="Utils\Logging.h" />

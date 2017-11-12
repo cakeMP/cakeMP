@@ -1,6 +1,6 @@
 #include <Common.h>
 
-#include <System/Strawberry.h>
+#include <System/Cake.h>
 
 #include <Scripts/CleanWorld.h>
 #include <Scripts/Game.h>
@@ -14,12 +14,12 @@
 
 NAMESPACE_BEGIN;
 
-Strawberry* _pGame = nullptr;
+Cake* _pGame = nullptr;
 
 /*
 static BOOL CALLBACK _windowEnumHandler(HWND hwnd, LPARAM lparam)
 {
-	Strawberry* pGame = (Strawberry*)lparam;
+	Cake* pGame = (Cake*)lparam;
 
 	DWORD pid = 0;
 	GetWindowThreadProcessId(hwnd, &pid);
@@ -32,7 +32,7 @@ static BOOL CALLBACK _windowEnumHandler(HWND hwnd, LPARAM lparam)
 }
 */
 
-Strawberry::Strawberry(HMODULE hInstance)
+Cake::Cake(HMODULE hInstance)
 {
 	m_hInstance = hInstance;
 
@@ -42,12 +42,12 @@ Strawberry::Strawberry(HMODULE hInstance)
 	scriptRegister(hInstance, scriptGame);
 }
 
-Strawberry::~Strawberry()
+Cake::~Cake()
 {
 	scriptUnregister(m_hInstance);
 }
 
-void Strawberry::Initialize()
+void Cake::Initialize()
 {
 	logWrite("Client initializing.");
 
@@ -67,7 +67,7 @@ void Strawberry::Initialize()
 	m_interface.Initialize();
 }
 
-void Strawberry::Update(float dt)
+void Cake::Update(float dt)
 {
 	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
 
@@ -81,7 +81,7 @@ void Strawberry::Update(float dt)
 	}
 }
 
-void Strawberry::Frame()
+void Cake::Frame()
 {
 	/*
 	//TODO: This should be an option (it slows down keyboard input outside of the game sadly)
@@ -95,20 +95,20 @@ void Strawberry::Frame()
 	m_player.Frame();
 }
 
-void Strawberry::OnConnected()
+void Cake::OnConnected()
 {
 	m_interface.OnConnected();
 }
 
-void Strawberry::OnDisconnected()
+void Cake::OnDisconnected()
 {
 	m_interface.OnDisconnected();
 
-	//TODO: Also delete local entities (m_entitiesLocal in Strawberry?)
+	//TODO: Also delete local entities (m_entitiesLocal in Cake?)
 	m_network.ClearEntities();
 }
 
-void Strawberry::OnKeyDown(uint32_t key)
+void Cake::OnKeyDown(uint32_t key)
 {
 	assert(key < 256);
 	if (key >= 256) {
@@ -134,7 +134,7 @@ void Strawberry::OnKeyDown(uint32_t key)
 	}
 }
 
-void Strawberry::OnKeyUp(uint32_t key)
+void Cake::OnKeyUp(uint32_t key)
 {
 	assert(key < 256);
 	if (key >= 256) {
@@ -145,7 +145,7 @@ void Strawberry::OnKeyUp(uint32_t key)
 	m_keyStates[key] = 0;
 }
 
-bool Strawberry::IsKeyDown(uint8_t key)
+bool Cake::IsKeyDown(uint8_t key)
 {
 	return (m_keyStates[key] == 1);
 }
