@@ -122,7 +122,7 @@ void Player::HandleMessage(NetworkMessage* message)
 
 		// Tell everyone else we joined
 		NetworkMessage* msgJoin = new NetworkMessage(NMT_PlayerJoin);
-		msgJoin->Write(GetNetworkCreatePedStruct());
+		msgJoin->Write(m_handle);
 		msgJoin->Write(m_username);
 		msgJoin->Write(m_nickname);
 		_pServer->m_network.SendMessageToAll(msgJoin, m_peer);
