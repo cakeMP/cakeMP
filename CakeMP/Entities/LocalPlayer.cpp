@@ -53,11 +53,14 @@ void LocalPlayer::Initialize()
 {
 	SetLocalHandle(PLAYER::GET_PLAYER_INDEX());
 
-	m_username = PLAYER::GET_PLAYER_NAME(m_playerHandle);
+	m_playerInfo = new PlayerInfo;
+	m_playerInfo->m_local = true;
+	m_playerInfo->m_username = PLAYER::GET_PLAYER_NAME(m_playerHandle);
+
 	if (_pGame->m_settings.Nickname != "") {
-		m_nickname = _pGame->m_settings.Nickname;
+		m_playerInfo->m_nickname = _pGame->m_settings.Nickname;
 	} else {
-		m_nickname = m_username;
+		m_playerInfo->m_nickname = m_playerInfo->m_username;
 	}
 }
 
@@ -161,6 +164,15 @@ void LocalPlayer::Frame()
 	glm::vec3 pos = GetPosition();
 	glm::vec3 vel = GetVelocity();
 	GRAPHICS::DRAW_LINE(pos.x, pos.y, pos.z, pos.x + vel.x, pos.y + vel.y, pos.z + vel.z, 0, 0, 255, 255);
+}
+
+s2::ref<PlayerInfo> LocalPlayer::GetPlayerInfo()
+{
+	return m_playerInfo;
+}
+
+void LocalPlayer::SetPlayerInfo(const s2::ref<PlayerInfo> &playerInfo)
+{
 }
 
 NAMESPACE_END;

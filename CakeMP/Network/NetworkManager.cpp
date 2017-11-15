@@ -11,6 +11,7 @@
 #include <Network/Structs/CreatePed.h>
 #include <Network/Structs/CreateVehicle.h>
 #include <GTA/UI/UI.h>
+#include <Utils/Formatting.h>
 
 #include <enet/enet.h>
 
@@ -163,9 +164,11 @@ void NetworkManager::Update()
 
 			LocalPlayer &player = _pGame->m_player;
 
+			auto playerInfo = player.GetPlayerInfo();
+
 			NetworkMessage* msgHandshake = new NetworkMessage(NMT_Handshake);
-			msgHandshake->Write(player.m_username);
-			msgHandshake->Write(player.m_nickname);
+			msgHandshake->Write(playerInfo->m_username);
+			msgHandshake->Write(playerInfo->m_nickname);
 			SendToHost(msgHandshake);
 
 			//NOTE: We don't call OnConnected until the server has accepted our handshake
@@ -226,6 +229,57 @@ void NetworkManager::Update()
 	m_statsOutgoingBytesTotal += outgoingBytes;
 }
 
+s2::ref<PlayerInfo> NetworkManager::GetPlayer(const NetHandle &handle)
+{
+	auto it = std::find_if(m_playerInfos.begin(), m_playerInfos.end(), [&handle](s2::ref<PlayerInfo> &player) {
+		return player->m_handle == handle;
+	});
+
+	if (it != m_playerInfos.end()) {
+		return *it;
+	}
+
+	return nullptr;
+}
+
+s2::ref<PlayerInfo> NetworkManager::GetPlayerByIndex(int index)
+{
+	return m_playerInfos[index];
+}
+
+int NetworkManager::GetPlayerCount()
+{
+	return (int)m_playerInfos.size();
+}
+
+int NetworkManager::GetServerMaxPlayers()
+{
+	return m_currentServerMaxPlayers;
+}
+
+std::string NetworkManager::GetServerIP()
+{
+	if (!IsConnected()) {
+		return "";
+	}
+
+	uint32_t addr = m_localHost->address.host;
+	uint16_t port = m_localHost->address.port;
+
+	return fmtString("%u.%u.%u.%u:%u",
+		((addr & 0x000000FF) >> 0),
+		((addr & 0x0000FF00) >> 8),
+		((addr & 0x00FF0000) >> 16),
+		((addr & 0xFF000000) >> 24),
+		port
+	);
+}
+
+std::string NetworkManager::GetServerName()
+{
+	return m_currentServerName;
+}
+
 //TODO: Perhaps this should move to some other place?
 void NetworkManager::HandleMessage(NetworkMessage* message)
 {
@@ -252,12 +306,24 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 		message->Read(position);
 		message->Read(skinHash);
 
+		std::string serverName;
+		int serverMaxPlayers;
+
+		message->Read(serverName);
+		message->Read(serverMaxPlayers);
+
+		m_currentServerName = serverName;
+		m_currentServerMaxPlayers = serverMaxPlayers;
+
 		logWrite("We have received our local handle: %u", handle.m_value);
 
 		LocalPlayer &player = _pGame->m_player;
+		player.GetPlayerInfo()->m_handle = handle;
 		player.SetNetHandle(handle);
 		player.SetModel(skinHash);
 		player.SetPositionNoOffset(position);
+
+		m_playerInfos.emplace_back(player.GetPlayerInfo());
 
 		_pGame->OnConnected();
 
@@ -282,15 +348,13 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 			//TODO: Clean this up a bit, it's gonna become huge if we leave this like this
 			if (entityType == ET_Player) {
 				NetStructs::CreatePed createPedPlayer;
-				std::string username, nickname;
 
 				message->Read(createPedPlayer);
-				message->Read(username);
-				message->Read(nickname);
+
+				auto playerInfo = GetPlayer(entityHandle);
 
 				Player* newPlayer = new Player(entityHandle, createPedPlayer);
-				newPlayer->m_username = username;
-				newPlayer->m_nickname = nickname;
+				newPlayer->SetPlayerInfo(playerInfo);
 				m_entitiesNetwork[entityHandle] = newPlayer;
 
 			} else if (entityType == ET_Vehicle) {
@@ -332,12 +396,20 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 	}
 
 	if (message->m_type == NMT_PlayerJoin) {
-		NetStructs::CreatePed createPedPlayer;
+		NetHandle handle;
 		std::string username, nickname;
 
-		message->Read(createPedPlayer);
+		message->Read(handle);
 		message->Read(username);
 		message->Read(nickname);
+
+		assert(GetPlayer(handle) == nullptr);
+
+		PlayerInfo* newPlayer = new PlayerInfo;
+		newPlayer->m_handle = handle;
+		newPlayer->m_username = username;
+		newPlayer->m_nickname = nickname;
+		m_playerInfos.emplace_back(newPlayer);
 
 		logWrite("Player joined: %s (%s)", username.c_str(), nickname.c_str());
 
@@ -351,22 +423,14 @@ void NetworkManager::HandleMessage(NetworkMessage* message)
 
 		message->Read(handle);
 
-		auto it = m_entitiesNetwork.find(handle);
-		if (it == m_entitiesNetwork.end()) {
-			assert(false);
-			return;
-		}
-
-		if (it->second->GetType() != ET_Player) {
-			assert(false);
-			return;
-		}
-
-		Player* player = static_cast<Player*>(it->second);
+		auto player = GetPlayer(handle);
+		assert(player != nullptr);
 
 		logWrite("Player left: %s (%s)", player->m_username.c_str(), player->m_nickname.c_str());
 
 		uiNotify("~b~%s~s~ left", player->m_nickname.c_str());
+
+		std::remove(m_playerInfos.begin(), m_playerInfos.end(), player);
 
 		return;
 	}

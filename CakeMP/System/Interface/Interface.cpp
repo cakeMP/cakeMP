@@ -43,7 +43,7 @@ void Interface::Initialize()
 	m_strVersion.m_scale = 0.3f;
 	m_strVersion.m_align = UITA_Center;
 	m_strVersion.m_color = glm::vec4(1, 1, 1, 0.4f);
-	m_strVersion.m_text = PROJECT_NAME " " PROJECT_VERSION "~n~" PROJECT_BUILDTYPE " (" + _pGame->m_player.m_username + ")";
+	m_strVersion.m_text = PROJECT_NAME " " PROJECT_VERSION "~n~" PROJECT_BUILDTYPE " (" + _pGame->m_player.GetPlayerInfo()->m_username + ")";
 
 	m_strDebug.m_font = 0;
 	m_strDebug.m_outline = true;

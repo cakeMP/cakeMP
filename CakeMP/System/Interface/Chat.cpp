@@ -10,8 +10,6 @@
 
 NAMESPACE_BEGIN;
 
-#include <Windows.h> //Winuser.h
-
 Chat::Chat()
 {
 }
@@ -78,7 +76,6 @@ void Chat::OnKeyDown(uint32_t c)
 
 		m_currentInput = "";
 		m_chatInput.m_text = m_currentInput;
-		//m_scaleform.CallFunction("COMPLETE_TEXT");
 		SetFocused(false);
 		return;
 
@@ -86,23 +83,19 @@ void Chat::OnKeyDown(uint32_t c)
 		if (m_currentInput.size() > 0) {
 			m_currentInput.pop_back();
 			m_chatInput.m_text = m_currentInput;
-			//m_scaleform.CallFunction("DELETE_TEXT");
 		}
 		return;
 
 	} else if (c == VK_ESCAPE) {
 		m_currentInput = "";
 		m_chatInput.m_text = m_currentInput;
-		//m_scaleform.CallFunction("ABORT_TEXT");
 		SetFocused(false);
 		return;
 
 	} else if (c == VK_PRIOR) {
-		//m_scaleform.CallFunction("PAGE_UP");
 		return;
 
 	} else if (c == VK_NEXT) {
-		//m_scaleform.CallFunction("PAGE_DOWN");
 		return;
 	}
 
@@ -125,33 +118,12 @@ void Chat::OnKeyDown(uint32_t c)
 		m_currentInput += buffer;
 		m_chatInput.m_text = m_currentInput;
 
-		/*
-		m_scaleform.StartFunction("ADD_TEXT");
-		m_scaleform.PushParam(buffer);
-		m_scaleform.FinishFunction();
-		*/
-
 		free(buffer);
 	}
 }
 
 void Chat::SetFocused(bool focus)
 {
-	/*
-	if (focus != m_focused) {
-		m_scaleform.StartFunction("SET_FOCUS");
-		if (focus) {
-			m_scaleform.PushParam(2);
-		} else if (!focus) {
-			m_scaleform.PushParam(1);
-		}
-		m_scaleform.PushParam(0);
-		m_scaleform.PushParam("");
-		m_scaleform.PushParam(_pGame->m_player.m_nickname);
-		m_scaleform.FinishFunction();
-	}
-	*/
-
 	m_focused = focus;
 }
 
@@ -162,7 +134,7 @@ bool Chat::IsFocused()
 
 void Chat::AddMessage(const std::string &message)
 {
-	m_chatLines.push_back(UIText(message));
+	m_chatLines.emplace_back(UIText(message));
 
 	if ((int)m_chatLines.size() > m_maxLines) {
 		m_chatLines.erase(m_chatLines.begin(), m_chatLines.begin() + (m_chatLines.size() - m_maxLines));

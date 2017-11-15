@@ -62,6 +62,7 @@ void Cake::Initialize()
 	TIME::SET_CLOCK_TIME(12, 0, 0);
 	TIME::PAUSE_CLOCK(true);
 
+	//m_discord.Initialize();
 	m_player.Initialize();
 	m_network.Initialize();
 	m_interface.Initialize();
@@ -70,6 +71,8 @@ void Cake::Initialize()
 void Cake::Update(float dt)
 {
 	m_gameTime = GAMEPLAY::GET_GAME_TIMER();
+
+	//m_discord.Update();
 
 	m_interface.Update(dt);
 
@@ -98,11 +101,13 @@ void Cake::Frame()
 void Cake::OnConnected()
 {
 	m_interface.OnConnected();
+	//m_discord.GameOnConnected();
 }
 
 void Cake::OnDisconnected()
 {
 	m_interface.OnDisconnected();
+	//m_discord.GameOnConnected();
 
 	//TODO: Also delete local entities (m_entitiesLocal in Cake?)
 	m_network.ClearEntities();

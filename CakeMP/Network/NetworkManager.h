@@ -3,6 +3,7 @@
 #include <Common.h>
 
 #include <Network/NetworkMessage.h>
+#include <Network/PlayerInfo.h>
 
 #include <System/Entity.h>
 
@@ -20,10 +21,16 @@ private:
 	ENetHost* m_localHost = nullptr;
 	ENetPeer* m_localPeer = nullptr;
 
+	std::vector<s2::ref<PlayerInfo>> m_playerInfos;
+
 	std::queue<NetworkMessage*> m_incomingMessages;
 	std::queue<NetworkMessage*> m_outgoingMessages;
 
 	std::unordered_map<uint32_t, Entity*> m_entitiesNetwork;
+
+	//TODO: Move this to a shared ServerInfo structure?
+	std::string m_currentServerName;
+	int m_currentServerMaxPlayers;
 
 public:
 	Average<uint32_t> m_statsIncomingMessages;
@@ -67,6 +74,16 @@ public:
 
 	void Initialize();
 	void Update();
+
+	s2::ref<PlayerInfo> GetPlayer(const NetHandle &handle);
+	s2::ref<PlayerInfo> GetPlayerByIndex(int index);
+
+	int GetPlayerCount();
+	int GetServerMaxPlayers();
+
+	std::string GetServerIP();
+	std::string GetServerName();
+
 	void HandleMessage(NetworkMessage* message);
 };
 

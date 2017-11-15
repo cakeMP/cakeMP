@@ -3,14 +3,14 @@
 #include <Entities/Ped.h>
 
 #include <Network/Structs/CreatePed.h>
+#include <Network/PlayerInfo.h>
 
 NAMESPACE_BEGIN;
 
 class Player : public Ped
 {
-public:
-	std::string m_username;
-	std::string m_nickname;
+protected:
+	s2::ref<PlayerInfo> m_playerInfo;
 
 public:
 	Player();
@@ -19,6 +19,9 @@ public:
 	virtual ~Player();
 
 	virtual NetworkEntityType GetType();
+
+	virtual s2::ref<PlayerInfo> GetPlayerInfo();
+	virtual void SetPlayerInfo(const s2::ref<PlayerInfo> &playerInfo);
 };
 
 NAMESPACE_END;

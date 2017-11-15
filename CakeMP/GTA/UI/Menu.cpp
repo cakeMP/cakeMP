@@ -41,7 +41,7 @@ UIMenu::~UIMenu()
 UIMenuItem* UIMenu::AddItem()
 {
 	UIMenuItem* newItem = new UIMenuItem(this);
-	m_items.push_back(newItem);
+	m_items.emplace_back(newItem);
 	return newItem;
 }
 
@@ -55,7 +55,7 @@ UIMenuItem* UIMenu::AddItem(const std::string &text)
 UIMenuItemCheckable* UIMenu::AddItemCheckable()
 {
 	UIMenuItemCheckable* newItem = new UIMenuItemCheckable(this);
-	m_items.push_back(newItem);
+	m_items.emplace_back(newItem);
 	return newItem;
 }
 

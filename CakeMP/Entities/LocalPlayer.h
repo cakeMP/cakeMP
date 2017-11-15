@@ -37,6 +37,9 @@ public:
 
 	virtual void Update();
 	virtual void Frame();
+
+	virtual s2::ref<PlayerInfo> GetPlayerInfo();
+	virtual void SetPlayerInfo(const s2::ref<PlayerInfo> &playerInfo);
 };
 
 NAMESPACE_END;

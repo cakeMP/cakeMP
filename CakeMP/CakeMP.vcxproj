@@ -110,6 +110,7 @@
     <ClCompile Include="GTA\UI\Texture.cpp" />
     <ClCompile Include="GTA\UI\UI.cpp" />
     <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="System\CakeDiscord.cpp" />
     <ClCompile Include="System\Interface\Chat.cpp" />
     <ClCompile Include="Libs\inih\ini.cpp" />
     <ClCompile Include="main.cpp" />
@@ -152,8 +153,11 @@
     <ClInclude Include="GTA\UI\UI.h" />
     <ClInclude Include="GTA\UI\Texture.h" />
     <ClInclude Include="Libs\inih\ini.h" />
+    <ClInclude Include="Libs\scratch2\s2ref.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Network\NetworkManager.h" />
+    <ClInclude Include="Network\PlayerInfo.h" />
+    <ClInclude Include="System\CakeDiscord.h" />
     <ClInclude Include="System\Interface\Chat.h" />
     <ClInclude Include="System\Entity.h" />
     <ClInclude Include="System\Interface\FPSCounter.h" />

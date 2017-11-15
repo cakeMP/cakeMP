@@ -6,6 +6,7 @@
 
 #include <System/Settings.h>
 #include <System/Interface/Interface.h>
+//#include <System/CakeDiscord.h>
 
 #include <Entities/LocalPlayer.h>
 
@@ -17,6 +18,8 @@ public:
 	HMODULE m_hInstance;
 	//HWND m_hWnd = nullptr;
 	uint8_t m_keyStates[256];
+
+	//CakeDiscord m_discord;
 
 	NetworkManager m_network;
 	Settings m_settings;

@@ -61,11 +61,11 @@ void MainMenu::Initialize()
 	};
 
 	m_itemNickname = AddItem("Nickname");
-	m_itemNickname->m_strTextRight.m_text = _pGame->m_player.m_nickname;
+	m_itemNickname->m_strTextRight.m_text = _pGame->m_player.GetPlayerInfo()->m_nickname;
 	m_itemNickname->m_onAccept = [this]() {
-		uiTextInput("Nickname", _pGame->m_player.m_nickname, 30, [this](const std::string &text) {
+		uiTextInput("Nickname", _pGame->m_player.GetPlayerInfo()->m_nickname, 30, [this](const std::string &text) {
 			m_itemNickname->m_strTextRight.m_text = text;
-			_pGame->m_player.m_nickname = text;
+			_pGame->m_player.GetPlayerInfo()->m_nickname = text;
 		});
 	};
 }

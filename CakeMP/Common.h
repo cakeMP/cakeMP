@@ -36,6 +36,9 @@
 #include <glm/vec4.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+// Scratch2
+#include <Libs/scratch2/s2ref.h>
+
 // Custom assertions
 #ifdef assert
 #undef assert
