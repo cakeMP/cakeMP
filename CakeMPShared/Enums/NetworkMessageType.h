@@ -51,7 +51,7 @@ enum NetworkMessageType
 	NMT_StreamOut,
 
 	// Server to client: A new player has joined the game.
-	//  * NetStructs::CreatePed: The ped that must be created for the player.
+	//  * NetHandle: The handle for the player.
 	//  * string: The player's Social Club username.
 	//  * string: The player's nickname.
 	NMT_PlayerJoin,
