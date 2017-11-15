@@ -301,8 +301,6 @@ NetStructs::CreatePed Player::GetNetworkCreatePedStruct()
 void Player::NetworkSerialize(NetworkMessage* message)
 {
 	message->Write(GetNetworkCreatePedStruct());
-	message->Write(m_username);
-	message->Write(m_nickname);
 }
 
 void Player::Update()
