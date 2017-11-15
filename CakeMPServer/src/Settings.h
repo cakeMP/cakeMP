@@ -8,6 +8,8 @@ public:
 	std::string ListenHost = "0.0.0.0";
 	uint16_t ListenPort = 4499;
 
+	std::string ServerName = "Cake is good";
+
 	uint32_t MaxClients = 100;
 
 	uint32_t TickRate = 60;

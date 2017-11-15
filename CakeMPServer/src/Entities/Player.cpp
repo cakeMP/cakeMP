@@ -104,6 +104,8 @@ void Player::HandleMessage(NetworkMessage* message)
 		msgHandshake->Write(m_handle);
 		msgHandshake->Write(m_position);
 		msgHandshake->Write(m_model);
+		msgHandshake->Write(_pServer->m_settings.ServerName);
+		msgHandshake->Write(_pServer->m_settings.MaxClients);
 		_pServer->m_network.SendMessageTo(m_peer, msgHandshake);
 
 		// Give the client the current world state

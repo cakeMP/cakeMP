@@ -21,6 +21,8 @@ enum NetworkMessageType
 	// Server to client: The player's information according to the server.
 	//  * NetHandle: The player's new network handle.
 	//  * vec3: The player's spawn position.
+	//  * string: The server name.
+	//  * int: The maximum number of players for this server.
 	//
 	// Client to server: The player's information, the initial handshake.
 	//  * string: The player's Social Club username.
