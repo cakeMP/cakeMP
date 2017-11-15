@@ -38,8 +38,6 @@ enum NetworkMessageType
 	//    * <serialized data based on entity type, see Entity::NetworkSerialize>
 	//      if t == ET_Player:
 	//      * NetStructs::CreatePed: The ped that must be created for the player.
-	//      * string: The player's Social Club username.
-	//      * string: The player's nickname;
 	//      if t == ET_Vehicle:
 	//      * NetStructs::CreateVehicle: The vehicle that must be created.
 	NMT_StreamIn,
