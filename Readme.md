@@ -1,14 +1,10 @@
-# CakeMP [![Discord](https://img.shields.io/discord/377450878531272725.svg)](https://discord.gg/4CgdqzA)
+# CakeMP
 
-CakeMP is a GTA 5 multiplayer mod. It originally started as a rewrite for a different multiplayer mod,
+CakeMP was a GTA 5 multiplayer mod. It originally started as a rewrite for a different multiplayer mod,
 but forked out into its own open source variation instead. Older names include: Strawberry Pie & quinMP.
 
 There is currently no publicly available download, but you are free to clone this repository and build it
 yourself.
-
-If you want to help contribute, you can join us on [Discord](https://discord.gg/4CgdqzA), and you are free
-to do pull requests if you wish. However, for new features, it would be nice to discuss this first in a
-Github issue.
 
 ## Features
 
@@ -46,12 +42,7 @@ via `cmake`. On Linux you will need to have the ENet library installed (eg. on D
 ## Contributing
 
 Whether this mod will have its development continued is questionable, so feel free to fork this repository
-and improve on the project. I might also accept pull requests, depending on their quality.
-
-## Support
-
-Want to donate? Send the author some bitcoin: `19ndVDT5KnZXAEydtr5yT7td67Zoi9sQxc` or donate
-via [Paypal](https://paypal.me/ansjh)!
+and improve on the project.
 
 ## License
 
